@@ -1,0 +1,114 @@
+# ==============================================================================
+# Smart Logistics 4.0 - .gitignore
+# ==============================================================================
+
+# --- Entornos Virtuales y Dependencias Python ---
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+bin/
+lib/
+include/
+Lib/
+Scripts/
+pyvenv.cfg
+
+# --- Bytecode y Caches de Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+parts/
+var/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# --- Pruebas, Cobertura y Linter ---
+.pytest_cache/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# --- MLOps & Experiment Tracking ---
+mlruns/
+mlruns.db
+catboost_info/
+wandb/
+.comet/
+lightning_logs/
+
+# --- Datos Crudos y Pesados (>100MB / Límite de GitHub) ---
+# Se excluyen los JSONs crudos masivos de Amazon Last Mile (358 MB)
+data/raw/
+data/streaming_landing_zone/
+data/live_fleet_state.db
+data/*.db
+data/*.sqlite
+
+# MANTENER explícitamente el dataset procesado curado para reproducibilidad:
+!data/processed/
+!data/processed/logistics_historical_dataset.csv
+!data/processed/model_benchmark_results.csv
+
+# --- Archivos de Modelos y Checkpoints Temporales ---
+# MANTENER los modelos serializados principales de inferencia:
+!models/
+!models/best_delay_model.pkl
+!models/xgboost_delay_model.pkl
+
+# --- Documentación Pesada / Bibliografía Local ---
+docs/bibliografia/
+
+# --- Jupyter Notebooks & Caches ---
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+profile_default/
+ipython_config.py
+
+# --- IDEs, Editores y Sistemas Operativos ---
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# --- Herramientas de Agentes IA ---
+.agents/
+.claude/
+.gemini/
+
+# --- Logs y Archivos Temporales ---
+*.log
+*.tmp
+*.bak
+*.swp
+scratch/

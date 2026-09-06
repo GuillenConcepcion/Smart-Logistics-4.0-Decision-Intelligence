@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  # 1. Torre de Control & Dashboard Interactivo
+  control-tower:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mow-control-tower
+    restart: unless-stopped
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: ["streamlit", "run", "src/visualization/dashboard.py", "--server.port=8501", "--server.address=0.0.0.0"]
+
+  # 2. Consumidor Streaming (Procesamiento, Feature Store e Inferencia en Tiempo Real)
+  stream-consumer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mow-stream-consumer
+    restart: unless-stopped
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: ["python", "src/processing/file_stream_consumer.py"]
+
+  # 3. Simulador IoT (Inyección de micro-batches de telemetría GPS)
+  iot-simulator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mow-iot-simulator
+    restart: unless-stopped
+    volumes:
+      - ./data:/app/data
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: ["python", "src/data_ingestion/iot_simulator.py"]
+
+  # 4. Servidor de Tracking de Experimentos MLflow
+  mlflow-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mow-mlflow-server
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./mlruns:/app/mlruns
+      - ./data:/app/data
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: ["mlflow", "ui", "--host", "0.0.0.0", "--port", "5000", "--backend-store-uri", "sqlite:///data/mlruns.db", "--default-artifact-root", "./mlruns"]

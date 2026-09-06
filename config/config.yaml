@@ -1,0 +1,44 @@
+# Configuración Global del Prototipo Logística 4.0 & Decision Intelligence
+project:
+  name: "Decision Intelligence Logística 4.0"
+  version: "1.0.0"
+  authors: ["Pablo Reyes", "Andrei", "Jean Carlos", "Guillen"]
+
+kafka:
+  bootstrap_servers: ["localhost:9092"]
+  topic_telemetry: "logistics-telemetry-topic"
+  topic_alerts: "logistics-alerts-topic"
+
+simulation:
+  sample_interval_sec: 60
+  speed_multiplier: 1.0
+  max_records: 10000
+
+models:
+  target_column: "delay_status"
+  recall_target: 0.90
+  roc_auc_target: 0.88
+  model_path: "models/best_delay_model.pkl"
+
+decision_engine:
+  threshold_high_risk: 0.75
+  threshold_medium_risk: 0.45
+  actions:
+    high_risk: "NIVEL_1_REENRUTAMIENTO_URGENTE"
+    medium_risk: "NIVEL_2_NOTIFICACION_PREVENTIVA"
+    low_risk: "NIVEL_3_ESTADO_NORMAL"
+
+mlflow:
+  experiment_name: "Metro-Meals-On-Wheels-Delay-Predictor"
+  tracking_uri: "sqlite:///mlruns.db"
+  artifact_location: "./mlruns"
+
+data_validation:
+  min_lat: 43.20
+  max_lat: 44.00
+  min_lon: -117.00
+  max_lon: -115.70
+  max_speed_kmh: 150.0
+  min_cargo_temp: -10.0
+  max_cargo_temp: 35.0
+
