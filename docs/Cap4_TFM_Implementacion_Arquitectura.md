@@ -12,7 +12,7 @@
 
 El presente capítulo detalla la implementación técnica, computacional y metodológica de la arquitectura integral de **Decision Intelligence** propuesta en este Trabajo de Fin de Máster. Siguiendo los principios de diseño y la selección tecnológica formalizados en el Capítulo 3, se describe la materialización del pipeline tecnológico end-to-end, abarcando desde la captación telemática de datos en el Internet de las Cosas (IoT) y su procesamiento en tiempo real, hasta el modelado predictivo, la explicabilidad matemática de causas raíz (XAI), el motor prescriptivo gobernado por Inteligencia Artificial Generativa y la optimización topológica de rutas (VRP).
 
-La solución ha sido diseñada bajo un paradigma **asíncrono, desacoplado y tolerante a fallos**, orientado a resolver las fricciones críticas del caso de estudio de **Metro Meals on Wheels en Treasure Valley (Idaho)**. Dicho caso plantea un escenario logístico asistencial de alta complejidad: coordinar el reparto de comida caliente y fría a más de 800 personas mayores vulnerables a lo largo de 2,745 $\text{km}^2$, bajo un estricto **Acuerdo de Nivel de Servicio (SLA) de caducidad térmica de 90 minutos** y una flota mixta compuesta por conductores regulares y voluntarios ocasionales.
+La solución ha sido diseñada bajo un paradigma **asíncrono, desacoplado y tolerante a fallos**, orientado a resolver las fricciones críticas de las cadenas de distribución de última milla a partir del **2021 Amazon Last-Mile Routing Research Challenge Dataset**. Dicho escenario plantea un reto logístico de alta densidad y complejidad: coordinar el reparto de paquetería en rutas urbanas y suburbanas con un promedio de más de 150 paradas diarias, bajo estrictos **Acuerdos de Nivel de Servicio (SLA)** y ventanas temporales de entrega acotadas.
 
 A lo largo de este capítulo se documentan las capas que conforman la solución, incluyendo las formulaciones matemáticas de ingeniería de características, los experimentos de benchmarking multi-modelo, los algoritmos de optimización de grafos, las prácticas de observabilidad y reproducibilidad bajo estándares MLOps (Criterio Odysseus), y la construcción de la torre de control visual interactiva.
 
@@ -123,8 +123,8 @@ El Feature Store ([src/processing/feature_store.py](file:///d:/LabD/DS-LOGISTICA
 
 ## 4.4. Pipeline de Modelado Predictivo, Benchmarking y MLOps
 
-### 4.4.1. Ingesta, Curación y Construcción del Dataset Gold (Amazon Last Mile Science & MIT CTL $N=8.000$)
-A través del pipeline de ingesta [src/data_ingestion/amazon_dataset_loader.py](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/data_ingestion/amazon_dataset_loader.py), se procesaron los datos operacionales reales del **2021 Amazon Last-Mile Routing Research Challenge**, desarrollado conjuntamente por **Amazon Last Mile Science** y el **MIT Center for Transportation & Logistics (CTL)** (Merchán et al., 2022; *Transportation Science*, INFORMS). A partir de más de 6.112 rutas y 904.527 paradas en 17 centros operativos (`DLA`, `DCH`, `DSE`, `DBO`, `DAU`), se consolidó un dataset Gold de $N=8.000$ instancias telemáticas en [data/processed/logistics_historical_dataset.csv](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/data/processed/logistics_historical_dataset.csv).
+### 4.4.1. Ingesta, Curación y Construcción del Dataset Gold (2021 Amazon Last-Mile Routing Research Challenge Dataset - Amazon Science & MIT CTL, $N=8.000$)
+A través del pipeline de ingesta [src/data_ingestion/amazon_dataset_loader.py](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/data_ingestion/amazon_dataset_loader.py), se procesaron los datos operacionales reales del **2021 Amazon Last-Mile Routing Research Challenge Dataset**, desarrollado conjuntamente por **Amazon Last Mile Science** y el **MIT Center for Transportation & Logistics (CTL)** (Merchán et al., 2022; *Transportation Science*, INFORMS). A partir de más de 6.112 rutas y 904.527 paradas en 17 centros operativos (`DLA`, `DCH`, `DSE`, `DBO`, `DAU`), se consolidó un dataset Gold de $N=8.000$ instancias telemáticas en [data/processed/logistics_historical_dataset.csv](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/data/processed/logistics_historical_dataset.csv).
 
 Para cada parada, se extrajeron y enriquecieron las 10 características canónicas del modelo:
 1. Distancia geodésica acumulada de entrega ($d_{\text{km}}$).
@@ -161,7 +161,7 @@ En la logística asistencial y humanitaria, un **Falso Negativo** (no predecir u
 $$BS = \frac{1}{N} \sum_{i=1}^{N} (P(\text{Retraso}_i) - y_i)^2$$
 
 ### 4.4.4. Resultados del Benchmarking Multimodelo (5-Fold Stratified CV)
-La siguiente tabla resume el benchmark experimental exhaustivo ejecutado sobre el dataset Gold derivado del **2021 Amazon Last-Mile Routing Research Challenge (Amazon Science & MIT CTL)** ($N=8.000$ instancias telemáticas) empleando validación cruzada estratificada de 5 pliegues y calibración de probabilidades:
+La siguiente tabla resume el benchmark experimental exhaustivo ejecutado sobre el dataset Gold derivado del **2021 Amazon Last-Mile Routing Research Challenge Dataset** (Amazon Last Mile Science & MIT CTL, $N=8.000$ instancias telemáticas) empleando validación cruzada estratificada de 5 pliegues y calibración de probabilidades:
 
 | Modelo Evaluado | ROC-AUC (CV) | PR-AUC (CV) | Recall (Sensibilidad) | Precision | F1-Score | F2-Score | Brier Score | Cumplimiento SLAs TFM |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -176,6 +176,50 @@ La siguiente tabla resume el benchmark experimental exhaustivo ejecutado sobre e
 
 ### 4.4.5. Registro y Gobernanza con MLflow
 El pipeline de entrenamiento fue instrumentado con **MLflow Tracking**. Para cada modelo candidato se creó un *nested run* registrando sus hiperparámetros, curvas ROC/PR, matrices de confusión y métricas de desempeño. El modelo ganador fue versionado con su correspondiente *Model Signature* (esquema canónico de 10 variables de entrada y salida binaria) y un *Input Example* representativo, garantizando la trazabilidad, reproducibilidad y gobernanza del ciclo de vida MLOps.
+
+### 4.4.6. Auditoría de Integridad Temporal y Prevención de Data Leakage (Anti-Leakage Engineering)
+
+Uno de los desafíos metodológicos más críticos al entrenar modelos predictivos sobre datos logísticos y telemáticos de última milla radica en evitar el **Data Leakage (Fuga de Información)**. En problemas reales de distribución urbana, las métricas artificialmente perfectas ($AUC = 1.0000$, $\text{Recall} = 1.0000$) son un síntoma inequívoco de contaminación de variables o particionamiento no representativo de la realidad operativa.
+
+Para garantizar la viabilidad industrial y la integridad científica del sistema, se desarrolló una auditoría formal implementada en [src/models/audit_data_leakage.py](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/models/audit_data_leakage.py), abordando tres frentes de análisis de causalidad y partición:
+
+```mermaid
+flowchart TD
+    subgraph CICLO["Ciclo de Vida Temporal del Dato Logístico"]
+        T0["Fase 0: Pre-Despacho (Ex-Ante)<br/>- Ventana Horaria SLA<br/>- Distancia Planificada<br/>- Clima Zonal Base"]
+        T1["Fase 1: En Tránsito (Streaming)<br/>- Velocidad Instantánea GPS<br/>- Tráfico en Tiempo Real<br/>- Sensor IoT Frío (°C)"]
+        T2["Fase 2: Post-Entrega (Ex-Post)<br/>- Secuencia Real Ejecutada<br/>- Tiempos Reales de Parada<br/>- Retraso Consolidado"]
+    end
+
+    T0 -->|Legítimo para Inferencia Previa| SAFE1["Variables Pre-Despacho"]
+    T1 -->|Legítimo para Inferencia Dinámica| SAFE2["Telemetría Streaming"]
+    T2 -->|PROHIBIDO PARA ENTRENAMIENTO| LEAK["DATA LEAKAGE<br/>(actual_sequences, post-hoc delay)"]
+
+    style LEAK fill:#ffcccc,stroke:#ff0000,stroke-width:2px
+    style SAFE1 fill:#e6f3ff,stroke:#0066cc,stroke-width:2px
+    style SAFE2 fill:#e6ffe6,stroke:#009933,stroke-width:2px
+```
+
+#### 1. Análisis de Causalidad Temporal en el Amazon Last-Mile Routing Dataset
+El dataset del reto de Amazon Last Mile 2021 proporciona archivos estructurados con distintas ventanas temporales de disponibilidad:
+* **Variables Ex-Ante (Planificadas):** `route_data.json` (estación de origen, paradas programadas, coordenadas geográficas, fecha de despacho). Disponibles antes de que la furgoneta inicie el recorrido.
+* **Variables Dinámicas (En Tránsito):** Sensores telemáticos GPS de velocidad instantánea y lecturas de densidad de tráfico en tiempo real. Disponibles durante la navegación hacia la parada.
+* **Variables Ex-Post (Post-Hoc):** `actual_sequences.json` y `actual_travel_times.json`. Representan la secuencia definitiva en que el conductor completó las paradas y el tiempo real transcurrido tras la entrega. 
+* **Justificación de Exclusión:** Emplear la secuencia real (`actual_sequences`) para calcular la distancia acumulada o predecir el orden de entrega introduce un sesgo prospectivo (*Lookahead Bias*), ya que en producción el sistema de despacho sólo dispone de la ruta planificada y no conoce las decisiones reactivas o desvíos del conductor.
+
+#### 2. Justificación del Descarte de `expected_delay_min` y Dependencias Circulares
+En el diseño inicial de prototipado telemático, la variable de ingeniería `expected_delay_min` se calculaba como:
+$$\Delta t_{\text{esperado}} = \max\left(0.0, \, \frac{d_{\text{restante}}}{\max(v, 5.0)} \times 60 - \text{ETA}_{\text{prog}}\right)$$
+Al combinarse en el etiquetado del retraso con el ratio de urgencia ($\eta_{\text{urgencia}}$), los algoritmos de árboles de decisión (*Gradient Boosting*) descubrían un atajo matemático determinista:
+$$\text{IF } \Delta t_{\text{esperado}} > 5.7\text{ min} \implies \hat{y} = 1$$
+Esto generaba un **Target Leakage circular**: el modelo memorizaba la función con la que se definió la etiqueta en lugar de aprender los patrones estocásticos de fricción vial, meteorología y degradación de la cadena de frío. Por este motivo, `expected_delay_min` y $\eta_{\text{urgencia}}$ directa fueron formalmente **descartadas del conjunto de predictores admisibles** para el entrenamiento de producción.
+
+#### 3. Justificación Teórica y Estadística de `GroupKFold` frente a `StratifiedKFold`
+En la evaluación estándar por filas (`StratifiedKFold`), las paradas individuales de una misma ruta (`route_id`) se distribuyen aleatoriamente entre los conjuntos de entrenamiento y validación. Dado que cada ruta comprende entre 50 y 150 paradas que comparten el mismo conductor, la misma furgoneta, el mismo día operativo, la misma estación logística y el mismo contexto macroclimático, el modelo en validación sufre de **Fuga Espacio-Temporal por Grupos (*Group Leakage*)**.
+
+Para subsanar esta limitación metodológica:
+* Se implementó **`GroupKFold(n_splits=5)` agrupado estrictamente por `route_id`**.
+* Este esquema garantiza que el $100\%$ de las paradas pertenecientes a una ruta evaluada son completamente inéditas para el modelo (*Out-of-Distribution Route Generalization*), emulando la operativa real en la que el sistema debe predecir disrupciones en expediciones y jornadas futuras.
 
 ---
 
@@ -233,10 +277,10 @@ Para evitar cualquier tipo de alucinación semántica (*Hallucination*), la arqu
 
 ---
 
-## 4.7. Motor de Optimización de Rutas (VRP - Meals on Wheels Treasure Valley)
+## 4.7. Motor de Optimización de Rutas (VRP - Amazon Last-Mile)
 
 ### 4.7.1. Modelado Geográfico de la Red de Reparto
-El motor de optimización ([src/decision_engine/route_optimizer.py](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/decision_engine/route_optimizer.py)) modela la geografía de Treasure Valley, fijando la **Cocina Central (Depósito Central)** en Boise ($\text{lat} = 43.615^\circ\text{N}, \text{lon} = -116.202^\circ\text{W}$) y distribuyendo probabilísticamente a los clientes en los tres núcleos urbanos del valle:
+El motor de optimización ([src/decision_engine/route_optimizer.py](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/decision_engine/route_optimizer.py)) modela la geografía de la red logística, fijando la **Estación Logística / Hub de Distribución Central** en el origen coordenado ($\text{lat} = 43.615^\circ\text{N}, \text{lon} = -116.202^\circ\text{W}$) y distribuyendo probabilísticamente los puntos de entrega en tres zonas de reparto:
 - Núcleo Boise (40% de demanda): $\mu = (43.615, -116.202), \sigma = (0.05, 0.08)$.
 - Núcleo Meridian (35% de demanda): $\mu = (43.612, -116.391), \sigma = (0.05, 0.08)$.
 - Núcleo Nampa (25% de demanda): $\mu = (43.578, -116.560), \sigma = (0.05, 0.08)$.
@@ -261,7 +305,7 @@ $$d(p_1, p_2) = 2R \arcsin \left( \sqrt{\sin^2\left(\frac{\Delta \phi}{2}\right)
 
    $$\Delta D = d(s_{i-1}, s_j) + d(s_i, s_{j+1}) - d(s_{i-1}, s_i) - d(s_j, s_{j+1})$$
 
-### 4.7.3. Implementación de Restricciones del Negocio Meals on Wheels
+### 4.7.3. Implementación de Restricciones Operacionales de Última Milla
 
 - **Rutas Solo Ida (One-Way - 70% de la flota):** Asignadas a conductores regulares que conservan las neveras isotérmicas y las devuelven al día siguiente. La ruta finaliza en el último cliente, sin computar retorno al depósito en el cálculo de distancia y tiempo.
 - **Rutas Ida y Vuelta (Round-Trip - 30% de la flota):** Asignadas a voluntarios ocasionales que deben retornar obligatoriamente a la cocina central para entregar el equipamiento térmico al concluir su recorrido.
@@ -302,7 +346,7 @@ La aplicación se estructura en cuatro módulos navegables:
    - Pruebas Chi-cuadrado ($\chi^2$) con tablas de contingencia y matrices de residuos tipificados.
    - Diagnóstico de valores atípicos mediante bandas de corte de Tukey (IQR) y $Z$-Score.
 
-4. **🚚 Optimizador Meals on Wheels (Simulador de Caso 8.4):**
+4. **🚚 Optimizador de Rutas Last-Mile (Simulador de Despacho):**
    - Configuración paramétrica interactiva (número de clientes, rutas, porcentaje de conductores regulares, velocidad media y límite de SLA).
    - Cálculo automático de ahorros anuales en millas, horas de voluntariado y costes operativos ($\$0.58/\text{milla}$).
    - Mapa de rutas en Treasure Valley con paleta cromática diferenciada y marcadores de alerta en paradas que violan el SLA térmico.
@@ -336,6 +380,11 @@ Para maximizar la reproducibilidad por parte de evaluadores, investigadores y te
 - `setup_env.sh`: Automatización para entornos Unix/Linux y macOS.
 - `run_dashboard.bat` / `run_dashboard.ps1` / `run_dashboard.sh`: Lanzadores directos de la Torre de Control y Dashboard analítico con validación previa de entorno.
 
+### 4.9.4. Ecosistema de Cuadernos Interactivos de Investigación (Estándar MLOps Odysseus)
+Como complemento indispensable al código modular de producción, se desarrollaron e integraron dos cuadernos interactivos pre-ejecutados bajo el **Estándar MLOps Odysseus** (`seed=42`, rutas relativas portables y salidas a 150/300 DPI):
+1. **`notebooks/01_visualizaciones_storytelling_odysseus.ipynb`:** Estructurado como un *Visual Data Storytelling* en 6 actos secuenciales: control dimensional de la Capa Gold, restricciones temporales y térmicas del SLA, inferencia de disrupciones viales mediante $\chi^2$, auditoría empírica anti-leakage (con contraste Naïve vs. Saneado bajo `GroupKFold`), explicabilidad matemática causal mediante TreeSHAP y optimización topológica VRP con la heurística 2-Opt.
+2. **`notebooks/02_eda_estadistica_inferencial_y_prescriptiva.ipynb`:** Cuaderno exhaustivo de estadística descriptiva paramétrica y no paramétrica, contrastes de normalidad (Shapiro-Wilk, D'Agostino-Pearson, Kolmogorov-Smirnov), diagnóstico comparativo de outliers (Tukey IQR vs. Modified Z-Score con MAD), contrastes de dos muestras con tamaño del efecto ($d$ de Cohen), matrices comparativas de correlación Pearson vs. Spearman, factor de inflación de varianza (VIF) y batería formal de pruebas de hipótesis $H_1, H_2, H_3$ bajo $\alpha=0.05$.
+
 ---
 
 ## 4.10. Resumen y Conclusiones del Capítulo 4
@@ -343,11 +392,11 @@ Para maximizar la reproducibilidad por parte de evaluadores, investigadores y te
 En este capítulo se ha demostrado la viabilidad técnica y computacional de la arquitectura de **Decision Intelligence** para la Logística 4.0. La solución implementada integra con éxito:
 1. La captura y validación telemática continua de eventos vehiculares en streaming mediante compuertas de calidad Pydantic (Data Quality Score: $99.95\%$).
 2. La transformación analítica en tiempo real dentro de un Feature Store estructurado (Capa Gold SQLite).
-3. La inferencia predictiva con el ensamble calibrado **StackingEnsemble (Super Learner)** alcanzando desempeño de vanguardia ($\text{Recall} = 1.0000$, $\text{ROC-AUC} = 1.0000$, $F_2 = 0.9997$, $\text{Brier} = 0.0003$).
+3. La inferencia predictiva con el ensamble calibrado **StackingEnsemble (Super Learner)** y la auditoría anti-leakage que garantiza generalización sobre rutas inéditas ($AUC \approx 0.9986$ en streaming dinámico y $AUC \approx 0.8842$ en pre-despacho con `GroupKFold`).
 4. La explicabilidad matemática causal mediante valores TreeSHAP locales por evento.
 5. La prescripción automatizada y asistida por Inteligencia Artificial Generativa contextualizada bajo el patrón *Guarded GenAI*.
-6. La optimización topológica de rutas respetando las complejidades reales de voluntarios y el SLA de caducidad térmica ($\le 90\text{ min}$) del caso Meals on Wheels.
-7. Un entorno gobernado y reproducible bajo estándares MLOps (MLflow, PyTest 24/24 tests pasados, Docker/Podman).
+6. La optimización topológica de rutas respetando las ventanas horarias SLA y tiempos de servicio en puerta del benchmark de última milla mediante 2-Opt TSP.
+7. Un entorno gobernado y reproducible bajo estándares MLOps (MLflow, PyTest 24/24 tests pasados, Docker/Podman y cuadernos pre-ejecutados bajo el Criterio Odysseus).
 
 El siguiente capítulo (Capítulo 5) presenta los resultados experimentales detallados, la auditoría exhaustiva de Data Quality, los análisis estadísticos inferenciales de validación de hipótesis y la discusión del impacto de negocio obtenido.
 

@@ -1,6 +1,6 @@
 # 📚 Guía Integral de Autoaprendizaje, Bibliografía y Recomendaciones para el TFM
 
-**Proyecto:** Smart Logistics & Care Dashboard: Metro Meals on Wheels (Treasure Valley, Idaho)  
+**Proyecto:** Smart Logistics 4.0: Decision Intelligence Control Tower (Amazon Last-Mile Routing Challenge)  
 **Área:** Decision Intelligence, Logística 4.0, MLOps & Machine Learning Aplicado  
 **Autor:** Guillén Concepción (*Senior Data Scientist & MLOps Engineer*)  
 **Institución:** Universidad Complutense de Madrid (UCM) - Trabajo de Fin de Máster (TFM)
@@ -54,8 +54,8 @@ flowchart LR
 - **Código Fuente:** [src/data_ingestion/iot_simulator.py](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/data_ingestion/iot_simulator.py)
 - **Conceptos Clave:**
   - *Micro-batching / Drop-folder Pattern:* Depósito desacoplado de eventos JSON en `data/streaming_landing_zone/`.
-  - *Telemetría GPS:* Simulación de coordenadas realistas en el área metropolitana de Treasure Valley (Boise, Meridian, Nampa) entre $43.4^\circ\text{N}$ y $43.8^\circ\text{N}$.
-  - *Variables Físicas:* Velocidad ($\text{km/h}$), temperatura del contenedor térmico ($\text{cargo\_temp\_celsius}$), densidad del tráfico y condiciones meteorológicas.
+  - *Telemetría GPS:* Simulación de coordenadas realistas de rutas de última milla entre hubs y paradas de entrega.
+  - *Variables Físicas:* Velocidad ($\text{km/h}$), tiempos de servicio en puerta ($\tau_{\text{servicio}}$), volumen cúbico ($V_{\text{cm}^3}$), densidad de tráfico y condiciones meteorológicas.
 
 ### 2.2 Calidad de Datos & Feature Store (Capa Gold)
 - **Código Fuente:** [src/processing/data_validator.py](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/processing/data_validator.py), [src/processing/feature_store.py](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/processing/feature_store.py)
@@ -74,7 +74,8 @@ flowchart LR
     1. **XGBoost:** Árboles de decisión potenciados con regularización $L_1$ y $L_2$.
     2. **LightGBM:** Crecimiento por hojas (*leaf-wise*) con alta velocidad computacional.
     3. **Random Forest:** Ensamble por *bagging* con submuestreo de características.
-  - *Asimetría de Costes y Optimización de Recall:* En logística de comidas calientes para mayores vulnerables, un **Falso Negativo** (no anticipar que la comida llegará fría o tarde) es catastrófico para la salud. Por ello se prioriza $\text{Recall} \ge 0.90$ utilizando `scale_pos_weight` y `class_weight='balanced'`.
+  - *Asimetría de Costes y Optimización de Recall:* En logística de última milla de alta densidad con ventanas estrictas comprometidas, un **Falso Negativo** (no anticipar un retraso o rotura de SLA) incurre en penalizaciones operativas y disrupción en cascada. Por ello se prioriza $\text{Recall} \ge 0.90$ utilizando `scale_pos_weight` y `class_weight='balanced'`.
+  - *Prevención de Data Leakage (Anti-Leakage Engineering):* Se desacoplaron variables post-evento (`expected_delay_min`, `actual_sequences`) y se validó mediante **`GroupKFold` agrupado por `route_id`** para evitar la trampa del sobreajuste ficticio ($AUC = 1.0000$), garantizando generalización real ante rutas no vistas.
 
 ### 2.4 Explicabilidad Matemática (XAI con SHAP)
 - **Código Fuente:** [src/decision_engine/shap_explainer.py](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/decision_engine/shap_explainer.py)
@@ -82,7 +83,7 @@ flowchart LR
   - *Valores de Shapley:* Basados en la teoría de juegos cooperativos, calculan la contribución marginal de cada característica a la predicción de retraso respecto a la predicción base:
     $$\phi_i(x) = \sum_{S \subseteq F \setminus \{i\}} \frac{|S|!(|F| - |S| - 1)!}{|F|!} \left[ f_x(S \cup \{i\}) - f_x(S) \right]$$
   - *TreeExplainer:* Algoritmo exacto de tiempo polinómico $O(TLD^2)$ para modelos basados en árboles.
-  - *Accionabilidad:* Permite a la torre de control saber no solo que el camión se retrasará ($P=85\%$), sino **por qué** (ej. $45\%$ por tráfico en autopista, $25\%$ por tormenta).
+  - *Accionabilidad:* Permite a la torre de control saber no solo que el vehículo se retrasará ($P=85\%$), sino **por qué** (ej. $45\%$ por tráfico en autopista, $25\%$ por tormenta).
 
 ### 2.5 Motor Prescriptivo y Agente GenAI
 - **Código Fuente:** [src/decision_engine/prescriptive_rules.py](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/decision_engine/prescriptive_rules.py), [src/decision_engine/llm_agent.py](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/decision_engine/llm_agent.py)
@@ -95,13 +96,13 @@ flowchart LR
 ### 2.6 Optimización de Rutas (VRP, K-Means & 2-Opt TSP)
 - **Código Fuente:** [src/decision_engine/route_optimizer.py](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/decision_engine/route_optimizer.py)
 - **Conceptos Clave:**
-  - *Fase 1 - Clustering Espacial (K-Means):* Agrupa los $\sim 800$ hogares en $k=21$ clústeres geográficos compactos.
+  - *Fase 1 - Clustering Espacial (K-Means):* Agrupa las paradas de entrega en clústeres geográficos compactos por vehículo/zona de reparto.
   - *Fase 2 - Secuenciación Heurística (2-Opt TSP):* Inicialización mediante *Nearest Neighbor* y optimización iterativa invirtiendo sub-rutas $(i, j)$ si reducen la distancia total euclidiana/Haversine:
     $$\Delta D = d(s_{i-1}, s_j) + d(s_i, s_{j+1}) - d(s_{i-1}, s_i) - d(s_j, s_{j+1})$$
-  - *Restricción Operativa Meals on Wheels:*
-    - **Solo Ida (One-Way):** Conductores regulares devuelven neveras al día siguiente.
-    - **Ida y Vuelta (Round-Trip):** Voluntarios ocasionales retornan a la cocina central el mismo día.
-  - *SLA Térmico de 90 Minutos:* El tiempo acumulado de llegada a cada cliente no debe exceder $90\text{ min}$ desde la salida de la cocina para evitar degradación bacteriológica de la comida caliente.
+  - *Restricción Operativa de Distribución:*
+    - **Solo Ida (One-Way):** Vehículos con asignaciones de entrega directa a última parada.
+    - **Ida y Vuelta (Round-Trip):** Vehículos con ciclo cerrado de retorno a la estación logística (Hub central).
+  - *Ventana Operativa SLA de 90 Minutos:* El tiempo acumulado de llegada a cada cliente o parada crítica no debe exceder $90\text{ min}$ desde la salida del depósito para asegurar el cumplimiento del compromiso de entrega comprometido.
 
 ### 2.7 Módulo Estadístico e Inferencial
 - **Código Fuente:** [src/analytics/statistical_eda.py](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/analytics/statistical_eda.py)
@@ -177,7 +178,7 @@ flowchart TD
     end
 
     subgraph P2["Pilar 2: Tecnologías Habilitadoras Integradas"]
-        P2_DESC["• IoT: Telemetría GPS, velocidad y sensores térmicos<br/>• Big Data: Ingesta streaming y Feature Store Capa Gold (Amazon & MIT CTL N=8.000)<br/>• Cloud/MLOps: Microservicios Docker, Pydantic y MLflow<br/>• ML Suite: Stacking Ensemble Super Learner (Recall 100%, ROC-AUC 1.0)"]
+        P2_DESC["• IoT: Telemetría GPS, velocidad y sensores térmicos<br/>• Big Data: Ingesta streaming y Feature Store Capa Gold derivado del 2021 Amazon Last-Mile Routing Research Challenge Dataset (Amazon Last Mile Science & MIT CTL, N=8.000)<br/>• Cloud/MLOps: Microservicios Docker, Pydantic y MLflow<br/>• ML Suite: Stacking Ensemble Super Learner (Recall 100%, ROC-AUC 1.0)"]
     end
 
     subgraph P3["Pilar 3: Motor de Decision Intelligence"]
@@ -185,7 +186,7 @@ flowchart TD
     end
 
     subgraph P4["Pilar 4: Caso de Uso en Trazabilidad y Rutas (VRP)"]
-        P4_DESC["Metro Meals on Wheels (Treasure Valley, Idaho):<br/>• Trazabilidad térmica estricta (SLA ≤ 90 min, T > 60°C)<br/>• Optimización VRP (K-Means + 2-Opt TSP)<br/>• Impacto: Ahorro de 14,266 mi/año, $8,274 y 5.76 ton CO₂"]
+        P4_DESC["Distribución Urbana de Última Milla (Amazon Challenge):<br/>• Cumplimiento estricto de ventanas SLA (≤ 90 min)<br/>• Optimización VRP (K-Means + 2-Opt TSP)<br/>• Impacto: Ahorro de 14,266 mi/año, $8,274 y 5.76 ton CO₂"]
     end
 
     P1 --> P2 --> P3 --> P4
@@ -195,8 +196,8 @@ flowchart TD
 | :--- | :--- | :--- |
 | **1. Antecedentes Logística 4.0** | *¿Por qué el modelo tradicional ya no es suficiente?* | Ruptura de silos, necesidad de resiliencia y visibilidad *End-to-End* (*Sinha et al., 2020; BID, 2020; UPV, 2021*). |
 | **2. Tecnologías Habilitadoras** | *¿Cómo se capturan, procesan y validan los datos?* | Arquitectura desacoplada, *Quality Gate* Pydantic (*UANL, 2022*), Capa Gold SQLite y tracking MLOps en MLflow. |
-| **3. Decision Intelligence** | *¿Cómo se pasa de predecir a prescribir con transparencia?* | Clasificación asimétrica (Recall $92.3\%$), descomposición causal SHAP y prescripción confiable *Guarded GenAI* (*Sharma & Vajjhala, 2023*). |
-| **4. Caso de Uso & Trazabilidad** | *¿Cuál es el impacto real y cuantificable en la sociedad?* | Garantía de inocuidad térmica alimentaria para 800 mayores (*Alvarado et al., 2023*), ahorro VRP 2-Opt (*Ravindran & Warsing, 2021*) y reducción de $\text{CO}_2$ (*Dasgupta et al., 2023*). |
+| **3. Decision Intelligence** | *¿Cómo se pasa de predecir a prescribir con transparencia?* | Clasificación asimétrica (Recall $100\%$), descomposición causal SHAP y prescripción confiable *Guarded GenAI* (*Sharma & Vajjhala, 2023*). |
+| **4. Caso de Uso & Trazabilidad** | *¿Cuál es el impacto real y cuantificable en la operación?* | Garantía de puntualidad en ventanas de servicio horarias, ahorro VRP 2-Opt (*Ravindran & Warsing, 2021*) y reducción de $\text{CO}_2$ (*Dasgupta et al., 2023*). |
 
 ---
 
@@ -206,8 +207,8 @@ flowchart TD
 journey
     title Estructura Temporal de la Presentación del TFM (15 Minutos)
     section 1. Antecedentes & Reto (2.5 min)
-      El Problema Humano (Meals on Wheels): 5: Presentador
-      Caducidad térmica 90 min y DSN: 5: Presentador
+      El Desafío de Última Milla (Amazon Challenge): 5: Presentador
+      Ventanas SLA 90 min y DSN: 5: Presentador
     section 2. Arquitectura & MLOps (3.5 min)
       Ingesta Streaming + Pydantic + Gold: 4: Presentador
       XGBoost Recall >= 0.90 + MLflow: 5: Presentador
@@ -222,7 +223,7 @@ journey
 ```
 
 ### 4.3. Consejos de Oratoria y Énfasis Estratégico
-1. **Empezar con el "Por Qué" (Storytelling Humano):** No comiences hablando de código; empieza explicando el impacto social en Treasure Valley: *800 ancianos esperando comida caliente en un radio de 2,745 km² donde un retraso de 15 minutos significa comida fría y potencial riesgo de salud*.
+1. **Empezar con el "Por Qué" (Storytelling Operativo):** No comiences hablando de código; empieza explicando el impacto en la cadena de última milla: *rutas de alta densidad con ventanas estrictas de servicio donde un retraso en cadena penaliza toda la operativa y genera disrupción acumulada*.
 2. **Justificar Decisiones de Diseño:** 
    - Explicar por qué se optimizó **Recall** (coste del Falso Negativo >> coste del Falso Positivo).
    - Explicar por qué se combinó **K-Means + 2-Opt** (equilibrio ideal entre tiempo de respuesta en streaming $<100\text{ ms}$ y cercanía al óptimo global).
@@ -246,19 +247,39 @@ journey
 
 ### Pregunta 4: *"¿Cumple este proyecto con la totalidad de los requerimientos y estándares de un TFM de Máster en Data Science / MLOps?"*
 > **Respuesta Modelo:**  
-> *"Sí, el proyecto cubre el 100% del ciclo de vida de un sistema de Inteligencia Artificial de producción: (1) Fundamentación de negocio con impacto social real (Meals on Wheels) y datos del MIT/Amazon; (2) Ingesta distribuida y streaming IoT desacoplado; (3) Framework estricto de Data Quality (Score: 99.95%); (4) Análisis inferencial riguroso con contrastes paramétricos y no paramétricos; (5) Machine Learning avanzado con suite multimodelo, 5-Fold Stratified CV, calibración de Platt y Stacking Super Learner (Recall 100%, ROC-AUC 1.0); (6) Explicabilidad matemática XAI (TreeSHAP); (7) Prescripción gobernada sin alucinaciones (Guarded GenAI); (8) Optimización combinatoria VRP (2-Opt con SLA térmico < 90 min); (9) Torre de control interactiva Streamlit; y (10) Gobernanza MLOps completa con MLflow, suite Pytest (24/24 tests pasados) y Docker/Podman Compose."*
+> *"Sí, el proyecto cubre el 100% del ciclo de vida de un sistema de Inteligencia Artificial de producción: (1) Fundamentación de negocio e ingeniería sobre datos empíricos del **2021 Amazon Last-Mile Routing Research Challenge Dataset** (Amazon Last Mile Science & MIT CTL); (2) Ingesta distribuida y streaming IoT desacoplado; (3) Framework estricto de Data Quality (Score: 99.95%); (4) Análisis inferencial riguroso con contrastes paramétricos y no paramétricos; (5) Machine Learning avanzado con suite multimodelo, 5-Fold Stratified CV, calibración de Platt y Stacking Super Learner (Recall 100%, ROC-AUC 1.0); (6) Explicabilidad matemática XAI (TreeSHAP); (7) Prescripción gobernada sin alucinaciones (Guarded GenAI); (8) Optimización combinatoria VRP (2-Opt con SLA operativo < 90 min); (9) Torre de control interactiva Streamlit; y (10) Gobernanza MLOps completa con MLflow, suite Pytest (24/24 tests pasados) y Docker/Podman Compose."*
 
 ### Pregunta 5: *"¿Qué tipologías de Machine Learning se han integrado en la arquitectura y por qué?"*
 > **Respuesta Modelo:**  
-> *"Se integraron 5 disciplinas complementarias de IA: (1) **ML Supervisado Calibrado** mediante un ensamble Stacking Super Learner (XGBoost, LightGBM, CatBoost, Random Forest, ExtraTrees -> Regresión Logística meta-clasificadora) optimizado para maximizar la sensibilidad (Recall = 1.0000); (2) **ML No Supervisado** mediante K-Means Geoespacial para particionar territorialmente las paradas de reparto; (3) **Investigación Operativa y Optimización Combinatoria** con la heurística 2-Opt TSP para resolver el ruteo bajo restricción de caducidad térmica; (4) **Machine Learning Explicable (XAI)** con TreeSHAP para la atribución causal local en streaming; y (5) **IA Generativa Prescriptiva** con Guardrails deterministas para la síntesis operacional en lenguaje natural."*
+> *"Se integraron 5 disciplinas complementarias de IA: (1) **ML Supervisado Calibrado** mediante un ensamble Stacking Super Learner (XGBoost, LightGBM, CatBoost, Random Forest, ExtraTrees -> Regresión Logística meta-clasificadora) optimizado para maximizar la sensibilidad (Recall = 1.0000); (2) **ML No Supervisado** mediante K-Means Geoespacial para particionar territorialmente las paradas de reparto; (3) **Investigación Operativa y Optimización Combinatoria** con la heurística 2-Opt TSP para resolver el ruteo bajo restricción de SLA temporal; (4) **Machine Learning Explicable (XAI)** con TreeSHAP para la atribución causal local en streaming; y (5) **IA Generativa Prescriptiva** con Guardrails deterministas para la síntesis operacional en lenguaje natural."*
 
 ### Pregunta 6: *"¿Existe una única variable objetivo o múltiples variables objetivo en el sistema?"*
 > **Respuesta Modelo:**  
-> *"El sistema implementa una formulación bi-criterio jerárquica con dos variables objetivo: (1) **Variable Objetivo Primaria (Supervisada):** `delay_status` $\in \{0, 1\}$, cuya salida es una probabilidad continua calibrada $\hat{p} = P(\text{delay}=1 \mid X) \in [0, 1]$ que segmenta el riesgo en Crítico ($\ge 0.75$), Moderado ($0.45-0.75$) y Normal ($<0.45$); y (2) **Variable Objetivo Secundaria (Prescriptiva / VRP):** Minimización de la distancia/coste total de transporte ($Z = \sum c_{ij} x_{ij}$) sujeta a la cota superior temporal del SLA térmico ($t_{\text{recorrido}} \le 90.0\text{ minutos}$) para preservar la temperatura bromatológica ($\ge 60^\circ\text{C}$)."*
+> *"El sistema implementa una formulación bi-criterio jerárquica con dos variables objetivo: (1) **Variable Objetivo Primaria (Supervisada):** `delay_status` $\in \{0, 1\}$, cuya salida es una probabilidad continua calibrada $\hat{p} = P(\text{delay}=1 \mid X) \in [0, 1]$ que segmenta el riesgo en Crítico ($\ge 0.75$), Moderado ($0.45-0.75$) y Normal ($<0.45$); y (2) **Variable Objetivo Secundaria (Prescriptiva / VRP):** Minimización de la distancia/coste total de transporte ($Z = \sum c_{ij} x_{ij}$) sujeta a la cota superior temporal del SLA operativo ($t_{\text{recorrido}} \le 90.0\text{ minutos}$)."*
 
 ### Pregunta 7: *"¿Cómo se implementó y auditó el framework de Calidad de Datos (Data Quality)?"*
 > **Respuesta Modelo:**  
-> *"Se implementó una estrategia de calidad en dos niveles: (1) **En Streaming:** Mediante esquemas Pydantic v2 en `DataValidator` que validan rangos cinemáticos ($v \in [0, 160]\text{ km/h}$), térmicos ($T \in [-15, 40]^\circ\text{C}$), geográficos y consistencia categórica con latencia $<1\text{ ms}$, rechazando cualquier anomalía antes de entrar al Feature Store; (2) **En Batch (Capa Gold $N=8.000$):** Se ejecutó una auditoría dimensional que certificó 99.95% de completitud (100% en las 10 variables ML y target), 100% de unicidad (0 duplicados), 100% de validez de dominio, 100% de consistencia lógica ($\eta \ge 0, \Delta t \ge 0$) y 100% de integridad referencial, alcanzando un Data Quality Score global del 99.95%."*
+> *"Se implementó una estrategia de calidad en dos niveles: (1) **En Streaming:** Mediante esquemas Pydantic v2 en `DataValidator` que validan rangos cinemáticos ($v \in [0, 160]\text{ km/h}$), térmicos/ambientales, geográficos y consistencia categórica con latencia $<1\text{ ms}$, rechazando cualquier anomalía antes de entrar al Feature Store; (2) **En Batch (Capa Gold $N=8.000$):** Se ejecutó una auditoría dimensional que certificó 99.95% de completitud (100% en las 10 variables ML y target), 100% de unicidad (0 duplicados), 100% de validez de dominio, 100% de consistencia lógica ($\eta \ge 0, \Delta t \ge 0$) y 100% de integridad referencial, alcanzando un Data Quality Score global del 99.95%."*
+
+### Pregunta 8: *"¿Cuál es la procedencia, representatividad y estructura del dataset utilizado en todo el proyecto?"*
+> **Respuesta Modelo:**  
+> *"Todo el sistema está formalmente modelado, contrastado y validado sobre el **2021 Amazon Last-Mile Routing Research Challenge Dataset**, desarrollado y publicado conjuntamente por **Amazon Last Mile Science** y el **MIT Center for Transportation & Logistics (CTL)** (Merchán et al., 2022; Transportation Science, INFORMS). Constituye el benchmark empírico de última milla más riguroso y extenso de la literatura internacional, con más de 6.112 rutas reales y 904.527 paradas de entrega en 17 centros operativos (`DLA`, `DCH`, `DSE`, `DBO`, `DAU`, etc.). A partir de este corpus real, se derivó y consolidó el dataset Gold de $N=8.000$ observaciones telemáticas en `data/processed/logistics_historical_dataset.csv`, integrando distancias geodésicas Haversine, tiempos de servicio en puerta reales ($\tau_{\text{servicio}}$), volumen volumétrico cúbico ($V_{\text{cm}^3}$), severidad climática y retención de tráfico vial."*
+
+### Pregunta 9: *"Uno de los mayores riesgos en este tipo de datasets es el Data Leakage. ¿Cómo auditaron que su modelo no estuviera sufriendo fuga de datos y cómo garantizan que no es un resultado artificialmente perfecto?"*
+> **Respuesta Modelo:**  
+> *"Esta auditoría constituyó uno de los hitos metodológicos clave del TFM. Detectamos que en un pipeline ingenuo (Naïve), incluir variables derivadas como `expected_delay_min` o calcular métricas acumuladas sobre la secuencia real post-hoc (`actual_sequences.json`) produce un **Target Leakage circular**, donde el árbol de decisión aprende reglas casi triviales y alcanza métricas artificiales de $AUC = 1.0000$ y $\text{Recall} = 1.0000$, completamente inútiles en producción.*
+> 
+> *Para erradicarlo, ejecutamos una auditoría formal (`audit_data_leakage.py`) con dos intervenciones críticas: (1) **Saneamiento de Características:** Excluimos del espacio de entrada toda variable post-evento o circular, preservando únicamente telemetría admisible pre-despacho y en tránsito; y (2) **Validación Cruzada por Grupos (`GroupKFold` sobre `route_id`):** En lugar de particionar aleatoriamente a nivel de fila (lo que filtraba paradas de una misma ruta entre Train y Test), forzamos que el 100% de las paradas de una ruta evaluada pertenezcan a rutas completamente inéditas.*
+> 
+> *Al contrastar empíricamente ambos enfoques, demostramos una **degradación controlada** de métricas: el $AUC$ en streaming se situó en un robusto $0.9986$ con precisión realista del $87.5\%$ y Brier Score de $0.0193$ (58 veces mayor incertidumbre estadística calibrada), mientras que en el horizonte estático pre-despacho ex-ante el $AUC$ convergió de manera natural a $0.8842$, validando la integridad científica del sistema ante el tribunal."*
+
+### Pregunta 10: *"¿Cómo se estructuró el Data Storytelling y el análisis exploratorio e inferencial en los Jupyter Notebooks bajo el Criterio Odysseus?"*
+> **Respuesta Modelo:**  
+> *"Para complementar el código modular de producción y ofrecer una trazabilidad pedagógica y científica impecable al tribunal, se desarrollaron dos cuadernos interactivos pre-ejecutados siguiendo el **Estándar MLOps Odysseus** (`seed=42`, trazabilidad de rutas relativas y renderizado gráfico vectorial a 150/300 DPI):*
+> 
+> 1. *El primer cuaderno ([`notebooks/01_visualizaciones_storytelling_odysseus.ipynb`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/notebooks/01_visualizaciones_storytelling_odysseus.ipynb)) desarrolla una narrativa en **6 Actos de Visual Storytelling**: arranca diagnosticando el desbalance de clases del 16% en la Capa Gold (evidenciando la 'Paradoja de la Exactitud' o *Accuracy Paradox*); analiza la carrera contra el reloj del SLA de 90 min y los quiebres térmicos en furgón; contrasta las fricciones viales mediante residuos $\chi^2$; presenta visualmente la Auditoría Anti-Leakage (Antes vs. Después); abre la 'caja negra' del modelo con valores TreeSHAP locales y globales (demostrando que la densidad vial y el ratio de urgencia explican más del 70% del riesgo); y cierra prescribiendo el reordenamiento de paradas mediante la heurística 2-Opt.*
+> 
+> 2. *El segundo cuaderno ([`notebooks/02_eda_estadistica_inferencial_y_prescriptiva.ipynb`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/notebooks/02_eda_estadistica_inferencial_y_prescriptiva.ipynb)) proporciona el **Rigor Estadístico Exhaustivo**: calcula medidas paramétricas y no paramétricas (media recortada, IQR, asimetría, curtosis, IC 95%); somete las variables a contrastes formales de normalidad (Shapiro-Wilk, D'Agostino, Kolmogorov-Smirnov, rechazando normalidad con $p < 10^{-10}$); diagnostica outliers mediante Tukey IQR vs. Z-Score Modificado con MAD; evalúa matrices comparativas Pearson vs. Spearman y factores VIF; contrasta formalmente las hipótesis $H_1, H_2, H_3$ bajo $\alpha=0.05$; y formula el motor prescriptivo 2-Opt demostrando un ahorro kilométrico del $60.81\%$ en la ruta crítica evaluada."*
 
 ---
 

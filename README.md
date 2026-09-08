@@ -9,6 +9,7 @@
     <img src="https://img.shields.io/badge/Streamlit-1.30%2B-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white" alt="Streamlit" />
     <img src="https://img.shields.io/badge/MLflow-Tracking%20%26%20Registry-0194E2?style=for-the-badge&logo=mlflow&logoColor=white" alt="MLflow" />
     <img src="https://img.shields.io/badge/Docker%20%2F%20Podman-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" />
+    <img src="https://img.shields.io/badge/Jupyter-Notebooks-F37626?style=for-the-badge&logo=jupyter&logoColor=white" alt="Jupyter Notebooks" />
     <img src="https://img.shields.io/badge/CI%2FCD-GitHub%20Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white" alt="CI" />
     <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License" />
     <img src="https://img.shields.io/badge/XAI-TreeSHAP-00C49F?style=for-the-badge" alt="SHAP" />
@@ -30,6 +31,7 @@ El sistema está formalmente modelado, entrenado y validado sobre el **2021 Amaz
 4. **Inteligencia Artificial Explicable (XAI con TreeSHAP):** Atribución causal matemática local en tiempo real de factores de retención vial, clima adverso y ratios de urgencia.
 5. **Inteligencia Prescriptiva Gobernada (Guarded GenAI & Grafos):** Sugerencias operacionales contextualizadas en lenguaje natural libres de alucinaciones y optimización de rutas mediante grafos topológicos (Dijkstra / 2-Opt VRP).
 6. **Torre de Control Web Interactiva (Streamlit):** Dashboard con visualización cartográfica en vivo (`open-street-map`) libre de marcas de agua y módulo de inferencia estadística avanzada.
+7. **Cuadernos de Investigación Reproducibles (Criterio Odysseus):** Notebooks Jupyter interactivos pre-ejecutados para *Visual Data Storytelling* en 6 actos y análisis inferencial/prescriptivo exhaustivo.
 
 ---
 
@@ -39,16 +41,17 @@ El proyecto satisface rigurosamente todos los estándares y requerimientos metod
 
 | Requerimiento Académico & Técnico | Estado | Implementación en la Arquitectura | Evidencia en el Repositorio |
 | :--- | :---: | :--- | :--- |
-| **1. Caso de Uso Real & Justificación de Negocio** | ✅ **100%** | Solución asistencial para Meals on Wheels en Idaho fusionada con datos reales de Amazon Last Mile. | [`docs/Cap1_TFM_Introduccion_y_Objetivos.md`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Cap1_TFM_Introduccion_y_Objetivos.md) |
+| **1. Caso de Uso Real & Justificación de Negocio** | ✅ **100%** | Solución para operaciones logísticas de última milla con el dataset real del 2021 Amazon Last Mile Challenge. | [`docs/Cap1_TFM_Introduccion_y_Objetivos.md`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Cap1_TFM_Introduccion_y_Objetivos.md) |
 | **2. Ingesta Big Data & Streaming IoT** | ✅ **100%** | Pipeline streaming asíncrono desacoplado (*Drop Folder / Kafka Topic*) con micro-batches en tiempo real. | [`src/data_ingestion/iot_simulator.py`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/data_ingestion/iot_simulator.py), [`src/processing/file_stream_consumer.py`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/processing/file_stream_consumer.py) |
 | **3. Framework de Calidad de Datos (Data Quality)** | ✅ **100%** | Validación Pydantic v2 en streaming y auditoría batch en 5 dimensiones (Score: **99.95%**). | [`src/processing/data_validator.py`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/processing/data_validator.py) |
-| **4. Análisis Estadístico e Inferencial Exhaustivo** | ✅ **100%** | Contrastes paramétricos y no paramétricos ($t$-Student, Mann-Whitney $U$, ANOVA, Kruskal-Wallis, $\chi^2$). | [`src/analytics/statistical_eda.py`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/analytics/statistical_eda.py), [`docs/ANALISIS_EDA_DATASET_AMAZON_LAST_MILE.md`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/ANALISIS_EDA_DATASET_AMAZON_LAST_MILE.md) |
+| **4. Análisis Estadístico e Inferencial Exhaustivo** | ✅ **100%** | Contrastes paramétricos y no paramétricos ($t$-Student, Mann-Whitney $U$, ANOVA, Kruskal-Wallis, $\chi^2$) en Notebooks y Dashboard. | [`src/analytics/statistical_eda.py`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/analytics/statistical_eda.py), [`notebooks/02_eda_estadistica_inferencial_y_prescriptiva.ipynb`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/notebooks/02_eda_estadistica_inferencial_y_prescriptiva.ipynb) |
 | **5. Machine Learning Supervisado & Ensembles** | ✅ **100%** | Suite de 6 algoritmos con 5-Fold Stratified CV, calibración de probabilidades y ensamble *Super Learner*. | [`src/models/ensemble.py`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/models/ensemble.py), [`src/models/train.py`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/models/train.py) |
 | **6. Machine Learning No Supervisado & VRP** | ✅ **100%** | Particionado geográfico K-Means + Heurística 2-Opt TSP con restricción térmica SLA ($\le 90\text{ min}$). | [`src/decision_engine/route_optimizer.py`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/decision_engine/route_optimizer.py) |
 | **7. Inteligencia Artificial Explicable (XAI)** | ✅ **100%** | TreeSHAP (valores de Shapley locales y globales) para auditoría causal y eliminación de cajas negras. | [`src/decision_engine/shap_explainer.py`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/decision_engine/shap_explainer.py) |
 | **8. Prescripción Inteligente & Guarded GenAI** | ✅ **100%** | Asistente prescriptivo LLM con validación estructurada y reglas deterministas de seguridad alimentaria. | [`src/decision_engine/llm_agent.py`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/decision_engine/llm_agent.py) |
 | **9. Plataforma Interactiva / Torre de Control** | ✅ **100%** | Dashboard Web en Streamlit con 4 módulos analíticos, cartografía interactiva OpenStreetMap y telemetría en vivo. | [`src/visualization/dashboard.py`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/visualization/dashboard.py) |
 | **10. Ciclo MLOps, CI/CD y Contenedorización** | ✅ **100%** | MLflow Tracking & Registry, suite automatizada Pytest (24/24 tests pasados) y Docker/Podman Compose. | [`tests/`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/tests/), [`docker-compose.yml`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docker-compose.yml) |
+| **11. Data Storytelling & Criterio Odysseus** | ✅ **100%** | Notebooks interactivos ejecutados de storytelling visual en 6 actos, auditoría anti-leakage y optimización VRP. | [`notebooks/01_visualizaciones_storytelling_odysseus.ipynb`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/notebooks/01_visualizaciones_storytelling_odysseus.ipynb) |
 
 ---
 
@@ -150,9 +153,9 @@ El sistema ha sido diseñado para maximizar el impacto social y garantizar la se
 
 ---
 
-## 📦 Dataset Operacional Real: 2021 Amazon Last-Mile Research Challenge (Amazon Science & MIT CTL)
+## 📦 Dataset Operacional Real: 2021 Amazon Last-Mile Routing Research Challenge Dataset (Amazon Last Mile Science & MIT CTL)
 
-El proyecto está formalmente entrenado, calibrado y validado sobre el dataset de operaciones logísticas reales más representativo de la literatura científica contemporánea:
+El proyecto está formalmente entrenado, calibrado y validado sobre el **2021 Amazon Last-Mile Routing Research Challenge Dataset**, el corpus de operaciones logísticas reales más representativo de la literatura científica contemporánea:
 
 * **Instituciones Desarrolladoras:** Publicado conjuntamente por el equipo de investigación de **Amazon Last Mile Science** y el **MIT Center for Transportation & Logistics (CTL)**.
 * **Referencia Científica:** Merchán, D., Arora, J., Pachon, J., Konduri, K., Winkenbach, M., Parks, S., & Noszek, J. (2022). *2021 Amazon Last-Mile Routing Research Challenge: Data Set*. **Transportation Science (INFORMS)**, 56(5), 1173–1191. [DOI: 10.1287/trsc.2022.1173](https://doi.org/10.1287/trsc.2022.1173)
@@ -176,6 +179,63 @@ Se evaluaron 6 algoritmos avanzados mediante **Validación Cruzada Estratificada
 | 6 | **Extra Trees Classifier** | **1.0000** | 0.9999 | **1.0000** | 0.9577 | 0.9783 | 0.9912 | 0.0163 | ✅ Ensamble Arbóreo |
 
 > **Artefacto Serializado:** El modelo campeón `StackingEnsemble` (integrando XGBoost, LightGBM, CatBoost y Random Forest con un meta-clasificador logístico) se encuentra empaquetado y versionado en [`models/best_delay_model.pkl`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/models/best_delay_model.pkl).
+
+---
+
+## 🔬 Auditoría de Data Leakage (Fuga de Información) y Validación por Grupos (GroupKFold)
+
+Uno de los errores más frecuentes al procesar datasets logísticos en investigación aplicada es el **Data Leakage (Fuga de Datos)**: incorporar variables que dependen directamente de la definición del retraso (`expected_delay_min`) o particionar aleatoriamente a nivel de fila individual, mezclando paradas de una misma ruta entre Train y Test. Esto infla artificialmente el rendimiento hasta un ficticio $\text{AUC} = 1.0000$.
+
+Para garantizar rigor científico y viabilidad industrial, se desarrolló una **Auditoría Formal** ([`src/models/audit_data_leakage.py`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/models/audit_data_leakage.py)) contrastando empíricamente tres regímenes operacionales:
+
+1. **Régimen 1 — Modelo Naïve (con Fuga):** Incluye `expected_delay_min` y evalúa mediante `StratifiedKFold` por fila.
+2. **Régimen 2 — Modelo Saneado Dinámico (En Tránsito):** Telemetría continua pura con **`GroupKFold(n_splits=5)` agrupado por `route_id`**.
+3. **Régimen 3 — Modelo Saneado Pre-Despacho (Estático Ex-Ante):** Emula la planificación antes de salida de almacén bajo partición estricta por `route_id`.
+
+#### Tabla Comparativa de Auditoría (Antes vs. Después)
+Persistida en [`data/processed/leakage_audit_comparison.csv`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/data/processed/leakage_audit_comparison.csv):
+
+| Configuración Evaluada | Algoritmo | Estrategia CV | Features | ROC-AUC | Recall (SLA) | Precision | F2-Score | Brier Score | Diagnóstico Metodológico |
+| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
+| **Naïve (Con Fuga)** | **XGBoost** | StratifiedKFold | 10 | **1.0000** | 1.0000 | 0.9984 | 0.9997 | 0.0003 | ❌ Fuga Circular (Inútil en Producción) |
+| **Naïve (Con Fuga)** | **LightGBM** | StratifiedKFold | 10 | **1.0000** | 0.9961 | 0.9961 | 0.9961 | 0.0009 | ❌ Fuga Circular (Inútil en Producción) |
+| **Naïve (Con Fuga)** | **CatBoost** | StratifiedKFold | 10 | **1.0000** | 1.0000 | 0.9977 | 0.9995 | 0.0004 | ❌ Fuga Circular (Inútil en Producción) |
+| **Naïve (Con Fuga)** | **Random Forest** | StratifiedKFold | 10 | **1.0000** | 0.9992 | 0.9992 | 0.9992 | 0.0002 | ❌ Fuga Circular (Inútil en Producción) |
+| **Naïve (Con Fuga)** | **StackingEnsemble** | StratifiedKFold | 10 | **1.0000** | 1.0000 | 0.9984 | 0.9997 | 0.0003 | ❌ Fuga Circular (Inútil en Producción) |
+| **Saneado (En Tránsito)**| **XGBoost** | GroupKFold (Ruta)| 7 | **0.9985** | 0.9906 | 0.8757 | 0.9653 | 0.0174 | ✅ Producción Streaming (Robusto) |
+| **Saneado (En Tránsito)**| **LightGBM** | GroupKFold (Ruta)| 7 | **0.9988** | 0.9945 | 0.8743 | 0.9679 | 0.0167 | ✅ Producción Streaming (Robusto) |
+| **Saneado (En Tránsito)**| **CatBoost** | GroupKFold (Ruta)| 7 | **0.9982** | 0.9914 | 0.8256 | 0.9531 | 0.0248 | ✅ Producción Streaming (Robusto) |
+| **Saneado (En Tránsito)**| **Random Forest** | GroupKFold (Ruta)| 7 | **0.9966** | 0.9617 | 0.8700 | 0.9419 | 0.0251 | ✅ Producción Streaming (Robusto) |
+| **Saneado (En Tránsito)**| **StackingEnsemble** | GroupKFold (Ruta)| 7 | **0.9986** | 0.9922 | 0.8687 | 0.9648 | 0.0193 | ✅ Producción Streaming (Robusto) |
+| **Saneado (Pre-Despacho)**| **XGBoost** | GroupKFold (Ruta)| 3 | **0.8833** | 0.8414 | 0.3799 | 0.6769 | 0.1542 | 🎯 Planificación Ex-Ante (Generalizable) |
+| **Saneado (Pre-Despacho)**| **LightGBM** | GroupKFold (Ruta)| 3 | **0.8815** | 0.8289 | 0.3817 | 0.6715 | 0.1520 | 🎯 Planificación Ex-Ante (Generalizable) |
+| **Saneado (Pre-Despacho)**| **CatBoost** | GroupKFold (Ruta)| 3 | **0.8835** | 0.7969 | 0.4435 | 0.6873 | 0.1356 | 🎯 Planificación Ex-Ante (Generalizable) |
+| **Saneado (Pre-Despacho)**| **Random Forest** | GroupKFold (Ruta)| 3 | **0.8765** | 0.7766 | 0.4396 | 0.6734 | 0.1324 | 🎯 Planificación Ex-Ante (Generalizable) |
+| **Saneado (Pre-Despacho)**| **StackingEnsemble** | GroupKFold (Ruta)| 3 | **0.8842** | 0.8125 | 0.4180 | 0.6835 | 0.1414 | 🎯 Planificación Ex-Ante (Generalizable) |
+
+![Auditoría de Data Leakage: Contraste Empírico](images/benchmark_leakage_contrast.png)
+
+```bash
+# Para replicar la auditoría completa y regenerar la gráfica de 4 cuadrantes:
+python src/models/audit_data_leakage.py
+```
+
+---
+
+## 📓 Cuadernos de Investigación Interactiva (Estándar MLOps Odysseus)
+
+El repositorio cuenta con dos cuadernos Jupyter interactivos desarrollados bajo el **Estándar MLOps Odysseus** (semillado determinista estricto `seed=42`, rutas relativas agnósticas al sistema operativo, gráficos de alta resolución a 150/300 DPI y validación formal de hipótesis). Ambos cuadernos se encuentran **100% pre-ejecutados** con todas sus celdas, tablas formateadas y salidas visuales consolidadas en el repositorio:
+
+| Cuaderno Interactivo | Enfoque y Contenido Principal | Técnicas Estadísticas / Modelos | Métricas y Hallazgos Destacados |
+| :--- | :--- | :--- | :--- |
+| [`01_visualizaciones_storytelling_odysseus.ipynb`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/notebooks/01_visualizaciones_storytelling_odysseus.ipynb) | **Visual Data Storytelling en 6 Actos:**<br>• Acto I: Capa Gold & Desbalance ($16\%$ retrasos)<br>• Acto II: SLAs ($\le 90\text{ min}$) & Cadena Frío<br>• Acto III: Fricciones Viales & $\chi^2$<br>• Acto IV: Auditoría Anti-Leakage (Antes vs. Después)<br>• Acto V: Explicabilidad Causal con TreeSHAP<br>• Acto VI: Optimización Topológica VRP | • Contraste Naïve vs. Saneado<br>• `GroupKFold(route_id)`<br>• TreeSHAP explainer<br>• Heurística 2-Opt TSP | • Desbalance $5.25\times$<br>• $\chi^2 = 1.062,47, p < 10^{-229}$<br>• Naïve $AUC=1.0000$<br>• Saneado $AUC=0.9986$<br>• Reducción de ruta: **$-60.81\%$** |
+| [`02_eda_estadistica_inferencial_y_prescriptiva.ipynb`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/notebooks/02_eda_estadistica_inferencial_y_prescriptiva.ipynb) | **EDA Exhaustivo, Inferencia y Prescripción:**<br>• Estadística descriptiva paramétrica/no paramétrica<br>• Pruebas de normalidad y diagnóstico de Outliers<br>• Contrastes de dos muestras con tamaño del efecto<br>• Correlación Pearson vs. Spearman & VIF<br>• Batería formal de hipótesis ($H_1, H_2, H_3$ bajo $\alpha=0.05$)<br>• Análisis Prescriptivo y Matriz de Contingencias | • Shapiro-Wilk, D'Agostino, KS<br>• Tukey IQR vs. Mod. Z-Score (MAD)<br>• Welch's $t$ & Mann-Whitney $U$<br>• Coeficiente $V$ de Cramér<br>• Kruskal-Wallis $H$ & ANOVA $\eta^2$<br>• Algoritmo 2-Opt VRP | • Rechazo de normalidad ($p<10^{-10}$)<br>• Outliers térmicos $>8^\circ\text{C}$ detectados<br>• Cohen's $d = 1.05$ (Velocidad)<br>• Cramér's $V = 0.3644$ (Tráfico)<br>• Matriz prescriptiva de 3 niveles |
+
+```bash
+# Reejecutar los notebooks en modo headless (Criterio Odysseus):
+python -m jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.kernel_name=python3 notebooks/01_visualizaciones_storytelling_odysseus.ipynb
+python -m jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.kernel_name=python3 notebooks/02_eda_estadistica_inferencial_y_prescriptiva.ipynb
+```
 
 ---
 
@@ -210,7 +270,7 @@ Se evaluaron 6 algoritmos avanzados mediante **Validación Cruzada Estratificada
 La aplicación interactiva de Streamlit (`src/visualization/dashboard.py`) ofrece 4 módulos operacionales:
 
 1. **Torre de Control de Flota en Vivo:** Monitoreo en tiempo real de vehículos sobre mapa interactivo de Idaho (`open-street-map`), con tarjetas de telemetría, velocímetro, termómetro de carga y factores SHAP explicables.
-2. **Simulador de Rutas Meals on Wheels (VRP):** Visualización interactiva de las 21 rutas de reparto en Treasure Valley, comparación de distancias antes/después del 2-Opt y auditoría de ventanas SLA de 90 minutos.
+2. **Simulador de Rutas Last-Mile (VRP):** Visualización interactiva de rutas de reparto, comparación de distancias antes/después del 2-Opt y auditoría de ventanas SLA de 90 minutos.
 3. **Inteligencia Histórica & EDA:** Análisis exploratorio multivariable sobre las 8.000 instancias de Amazon, matrices de correlación interactiva y diagramas de dispersión.
 4. **Validación Estadística e Inferencia:** Ejecución de contrastes de hipótesis paramétricos y no paramétricos ($t$-Student, Mann-Whitney $U$, Kolmogorov-Smirnov, ANOVA, Kruskal-Wallis, Chi-cuadrado).
 
@@ -238,6 +298,11 @@ DS-LOGISTICA 4.0-Metro-Meals-on Wheels Treasure Valley/
 │   └── GUIA_AUTOAPRENDIZAJE_Y_DEFENSA_TFM.md
 ├── images/                            # Banners, logotipos e infografías del TFM
 ├── models/                            # Artefacto serializado best_delay_model.pkl
+├── notebooks/                         # Cuadernos interactivos (Estándar MLOps Odysseus)
+│   ├── 01_visualizaciones_storytelling_odysseus.ipynb  # Visual Storytelling 6 Actos & TreeSHAP
+│   ├── 02_eda_estadistica_inferencial_y_prescriptiva.ipynb # EDA, Hipótesis y 2-Opt Prescriptivo
+│   ├── build_notebook.py              # Constructor reproducible del Notebook 01
+│   └── build_eda_notebook.py          # Constructor reproducible del Notebook 02
 ├── src/
 │   ├── analytics/                     # Motor de estadística descriptiva e inferencial
 │   ├── data_ingestion/                # Cargador dataset Amazon y Simulador IoT
@@ -326,6 +391,14 @@ Si prefiere crear y activar el entorno virtual manualmente paso a paso:
    streamlit run src/visualization/dashboard.py
    ```
 
+6. **Explorar y reejecutar los Notebooks Interactivos (Criterio Odysseus):**
+   ```bash
+   # Abrir el servidor Jupyter Lab para análisis visual:
+   jupyter lab notebooks/
+   ```
+   - Cuaderno 01: [`notebooks/01_visualizaciones_storytelling_odysseus.ipynb`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/notebooks/01_visualizaciones_storytelling_odysseus.ipynb) (Storytelling 6 Actos, Auditoría Anti-Leakage y TreeSHAP)
+   - Cuaderno 02: [`notebooks/02_eda_estadistica_inferencial_y_prescriptiva.ipynb`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/notebooks/02_eda_estadistica_inferencial_y_prescriptiva.ipynb) (EDA Exhaustivo, Contrastes $H_1, H_2, H_3$ y Prescripción VRP 2-Opt)
+
 - **Torre de Control:** [http://localhost:8501](http://localhost:8501)
 - **MLflow Tracking UI:** [http://localhost:5000](http://localhost:5000)
 
@@ -371,11 +444,13 @@ Todos los documentos del TFM se encuentran disponibles en formato Markdown y com
 
 ---
 
-## 👨‍💻 Autor & Contacto
+## 👨‍💻 Autor & Perfil Profesional
 
 **Guillén Concepción**  
 *Senior Data Scientist & MLOps Engineer*
 
+- **Enfoque Profesional:** Experto en diseño, desarrollo y despliegue de soluciones integrales de Inteligencia Artificial. Pragmático y centrado en el valor de negocio, abarcando desde la fase de investigación científica (CRISP-DM) hasta sistemas de producción escalables, resilientes y auditables utilizando arquitecturas Cloud-Native y prácticas MLOps (Docker, Podman, MLflow, uv, CI/CD).
 - **LinkedIn:** [linkedin.com/in/guillen-concepcion-25266b127](https://www.linkedin.com/in/guillen-concepcion-25266b127)
 - **GitHub:** [github.com/GuillenConcepcion](https://github.com/GuillenConcepcion)
 - **Email:** [guillenconcepcion@gmail.com](mailto:guillenconcepcion@gmail.com)
+

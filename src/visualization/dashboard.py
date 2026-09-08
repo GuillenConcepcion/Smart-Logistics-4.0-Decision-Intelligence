@@ -65,7 +65,7 @@ from scipy import stats
 
 # Configuración de página
 st.set_page_config(
-    page_title="Smart Logistics & Care Dashboard | Meals on Wheels",
+    page_title="Smart Logistics 4.0 | Decision Intelligence Control Tower",
     page_icon="🚚",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -178,8 +178,8 @@ def load_components():
     return simulator, feature_store, predictor, decision_engine, explainer
 
 def render_control_tower():
-    st.title("🚚 Smart Logistics & Care Dashboard: Meals on Wheels")
-    st.caption("Sistema Prescriptivo de Decision Intelligence para el cuidado a mayores en Treasure Valley - TFM UCM")
+    st.title("🚚 Smart Logistics 4.0: Decision Intelligence Control Tower")
+    st.caption("Sistema Prescriptivo de Decision Intelligence (TFM UCM) | Base: 2021 Amazon Last-Mile Routing Research Challenge Dataset (Amazon Science & MIT CTL)")
     
     try:
         simulator, feature_store, predictor, decision_engine, explainer = load_components()
@@ -245,6 +245,27 @@ def render_control_tower():
                     shap_summaries.append({row.get("dominant_factor", "N/A"): 0.1})
             else:
                 shap_summaries.append({row.get("dominant_factor", "N/A"): 0.1})
+
+    # Asegurar columnas esperadas para compatibilidad con streaming y SQLite
+    expected_defaults = {
+        "distance_remaining_km": 28.5,
+        "scheduled_eta_minutes": 45,
+        "cargo_temp_celsius": 4.2,
+        "speed_kmh": 42.0,
+        "weather_severity_num": 0.0,
+        "traffic_density_num": 0.1,
+        "estimated_real_min": 40.0,
+        "eta_urgency_ratio": 0.88,
+        "environmental_risk_index": 0.20,
+        "weather_condition": "CLEAR",
+        "traffic_density": "LOW",
+        "action_code": "NORMAL",
+        "recommendation": "Continuar ruta programada.",
+        "risk_level": "BAJO"
+    }
+    for col, val in expected_defaults.items():
+        if col not in df_predicted.columns:
+            df_predicted[col] = val
 
     # --- SECCIÓN 1: METRICAS CLAVE DE NEGOCIO (KPIs) ---
     col1, col2, col3, col4, col5 = st.columns(5)
@@ -413,7 +434,7 @@ def load_historical_data():
 
 def render_historical_analysis():
     st.title("📊 Inteligencia Histórica (Batch Analytics)")
-    st.caption("Análisis de tendencias, SLAs e impacto ambiental sobre la cadena de suministro.")
+    st.caption("Análisis de tendencias, SLAs e impacto ambiental sobre el **2021 Amazon Last-Mile Routing Research Challenge Dataset** (Amazon Last Mile Science & MIT CTL).")
     
     df = load_historical_data()
     if df is None:
@@ -516,22 +537,22 @@ def get_mow_clients(n_clients):
     opt = RouteOptimizer()
     return opt.generate_clients(n_clients)
 
-def render_meals_on_wheels_optimizer():
-    st.title("🚚 Optimizador de rutas Meals on Wheels")
-    st.caption("Planificación automatizada y secuenciación óptima de rutas para Treasure Valley, Idaho (Caso 8.4)")
+def render_last_mile_optimizer():
+    st.title("🚚 Optimizador de Rutas Last-Mile (VRP)")
+    st.caption("Planificación automatizada y secuenciación óptima de rutas de última milla (K-Means + 2-Opt TSP)")
     
     # Explicación del caso de estudio
-    with st.expander("ℹ️ Información del caso de estudio (Treasure Valley, Idaho)", expanded=False):
+    with st.expander("ℹ️ Información del modelo operativo (Distribución de Última Milla)", expanded=False):
         st.markdown("""
         **Contexto del problema:**
-        Metro Meals on Wheels entrega comida caliente y fría a más de 800 clientes mayores a lo largo de 21 rutas en un área de 2,745 km² en Idaho.
+        Operaciones de distribución urbana y suburbana de última milla con flota heterogénea a lo largo de rutas de entrega de alta densidad.
         
         **Desafíos:**
-        - **Caducidad térmica:** La comida caliente debe ser entregada dentro de un SLA estricto de **90 minutos** desde la salida de la cocina.
-        - **Planificación manual:** El proceso manual tomaba horas de dos empleados para coordinar las rutas de entrega.
-        - **Tipos de conductores (Retorno de neveras/calentadores):**
-          - *Conductores regulares:* Devuelven las neveras al día siguiente (la ruta termina en la última entrega: **Solo ida**).
-          - *Conductores ocasionales:* Deben regresar a la cocina el mismo día para entregar el equipo de vuelta (**Ida y vuelta**).
+        - **Ventana operativa de servicio:** Cada entrega debe realizarse dentro de un SLA estricto de **90 minutos** desde la salida de la estación logística / hub.
+        - **Planificación automatizada:** Sustitución de la planificación manual por optimización combinatoria basada en K-Means y 2-Opt TSP.
+        - **Tipos de rutas:**
+          - *Rutas directas (Solo ida):* El conductor finaliza la jornada tras completar la última entrega programada.
+          - *Rutas de ciclo cerrado (Ida y vuelta):* El vehículo retorna a la estación central al completar el itinerario.
         """)
         
     # Sidebar: Controles específicos del optimizador
@@ -649,9 +670,9 @@ def render_meals_on_wheels_optimizer():
             color="#ef4444",
             symbol="star"
         ),
-        name="Cocina Central (Depósito)",
+        name="Estación Logística Central (Hub)",
         hoverinfo="text",
-        hovertext="Cocina Central (Meals on Wheels)"
+        hovertext="Estación Logística Central (Hub)"
     ))
     
     # Agregar marcadores para paradas con SLA violado (halo rojo)
@@ -728,7 +749,7 @@ def render_meals_on_wheels_optimizer():
         st.download_button(
             label="Descargar hojas de ruta completas (CSV)",
             data=csv_data,
-            file_name="hojas_de_ruta_meals_on_wheels.csv",
+            file_name="hojas_de_ruta_last_mile.csv",
             mime="text/csv",
             icon=":material/download:"
         )
@@ -766,7 +787,7 @@ def render_meals_on_wheels_optimizer():
 
 def render_statistical_eda():
     st.title("🔬 Módulo EDA, Estadística Descriptiva e Inferencial")
-    st.caption("Contraste de hipótesis, análisis de distribuciones, pruebas no paramétricas y diagnóstico de robustez.")
+    st.caption("Contraste de hipótesis, análisis de distribuciones y pruebas no paramétricas sobre el **2021 Amazon Last-Mile Routing Research Challenge Dataset** (Amazon Last Mile Science & MIT CTL).")
     
     df = load_historical_data()
     if df is None:
@@ -1127,11 +1148,14 @@ def render_statistical_eda():
 
 def main():
     st.sidebar.title("Navegación")
+    st.sidebar.markdown("**📦 Dataset Base:**")
+    st.sidebar.caption("2021 Amazon Last-Mile Routing Research Challenge Dataset (Amazon Science & MIT CTL)")
+    st.sidebar.markdown("---")
     page = st.sidebar.radio("Seleccione Módulo:", [
         "📡 Torre de Control (En Vivo)", 
         "📊 Inteligencia Histórica (Batch)",
         "🔬 EDA Estadístico e Inferencial",
-        "🚚 Optimizador Meals on Wheels"
+        "🚚 Optimizador de Rutas Last-Mile"
     ])
     
     if page == "📡 Torre de Control (En Vivo)":
@@ -1141,7 +1165,7 @@ def main():
     elif page == "🔬 EDA Estadístico e Inferencial":
         render_statistical_eda()
     else:
-        render_meals_on_wheels_optimizer()
+        render_last_mile_optimizer()
 
 if __name__ == "__main__":
     main()

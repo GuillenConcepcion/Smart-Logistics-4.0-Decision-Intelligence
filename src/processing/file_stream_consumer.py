@@ -39,14 +39,23 @@ def init_db():
             action_code TEXT,
             recommendation TEXT,
             dominant_factor TEXT,
-            shap_values TEXT
+            shap_values TEXT,
+            distance_remaining_km REAL,
+            scheduled_eta_minutes INTEGER,
+            cargo_temp_celsius REAL
         )
     """)
-    # Migración: asegurar columna shap_values si la tabla ya existía
+    # Migración: asegurar columnas si la tabla ya existía
     cursor.execute("PRAGMA table_info(fleet_telemetry)")
     columns = [row[1] for row in cursor.fetchall()]
-    if "shap_values" not in columns:
-        cursor.execute("ALTER TABLE fleet_telemetry ADD COLUMN shap_values TEXT")
+    for new_col, col_type in [
+        ("shap_values", "TEXT"),
+        ("distance_remaining_km", "REAL"),
+        ("scheduled_eta_minutes", "INTEGER"),
+        ("cargo_temp_celsius", "REAL")
+    ]:
+        if new_col not in columns:
+            cursor.execute(f"ALTER TABLE fleet_telemetry ADD COLUMN {new_col} {col_type}")
     conn.commit()
     conn.close()
 
@@ -110,8 +119,9 @@ def run_file_consumer():
             cursor.execute("""
                 INSERT INTO fleet_telemetry 
                 (vehicle_id, shipment_id, timestamp, latitude, longitude, speed_kmh, traffic_density, weather_condition, 
-                 delay_probability, risk_level, action_code, recommendation, dominant_factor, shap_values)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                 delay_probability, risk_level, action_code, recommendation, dominant_factor, shap_values,
+                 distance_remaining_km, scheduled_eta_minutes, cargo_temp_celsius)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ON CONFLICT(vehicle_id) DO UPDATE SET
                 timestamp=excluded.timestamp,
                 latitude=excluded.latitude,
@@ -124,13 +134,19 @@ def run_file_consumer():
                 action_code=excluded.action_code,
                 recommendation=excluded.recommendation,
                 dominant_factor=excluded.dominant_factor,
-                shap_values=excluded.shap_values
+                shap_values=excluded.shap_values,
+                distance_remaining_km=excluded.distance_remaining_km,
+                scheduled_eta_minutes=excluded.scheduled_eta_minutes,
+                cargo_temp_celsius=excluded.cargo_temp_celsius
             """, (
                 row["vehicle_id"], row["shipment_id"], event["timestamp"], row["latitude"], row["longitude"],
                 row["speed_kmh"], row["traffic_density"], row["weather_condition"],
                 float(row["delay_probability"]), decision["risk_level"], decision["action_code"], 
                 decision["recommendation"], decision["dominant_factor"]["feature"],
-                json.dumps(shap_factors)
+                json.dumps(shap_factors),
+                float(row.get("distance_remaining_km", 25.0)),
+                int(row.get("scheduled_eta_minutes", 60)),
+                float(row.get("cargo_temp_celsius", 4.0))
             ))
             
             conn.commit()

@@ -1,5 +1,5 @@
 """
-Motor de Optimización de Rutas para Meals on Wheels - Treasure Valley
+Motor de Optimización de Rutas para Distribución de Última Milla (Amazon Last-Mile Challenge)
 Implementa clustering K-Means y secuenciación heurística 2-opt para VRP.
 Soporta rutas de ida (One-Way) e ida y vuelta (Round-Trip) con verificación de SLA.
 """

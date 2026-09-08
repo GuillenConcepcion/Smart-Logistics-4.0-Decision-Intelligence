@@ -1,5 +1,5 @@
 # ==============================================================================
-# Dockerfile Multi-Service: Decision Intelligence & Smart Logistics (Meals on Wheels)
+# Dockerfile Multi-Service: Decision Intelligence & Smart Logistics (Amazon Last-Mile)
 # Compatible con Docker y Podman
 # ==============================================================================
 FROM python:3.10-slim AS base

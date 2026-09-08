@@ -18,7 +18,7 @@ El pipeline metodológico se estructura en seis fases interconectadas:
 
 ```mermaid
 flowchart LR
-    F1["1. Entendimiento del Negocio<br/>(SLAs Asistenciales & FSIS)"] --> F2["2. Entendimiento de Datos<br/>(Telemetría IoT & Tráfico)"]
+    F1["1. Entendimiento del Negocio<br/>(SLAs Asistenciales & FSIS)"] --> F2["2. Entendimiento de Datos<br/>(2021 Amazon Last-Mile Dataset & IoT)"]
     F2 --> F3["3. Preparación de Datos<br/>(Pydantic & Capa Gold)"]
     F3 --> F4["4. Modelado & XAI<br/>(XGBoost + TreeSHAP)"]
     F4 --> F5["5. Prescripción & VRP<br/>(2-Opt TSP & Guarded GenAI)"]
@@ -29,12 +29,13 @@ flowchart LR
 
 ## 3.2. Principios de Diseño Arquitectónico (Digital Supply Network)
 
-Siguiendo los principios de diseño de Redes Digitales de Suministro (Sinha et al., 2020), las directrices del BID (2020) y los marcos de gestión logística cuantitativa (Longshore & Cheatham, 2022; Dasgupta et al., 2023; Aponte Parejo, 2023), la arquitectura del sistema se rige por cuatro principios fundamentales:
+Siguiendo los principios de diseño de Redes Digitales de Suministro (Sinha et al., 2020), las directrices del BID (2020) y los marcos de gestión logística cuantitativa (Longshore & Cheatham, 2022; Dasgupta et al., 2023; Aponte Parejo, 2023), la arquitectura del sistema se rige por cinco principios fundamentales:
 
 1. **Desacoplamiento y Tolerancia a Fallos:** El productor telemático IoT y el motor analítico operan de forma asíncrona mediante el patrón *Drop Folder / Landing Zone*, evitando bloqueos ante caídas de red o picos de tráfico telemático (Aponte Parejo, 2023).
 2. **Compuerta de Calidad de Datos en Ingesta (*Data Quality Gate*):** Validación estricta de tipos, rangos físicos y consistencia geográfica mediante esquemas Pydantic antes de que los datos ingresen al almacén analítico (UANL, 2022).
 3. **Optimización de Coste Asimétrico:** En la logística asistencial de alimentos calientes para personas dependientes, el coste de un **Falso Negativo** (no anticipar que la comida llegará fría) es infinitamente superior al coste de un **Falso Positivo** (alerta preventiva de revisión). Por ello, el pipeline prioriza maximizar la sensibilidad ($\text{Recall} \ge 0.90$) sobre la exactitud global (*Accuracy*) (Longshore & Cheatham, 2022).
 4. **Prescripción Gobernada y Explicable (*Guarded GenAI*):** Cero tolerancia a la opacidad de "caja negra" o a las alucinaciones de modelos generativos (Sharma & Vajjhala, 2023). Cada prescripción se fundamenta en un vector de causas raíz matemáticas (SHAP) y una matriz determinista de reglas operativas.
+5. **Anclaje en Datos Empíricos Reales:** Todo el modelado predictivo, contrastes inferenciales y optimización se sustentan sobre el **2021 Amazon Last-Mile Routing Research Challenge Dataset** (Amazon Last Mile Science & MIT CTL; Merchán et al., 2022), erradicando el uso de simulaciones artificiales y garantizando validez industrial externa.
 
 ---
 
@@ -170,18 +171,18 @@ El entrenamiento se ejecuta mediante **5-Fold Stratified Cross-Validation**, gar
 
 ---
 
-## 3.8. Algoritmia del Motor de Optimización de Rutas (VRP Meals on Wheels)
+## 3.8. Algoritmia del Motor de Optimización de Rutas (VRP Last-Mile)
 
-Siguiendo el enfoque de modelado de transporte de Ravindran & Warsing (2021), la asignación de $N$ clientes a $K$ vehículos y la secuenciación de paradas se resuelve en dos fases:
+Siguiendo el enfoque de modelado de transporte de Ravindran & Warsing (2021), la asignación de $N$ paradas de entrega a $K$ vehículos y la secuenciación de rutas se resuelve en dos fases:
 
 ```mermaid
 flowchart TD
-    A["Demanda Asistencial (N=200 Hogares)"] --> B["Fase 1: K-Means Spatial Clustering (K=21 Rutas)"]
+    A["Paradas de Entrega de Ruta (N=200 Paradas)"] --> B["Fase 1: K-Means Spatial Clustering (K=21 Zonas/Rutas)"]
     B --> C["Fase 2: Heurística 2-Opt TSP por Clúster"]
-    C --> D{"Tipo de Conductor"}
-    D -->|Regular (70%)| E["Ruta One-Way (Finaliza en última parada)"]
-    D -->|Voluntario (30%)| F["Ruta Round-Trip (Retorna a Cocina Central)"]
-    E --> G["Validación SLA Térmico (< 90 min)"]
+    C --> D{"Modalidad de Ruta"}
+    D -->|Entrega Directa (70%)| E["Ruta One-Way (Finaliza en última parada)"]
+    D -->|Retorno al Depósito (30%)| F["Ruta Round-Trip (Retorna a Estación Logística)"]
+    E --> G["Validación Ventana Horaria SLA"]
     F --> G
 ```
 
@@ -198,9 +199,10 @@ $$d(p_1, p_2) = 2 R \arcsin\left(\sqrt{\sin^2\left(\frac{\Delta \phi}{2}\right) 
 ## 3.9. Marco de Evaluación y Pruebas
 
 Para garantizar la reproducibilidad y rigor de las conclusiones, el sistema se evalúa mediante un protocolo integral en tres ejes:
-1. **Validación Estadística Inferencial:** Contrastes de hipótesis sobre el dataset Gold operacional publicado conjuntamente por **Amazon Last Mile Science** y el **MIT Center for Transportation & Logistics (CTL)** (*2021 Amazon Last-Mile Routing Research Challenge*, Merchán et al., 2022; $N=8.000$ instancias telemáticas en 17 centros operativos) mediante pruebas de Shapiro-Wilk, Kolmogorov-Smirnov, $t$-test de Welch con tamaño del efecto Cohen's $d$, Mann-Whitney $U$, One-Way ANOVA, Kruskal-Wallis, Chi-cuadrado $\chi^2$ e intervalos de confianza Bootstrap al $95\%$.
+1. **Validación Estadística Inferencial:** Contrastes de hipótesis sobre el dataset Gold operacional derivado del **2021 Amazon Last-Mile Routing Research Challenge Dataset**, publicado conjuntamente por **Amazon Last Mile Science** y el **MIT Center for Transportation & Logistics (CTL)** (Merchán et al., 2022; $N=8.000$ instancias telemáticas en 17 centros operativos) mediante pruebas de Shapiro-Wilk, Kolmogorov-Smirnov, $t$-test de Welch con tamaño del efecto Cohen's $d$, Mann-Whitney $U$, One-Way ANOVA, Kruskal-Wallis, Chi-cuadrado $\chi^2$ e intervalos de confianza Bootstrap al $95\%$.
 2. **Evaluación de Machine Learning y XAI:** Suite de 6 algoritmos bajo Validación Cruzada Estratificada de 5 Pliegues (5-Fold Stratified CV), evaluando ROC-AUC, PR-AUC, Recall, Precision, $F_1$-Score, $F_2$-Score, calibración de probabilidades (*Brier Score*) del ensamble *Super Learner* (`StackingEnsemble`) y jerarquía de importancia causal mediante valores TreeSHAP en tiempo real.
-3. **Evaluación Operacional y Económica:** Análisis comparativo de kilometraje diario, horas de conducción, cumplimiento porcentual del SLA térmico ($\le 90\text{ min}$) y proyección de ahorro financiero anual para Meals on Wheels en Treasure Valley (Longshore & Cheatham, 2022).
+3. **Evaluación Operacional y Económica:** Análisis comparativo de kilometraje diario, horas de conducción, cumplimiento porcentual de ventanas SLA y proyección de eficiencia de costes anuales en operaciones de última milla (Longshore & Cheatham, 2022).
+4. **Reproducibilidad en Cuadernos Interactivos (Criterio Odysseus):** Implementación de cuadernos reproducibles de inferencia exploratoria y visual data storytelling ([`notebooks/01_visualizaciones_storytelling_odysseus.ipynb`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/notebooks/01_visualizaciones_storytelling_odysseus.ipynb) y [`notebooks/02_eda_estadistica_inferencial_y_prescriptiva.ipynb`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/notebooks/02_eda_estadistica_inferencial_y_prescriptiva.ipynb)) con semillado fijo (`seed=42`), auditoría formal anti-leakage bajo `GroupKFold` y prescripción topológica 2-Opt.
 
 ---
 

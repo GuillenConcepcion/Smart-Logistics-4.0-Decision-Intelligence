@@ -62,7 +62,7 @@ def evaluate_predictions(y_true: np.ndarray, y_pred: np.ndarray, y_proba: np.nda
 
 def train_advanced_suite(
     dataset_path: str = "data/processed/logistics_historical_dataset.csv",
-    experiment_name: str = "Metro-Meals-On-Wheels-Delay-Predictor",
+    experiment_name: str = "Amazon-Last-Mile-Delay-Predictor",
     n_splits: int = 5
 ) -> Dict[str, Any]:
     """
@@ -71,7 +71,8 @@ def train_advanced_suite(
     """
     print("=========================================================================")
     print("   SUITE AVANZADA DE MACHINE LEARNING & MLOPS: LOGÍSTICA 4.0            ")
-    print("   Caso: Metro Meals on Wheels | Dataset: Amazon Last Mile Challenge    ")
+    print("   Dataset: 2021 Amazon Last-Mile Routing Research Challenge Dataset     ")
+    print("   (Amazon Last Mile Science & MIT Center for Transportation & Logistics)")
     print("=========================================================================")
     
     # 1. Carga de Datos
@@ -173,9 +174,9 @@ def train_advanced_suite(
         print(f"[MLflow Info] Usando tracking local: {e}")
 
     with mlflow.start_run(run_name="Multi-Model-Benchmark-Suite-Amazon-2021"):
-        mlflow.set_tag("project", "Metro Meals on Wheels - Logistica 4.0")
+        mlflow.set_tag("project", "Amazon Last-Mile Logistics 4.0")
         mlflow.set_tag("lead", "Guillen Concepcion")
-        mlflow.set_tag("dataset", "Amazon Last Mile 2021")
+        mlflow.set_tag("dataset", "2021 Amazon Last-Mile Routing Research Challenge Dataset (Amazon Science & MIT CTL)")
         mlflow.log_param("n_samples", len(df))
         mlflow.log_param("cv_folds", n_splits)
         

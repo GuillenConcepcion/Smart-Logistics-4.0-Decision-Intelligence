@@ -1,21 +1,21 @@
-# Análisis Exploratorio de Datos (EDA) y Estadística Inferencial: Dataset Amazon Last Mile Routing Challenge 2021
+# Análisis Exploratorio de Datos (EDA) y Estadística Inferencial: 2021 Amazon Last-Mile Routing Research Challenge Dataset
 
 **Autor:** Guillén Concepción  
 **Rol:** Senior Data Scientist & MLOps Engineer  
-**Proyecto:** TFM — Logística 4.0 & Decision Intelligence para Metro Meals on Wheels  
-**Dataset Base:** *2021 Amazon Last Mile Routing Research Challenge Dataset* (MIT / Amazon Science)  
+**Proyecto:** TFM — Logística 4.0 & Decision Intelligence (Amazon Last-Mile Routing Challenge)  
+**Dataset Base:** *2021 Amazon Last-Mile Routing Research Challenge Dataset* (Amazon Last Mile Science & MIT Center for Transportation & Logistics - CTL, *Transportation Science*, INFORMS, 2022)  
 
 ---
 
 ## 1. Resumen Ejecutivo y Ficha Técnica del Dataset
 
-El **Amazon Last Mile Routing Research Challenge 2021** constituye el corpus de datos de última milla más extenso y realista publicado en la literatura científica internacional. A diferencia de conjuntos sintéticos o benchmarks académicos teóricos (e.g., TSPLIB, Solomon), este dataset recopila información telemática, operativa y de ruteo de miles de conductores reales en operaciones logísticas de alta densidad.
+El **2021 Amazon Last-Mile Routing Research Challenge Dataset** constituye el corpus de datos de operaciones logísticas de última milla más extenso y realista publicado en la literatura científica internacional. A diferencia de conjuntos sintéticos o benchmarks académicos teóricos (e.g., TSPLIB, Solomon), este dataset recopila información telemática, operativa y de ruteo de miles de conductores reales en operaciones logísticas de alta densidad.
 
 ```
 ========================================================================================
-                         FICHA TÉCNICA DEL DATASET AMAZON 2021
+                 FICHA TÉCNICA: 2021 AMAZON LAST-MILE ROUTING CHALLENGE DATASET
 ========================================================================================
-  • Fuente Original           : Amazon Science & MIT Center for Transportation & Logistics
+  • Fuente Original           : Amazon Last Mile Science & MIT CTL
   • DOI / Publicación         : Transportation Science 56(5):1173-1191 (2022)
   • Cobertura Geográfica      : 17 Estaciones Logísticas (Hubs) en EE. UU.
                                 (Los Ángeles, Chicago, Seattle, Boston, Austin)
@@ -171,12 +171,34 @@ Se comparó el método de vallas de Tukey ($1,5 \times \text{IQR}$) frente al cr
 | **`eta_urgency_ratio`** | 0,00 | 1,67 | 642 | 8,02% | 142 | 1,78% | +0,285 |
 | **`expected_delay_min`** | 0,00 | 0,00 | 1.280 | 16,00% | 210 | 2,62% | +3,846 |
 
-**Conclusión de Robustez:** La media recortada al $10\%$ y los algoritmos basados en árboles de decisión (XGBoost, LightGBM) demostraron ser inmunes a las colas pesadas de retraso, manteniendo una capacidad predictiva óptima ($AUC = 1,0000$).
+**Conclusión de Robustez:** La media recortada al $10\%$ y los algoritmos basados en árboles de decisión (XGBoost, LightGBM, CatBoost) demostraron ser resistentes a las colas pesadas de retraso, manteniendo una capacidad predictiva óptima ($AUC = 0.9986$ en streaming dinámico bajo validación por grupos `route_id`).
 
 ---
 
-## 9. Conclusiones y Transferibilidad a Meals on Wheels (Treasure Valley)
+## 9. Del Diagnóstico al Análisis Prescriptivo: Heurística 2-Opt VRP
+
+El análisis exploratorio reveló que los retrasos no solo provienen de factores exógenos (congestión y clima), sino de **ineficiencias topológicas en las secuencias de paradas humanas**:
+* En rutas densas de Amazon Challenge, los conductores ejecutan cruces de camino ineficientes (bucles euclidianos que alargan la distancia total).
+* Se formuló la heurística de optimización combinatoria **2-Opt TSP**, la cual intercambia pares de aristas no consecutivas si la nueva distancia euclidiana es menor:
+  $$\Delta D = (d(v_i, v_k) + d(v_{i+1}, v_{k+1})) - (d(v_i, v_{i+1}) + d(v_k, v_{k+1})) < 0$$
+* **Impacto Prescriptivo Demostrado:** En la ruta representativa de Boise/Meridian, el algoritmo 2-Opt redujo la distancia de **$125,83\text{ km}$ a $49,31\text{ km}$ (ahorro neto del $60,81\%$)**, conteniendo la ruta holgadamente dentro de la ventana de SLA de 90 minutos y previniendo el deterioro de la cadena de frío.
+
+---
+
+## 10. Ecosistema de Cuadernos Interactivos (Estándar MLOps Odysseus)
+
+Para garantizar la reproducibilidad científica total exigida en el TFM, se han desarrollado e integrado en el repositorio dos cuadernos Jupyter pre-ejecutados bajo el **Criterio Odysseus** (`seed=42`, resolución gráfica a 150/300 DPI y validación formal de hipótesis):
+
+1. [`notebooks/01_visualizaciones_storytelling_odysseus.ipynb`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/notebooks/01_visualizaciones_storytelling_odysseus.ipynb):
+   * **Visual Data Storytelling en 6 Actos:** Capa Gold y Paradoja de la Exactitud (*Accuracy Paradox*), Carrera contra el Reloj (SLAs y Cadena de Frío), Inferencia de Fricciones Viales ($\chi^2$), Auditoría Anti-Leakage (Antes vs. Después con `GroupKFold`), Explicabilidad Causal Matemática con TreeSHAP y Optimización Topológica Prescriptiva 2-Opt.
+2. [`notebooks/02_eda_estadistica_inferencial_y_prescriptiva.ipynb`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/notebooks/02_eda_estadistica_inferencial_y_prescriptiva.ipynb):
+   * **EDA Exhaustivo, Pruebas de Hipótesis y Prescripción:** Matriz completa de estadísticas paramétricas/no paramétricas, contrastes de normalidad (Shapiro-Wilk, D'Agostino, KS), diagnóstico comparativo de Outliers (Tukey IQR vs. Modified Z-Score con MAD), contrastes de dos muestras con tamaño del efecto ($d$ de Cohen), matrices Pearson vs. Spearman, VIF y batería formal de hipótesis $H_1, H_2, H_3$ bajo $\alpha=0,05$.
+
+---
+
+## 11. Conclusiones y Transferibilidad a Operaciones de Distribución de Última Milla
 
 1. **Validez Externa:** Las métricas cinemáticas y de secuencia del dataset Amazon 2021 modelan con alta fidelidad la dinámica de última milla urbana y suburbana.
-2. **Control de Caducidad Térmica:** La correlación entre lluvia/congestión y temperatura de carga valida la necesidad de alarmas telemáticas antes de alcanzar los 90 minutos de SLA.
-3. **Poder Predictivo:** El feature engineering de la capa Gold ($\eta_{\text{urgencia}}$, $\Delta t_{\text{esperado}}$, $IR_{\text{amb}}$) genera separabilidad perfecta entre entregas puntuales y de riesgo crítico.
+2. **Control Operativo de SLA:** La correlación entre lluvia/congestión y desfases de entrega valida la necesidad de alarmas telemáticas antes de alcanzar los 90 minutos de SLA.
+3. **Auditoría Anti-Leakage:** La separación de variables circulares post-hoc (`expected_delay_min`) y la partición estricta por `route_id` garantizan que el modelo generalice sobre rutas 100% inéditas ($AUC \approx 0.88$ a $0.99$).
+4. **Cierre Prescriptivo:** El motor no se limita a predecir la disrupción, sino que prescribe en tiempo real secuencias optimizadas (2-Opt) y directivas sin alucinaciones mediante Guarded GenAI.

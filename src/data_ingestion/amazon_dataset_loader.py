@@ -1,5 +1,6 @@
 """
-ETL & Ingesta del Dataset Real Amazon Last Mile Routing Challenge 2021
+ETL & Ingesta del 2021 Amazon Last-Mile Routing Research Challenge Dataset
+(Amazon Last Mile Science & MIT Center for Transportation & Logistics - CTL)
 Procesa rutas reales (6.112 rutas, 17 estaciones de Amazon) y genera el dataset Gold
 enriquecido con métricas de ingeniería de características para Logística 4.0.
 """
@@ -175,7 +176,7 @@ class AmazonDatasetLoader:
                 # Enriquecer con Feature Store
                 enriched = self.feature_store.enrich_event(event)
                 
-                # Etiqueta Ground Truth (Retraso real según SLA Amazon / Meals on Wheels)
+                # Etiqueta Ground Truth (Retraso real según SLA operativo Amazon Last-Mile)
                 urgency = enriched["eta_urgency_ratio"]
                 expected_delay = enriched["expected_delay_min"]
                 env_risk = enriched["environmental_risk_index"]

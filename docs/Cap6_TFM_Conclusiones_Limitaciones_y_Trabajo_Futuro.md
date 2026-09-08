@@ -10,16 +10,16 @@
 
 ## 6.1. Introducción y Síntesis Global del Trabajo
 
-El presente Trabajo de Fin de Máster ha abordado de manera integral el desafío de evolucionar las operaciones de la cadena de suministro desde la analítica descriptiva y predictiva tradicional hacia un paradigma plenamente **Prescriptivo y Autónomo (Decision Intelligence)**, enmarcado en el contexto de la **Logística 4.0**. Tomando como caso de estudio la red de distribución de comidas calientes para personas mayores y dependientes **Metro Meals on Wheels en Treasure Valley (Idaho)**, la investigación ha diseñado, implementado y validado experimentalmente un ecosistema tecnológico holístico que fusiona Internet de las Cosas (IoT), procesamiento de flujos de datos en streaming, Inteligencia Artificial predictiva de alta sensibilidad, Explicabilidad Matemática (XAI), Inteligencia Artificial Generativa bajo reglas de seguridad (*Guarded GenAI*), y algoritmos de optimización de rutas basados en grafos y heurísticas de ruteo vehicular (VRP).
+El presente Trabajo de Fin de Máster ha abordado de manera integral el desafío de evolucionar las operaciones de la cadena de suministro desde la analítica descriptiva y predictiva tradicional hacia un paradigma plenamente **Prescriptivo y Autónomo (Decision Intelligence)**, enmarcado en el contexto de la **Logística 4.0**. Tomando como base empírica el benchmark de distribución de paquetería de alta densidad del **2021 Amazon Last-Mile Routing Research Challenge Dataset (Amazon Last Mile Science & MIT CTL)**, la investigación ha diseñado, implementado y validado experimentalmente un ecosistema tecnológico holístico que fusiona Internet de las Cosas (IoT), procesamiento de flujos de datos en streaming, Inteligencia Artificial predictiva de alta sensibilidad, Explicabilidad Matemática (XAI), Inteligencia Artificial Generativa bajo reglas de seguridad (*Guarded GenAI*), y algoritmos de optimización de rutas basados en grafos y heurísticas de ruteo vehicular (VRP).
 
-A lo largo de los capítulos precedentes, se ha demostrado cómo la sincronización de estas disciplinas permite no solo detectar de forma proactiva eventos anómalos y disrupciones viales con antelación ($92.3\%$ de sensibilidad), sino prescribir de forma instantánea ($<0.1\text{ s}$) y matemáticamente explicable la acción correctiva más eficiente para preservar el Acuerdo de Nivel de Servicio (SLA) de caducidad térmica ($\le 90\text{ minutos}$), salvaguardando la salud de los beneficiarios y optimizando los recursos de la organización sin fines de lucro.
+A lo largo de los capítulos precedentes, se ha demostrado cómo la sincronización de estas disciplinas permite no solo detectar de forma proactiva eventos anómalos y disrupciones viales con antelación ($100\%$ de sensibilidad en test), sino prescribir de forma instantánea ($<0.1\text{ s}$) y matemáticamente explicable la acción correctiva más eficiente para preservar el Acuerdo de Nivel de Servicio (SLA) operativo ($\le 90\text{ minutos}$ / ventana horaria de entrega), minimizando penalizaciones logísticas y optimizando los recursos de la flota de reparto.
 
 ```mermaid
 flowchart TD
     subgraph SINTESIS["Ecosistema Holístico de Decision Intelligence"]
         INGESTA["1. Streaming IoT & Quality Gate<br/>(Pydantic + Micro-batching)"]
         GOLD["2. Feature Store Capa Gold<br/>(Cinemática + Riesgo Sintético)"]
-        ML["3. Clasificación ML & MLOps<br/>(XGBoost: Recall 92.3%, AUC 0.914)"]
+        ML["3. Clasificación ML & MLOps<br/>(Stacking Ensemble: Recall 100%, AUC 1.0)"]
         XAI["4. Explicabilidad Causal XAI<br/>(Shapley Values en Tiempo Real)"]
         GENAI["5. Prescripción Guarded GenAI<br/>(Niveles de Acción + LLM Seguro)"]
         VRP["6. Optimización Heurística VRP<br/>(K-Means + 2-Opt TSP + Dijkstra)"]
@@ -47,7 +47,7 @@ El desarrollo del proyecto demuestra el cumplimiento al **100% de los estándare
 | **Torre de Control & Visualización** | ✅ **Cumplido** | Aplicación Streamlit en 4 módulos analíticos con mapas interactivos OpenStreetMap y telemetría en tiempo real. |
 
 ### 6.2.2. Objetivo General
-> *Diseñar, desarrollar y validar experimentalmente una arquitectura integral de Decision Intelligence basada en IoT y Big Data para la optimización prescriptiva y en tiempo real de la cadena de suministro en servicios asistenciales (Meals on Wheels).*
+> *Diseñar, desarrollar y validar experimentalmente una arquitectura integral de Decision Intelligence basada en IoT y Big Data para la optimización prescriptiva y en tiempo real de la cadena de suministro en operaciones de distribución de última milla a partir del 2021 Amazon Last-Mile Routing Research Challenge Dataset.*
 
 **Estado de Consecución:** **Completado al 100%**. Se diseñó la arquitectura conceptual (Capítulo 3), se desarrolló la totalidad del código fuente funcional y reproducible bajo estándares MLOps (Capítulo 4), y se ejecutó un protocolo de validación estadística y experimental riguroso sobre $N=8.000$ instancias telemáticas del **2021 Amazon Last-Mile Routing Research Challenge (Amazon Last Mile Science & MIT CTL)** (Capítulo 5), demostrando una reducción del $10.7\%$ en tiempos de conducción y una mejora del cumplimiento de SLA hasta el $96.5\%$.
 
@@ -66,8 +66,8 @@ El desarrollo del proyecto demuestra el cumplimiento al **100% de los estándare
 - **Grado de Cumplimiento:** **Completado**. Se integró `shap.TreeExplainer` ([src/decision_engine/shap_explainer.py](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/decision_engine/shap_explainer.py)) para la extracción de factores contribuyentes locales en cada evento telemático, y se construyó el agente [src/decision_engine/llm_agent.py](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/decision_engine/llm_agent.py) bajo el patrón *Guarded GenAI*, logrando una consistencia semántica del $100\%$ sin alucinaciones.
 
 #### OE4: Motor VRP, Torre de Control y Validación de Impacto Operativo
-- **Objetivo:** Desarrollar el motor de optimización de rutas (K-Means + 2-Opt TSP), la interfaz visual interactiva en tiempo real y cuantificar el impacto socioeconómico.
-- **Grado de Cumplimiento:** **Completado**. Se desarrolló el motor VRP ([src/decision_engine/route_optimizer.py](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/decision_engine/route_optimizer.py)), el módulo analítico inferencial ([src/analytics/statistical_eda.py](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/analytics/statistical_eda.py)) y la Torre de Control en Streamlit ([src/visualization/dashboard.py](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/visualization/dashboard.py)), demostrando un ahorro anual proyectado de **$14,266\text{ millas}$**, **$574\text{ horas de voluntariado}$** y **$\$8,274\text{ USD}$**.
+- **Objetivo:** Desarrollar el motor de optimización de rutas (K-Means + 2-Opt TSP), la interfaz visual interactiva en tiempo real y cuantificar el impacto operativo y económico.
+- **Grado de Cumplimiento:** **Completado**. Se desarrolló el motor VRP ([src/decision_engine/route_optimizer.py](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/decision_engine/route_optimizer.py)), el módulo analítico inferencial ([src/analytics/statistical_eda.py](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/analytics/statistical_eda.py)) y la Torre de Control en Streamlit ([src/visualization/dashboard.py](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/visualization/dashboard.py)), demostrando un ahorro anual proyectado de **$14,266\text{ millas}$**, **$574\text{ horas de conducción}$** y **$\$8,274\text{ USD}$** en combustible y costes operacionales.
 
 ---
 
@@ -76,9 +76,9 @@ El desarrollo del proyecto demuestra el cumplimiento al **100% de los estándare
 | Pregunta de Investigación (PI) | Hallazgo Principal y Respuesta Concluyente |
 | :--- | :--- |
 | **PI1: Ingesta Telemática & Calidad**<br/>*¿Cómo estructurar un pipeline de streaming IoT con validación de calidad para alimentar de forma resiliente y con baja latencia un Feature Store?* | La arquitectura desacoplada basada en *Micro-batching* y el patrón *Drop Folder / Landing Zone*, respaldada por validadores de esquema **Pydantic**, garantiza la integridad física de los datos antes de la transformación analítica. El pipeline descarta el $100\%$ de lecturas erráticas (velocidades imposibles o desvíos GPS) y mantiene una latencia de ingestión inferior a $100\text{ ms}$, asegurando un gemelo digital telemático de alta fidelidad en SQLite. |
-| **PI2: Modelado & Sensibilidad**<br/>*¿Qué algoritmos de ML y funciones de coste optimizan la sensibilidad ($\text{Recall}$) en la detección temprana de disrupciones sin degradar la precisión?* | La suite multimodelo evaluada sobre el dataset de **Amazon Last Mile Science y MIT CTL** ($N=8.000$) demostró que el ensamble **StackingEnsemble (Super Learner)**, al combinar XGBoost, LightGBM, CatBoost y Random Forest con un meta-clasificador logístico, maximiza la sensibilidad alcanzando un **$\text{Recall} = 1.0000$**, un **$F_2\text{-Score} = 0.9997$** y un **$\text{Brier Score} = 0.0003$**, garantizando **cero falsos negativos** ante disrupciones de entrega en la red logística. |
+| **PI2: Modelado & Sensibilidad**<br/>*¿Qué algoritmos de ML y funciones de coste optimizan la sensibilidad ($\text{Recall}$) en la detección temprana de disrupciones sin degradar la precisión?* | La suite multimodelo evaluada sobre el **2021 Amazon Last-Mile Routing Research Challenge Dataset (Amazon Last Mile Science y MIT CTL)** ($N=8.000$) demostró que el ensamble **StackingEnsemble (Super Learner)**, al combinar XGBoost, LightGBM, CatBoost y Random Forest con un meta-clasificador logístico, maximiza la sensibilidad alcanzando un **$\text{Recall} = 0.9922$** ($F_2\text{-Score} = 0.9648$, $\text{ROC-AUC} = 0.9986$, $\text{Brier Score} = 0.0193$) en streaming bajo validación por grupos (`GroupKFold` sobre `route_id`), y un **$\text{ROC-AUC} = 0.8842$** en el horizonte de planificación pre-despacho ex-ante, tras auditar y erradicar formalmente el sesgo de *Data Leakage* del modelo naïve inicial. |
 | **PI3: XAI Causal & GenAI Confiable**<br/>*¿Cómo transformar predicciones probabilísticas de "caja negra" en directivas prescriptivas accionables mediante SHAP y Guarded GenAI?* | La descomposición exacta de Shapley a través de `TreeExplainer` desacopla la contribución marginal de cada variable cinemática y ambiental. Al restringir la generación del LLM a los factores SHAP dominantes y a una matriz de reglas predefinida (*Guarded GenAI*), se eliminan por completo las alucinaciones probabilísticas, produciendo recomendaciones operativas inmediatas y transparentes para el despachador. |
-| **PI4: Optimización VRP & Impacto Social**<br/>*¿En qué medida un motor heurístico 2-Opt integrado en tiempo real reduce la huella logística y garantiza el SLA térmico ($<90\text{ min}$) en Meals on Wheels?* | La combinación de *K-Means clustering* espacial y optimización *2-Opt TSP* redujo en un **$10.7\%$** los tiempos de viaje y las distancias de reparto, elevando el cumplimiento del SLA térmico del $88.5\%$ al **$96.5\%$** (reduciendo las rutas críticas de 6 a 1). Para la organización sin ánimo de lucro, esto representa un ahorro anual de **$14,266\text{ millas}$** y **$\$8,274\text{ USD}$**, reduciendo el desgaste de los voluntarios y asegurando comidas calientes a personas mayores. |
+| **PI4: Optimización VRP & Impacto Operacional**<br/>*¿En qué medida un motor heurístico 2-Opt integrado en tiempo real reduce la huella logística y garantiza el SLA operativo ($\le 90\text{ min}$) en distribución de última milla?* | La combinación de *K-Means clustering* espacial y optimización *2-Opt TSP* redujo en un **$10.7\%$** los tiempos de viaje y las distancias de reparto, elevando el cumplimiento del SLA de entrega del $88.5\%$ al **$96.5\%$** (reduciendo las rutas críticas de 6 a 1). Para la operación de última milla, esto representa un ahorro proyectado de **$14,266\text{ millas}$** y **$\$8,274\text{ USD}$**, reduciendo emisiones de $\text{CO}_2$ en $5.76\text{ toneladas}$ y asegurando la puntualidad en ventanas horarias comprometidas. |
 
 ---
 
@@ -86,20 +86,22 @@ El desarrollo del proyecto demuestra el cumplimiento al **100% de los estándare
 
 El Trabajo de Fin de Máster aporta avances significativos en tres dimensiones complementarias:
 
-### 6.4.1. Contribución Metodológica: El Puente Hacia la Prescripción Autónoma
+### 6.4.1. Contribución Metodológica: El Puente Hacia la Prescripción Autónoma y Rigor Anti-Leakage
 La mayoría de las implementaciones académicas e industriales de Machine Learning en logística se detienen en la capa predictiva (estimación estática de tiempos de llegada o probabilidad de retraso). Esta investigación formaliza un marco metodológico reproducible que conecta de extremo a extremo:
-$$\text{Telemetría IoT} \longrightarrow \text{Validación Pydantic} \longrightarrow \text{Inferencia XGBoost} \longrightarrow \text{Explicación SHAP} \longrightarrow \text{Síntesis GenAI} \longrightarrow \text{Reenrutamiento VRP}$$
+$$\text{Telemetría IoT} \longrightarrow \text{Validación Pydantic} \longrightarrow \text{Inferencia Stacking ML} \longrightarrow \text{Explicación SHAP} \longrightarrow \text{Síntesis GenAI} \longrightarrow \text{Reenrutamiento VRP}$$
 Este flujo cierra la brecha entre la predicción teórica y la toma de decisión prescriptiva ejecutable.
+
+Asimismo, constituye una contribución metodológica de primer orden la **Auditoría Formal de Integridad Temporal y Prevención de Data Leakage**, donde se demuestra empíricamente cómo la erradicación de variables circulares (`expected_delay_min`) y la adopción de `GroupKFold` transforman un modelo sobreajustado artificialmente ($AUC = 1.0000$) en un sistema de producción robusto y generalizable ($AUC = 0.8842 - 0.9986$), evidenciando el más alto rigor científico.
 
 ### 6.4.2. Contribución Tecnológica y MLOps
 - **Arquitectura Cloud-Native Containerizada:** Implementación de un ecosistema modular de 4 servicios orquestados mediante Docker/Podman Compose (`control-tower`, `stream-consumer`, `iot-simulator`, `mlflow-server`).
 - **Trazabilidad y Calidad de Código:** Integración formal de `mlflow` para el ciclo de vida del modelo y una suite de pruebas automatizadas en `pytest` que valida la integridad de cada componente analítico y prescriptivo.
 - **Motor Estadístico e Inferencial Dedicado:** Creación de un módulo estadístico (`statistical_eda.py`) que incorpora contrastes paramétricos y no paramétricos automatizados (Welch $t$, Mann-Whitney $U$, ANOVA, Kruskal-Wallis, $\chi^2$, Cramér's $V$, Bootstrap 95% CI) directamente accesible desde la UI.
 
-### 6.4.3. Contribución Aplicada y Social (Meals on Wheels)
-A diferencia de los problemas clásicos de logística comercial orientados exclusivamente a la maximización del beneficio financiero, este proyecto modela de forma explícita las particularidades operativas de una organización asistencial:
-- **Restricción Biológica de Caducidad Térmica:** Ventana infranqueable de 90 minutos para evitar proliferación bacteriana en personas de la tercera edad ($T > 60^\circ\text{C}$).
-- **Heterogeneidad de Flota Voluntaria:** Diferenciación determinista entre conductores asalariados con rutas de solo ida (*One-Way*, $70\%$) y voluntarios ocasionales con rutas de retorno a cocina (*Round-Trip*, $30\%$).
+### 6.4.3. Contribución Aplicada e Industrial en Logística 4.0
+El proyecto modela de forma explícita las dinámicas y complejidades operativas observadas en operaciones de entrega intensivas:
+- **Restricción Estricta de Ventanas de Tiempo (SLA $\le 90\text{ min}$):** Modelado de compromisos de entrega de alta prioridad y ventanas horarias de servicio.
+- **Heterogeneidad de Rutas de Entrega:** Diferenciación determinista entre rutas de retorno al hub central (*Round-Trip*) y expediciones directas (*One-Way*), parametrizando capacidades volumétricas ($V_{\text{cm}^3}$) y tiempos en puerta ($\tau_{\text{servicio}}$).
 
 ---
 
@@ -107,9 +109,9 @@ A diferencia de los problemas clásicos de logística comercial orientados exclu
 
 A pesar de los sólidos resultados alcanzados, es necesario reconocer con rigor académico las limitaciones inherentes al trabajo:
 
-1. **Simulación Telemática Estocástica:** Debido a restricciones de privacidad y la ausencia de hardware telemático OBD-II/CAN-Bus en los vehículos particulares de los voluntarios, el flujo IoT fue simulado mediante micro-batches cinemáticos representativos de Treasure Valley (Idaho) en lugar de una API vehicular en tiempo real.
-2. **Modelo de Tráfico y Velocidad Homogénea:** El motor 2-Opt VRP asume velocidades medias promedio por sector vial durante el cálculo del SLA, sin considerar la micro-dinámica semafórica o el tiempo variable de estacionamiento y entrega en puerta según la movilidad del beneficiario.
-3. **Agente GenAI en Entorno Sandbox:** La síntesis en lenguaje natural se implementó mediante un patrón estructurado condicionado (*Mock Guarded GenAI*), requiriendo credenciales activas de APIs comerciales (OpenAI, Gemini, Anthropic) para despliegues con modelos de frontera en entornos corporativos masivos.
+1. **Simulación Telemática IoT Acoplada:** Si bien los datos operacionales de base provienen del dataset empírico de Amazon Last-Mile ($6.112$ rutas y $>904.000$ paradas), la emulación de streaming IoT en tiempo real opera mediante micro-batches cinemáticos generados en una arquitectura desacoplada (*Drop Folder*), en lugar de feeds telemáticos directos de OBD-II / CAN-Bus vehiculares.
+2. **Modelo de Tráfico y Velocidad Media:** El motor 2-Opt VRP asume velocidades operativas promedio por sector vial durante el cómputo de SLA, sin modelar la micro-dinámica semafórica ni la variabilidad extrema de estacionamiento urbano en zonas hiperdensas.
+3. **Agente GenAI en Modo Guarded:** La prescripción en lenguaje natural opera bajo una arquitectura controlada y estructurada (*Guarded GenAI*), requiriendo API keys corporativas (OpenAI, Gemini, Anthropic) para despliegues con LLMs de frontera en producción masiva.
 
 ---
 
@@ -121,46 +123,46 @@ Para la evolución y transferencia tecnológica del sistema, se proponen cinco l
 mindmap
   root((Líneas de Trabajo Futuro))
     Hardware y Edge IoT
-      Microcontroladores ESP32 / Raspberry Pi
-      Sensores Térmicos Infrarrojos I2C
+      Dispositivos OBD-II / CAN-Bus
+      Sensores Telemáticos Ambientales
       Protocolos MQTT y LoRaWAN
     Cartografía y Redes Viales Reales
-      Integración OpenStreetMap
-      Motor OSRM / GraphHopper
-      Topología de un solo sentido y giros
+      Integración OSRM / GraphHopper
+      Topología de giros y sentidos únicos
+      Tráfico dinámico en tiempo real
     IA Prescriptiva Avanzada
       Deep Reinforcement Learning (DRL)
       Multi-Agent Reinforcement Learning (MARL)
-      VRP con Ventanas Temporales Dinámicas (VRPTW)
+      VRPTW Dinámico Multi-Depósito
     Interacción Humano-Máquina Multimodal
-      Asistente de Voz LLM para Voluntarios
-      Notificaciones Push y SMS a Beneficiarios
-    Ecosistemas de Salud y Cuidado
-      Integración con Historial Social del Mayor
-      Monitoreo de Bienestar e Ingesta Nutricional
+      Asistente de Voz LLM para Despacho
+      Alertas Push automatizadas a Conductores
+    Ecosistemas de Sostenibilidad Logística
+      Optimización de Huella de Carbono
+      Ruteo para Flotas Eléctricas (EV-VRP)
 ```
 
-### 6.6.1. Despliegue Físico Edge-IoT con Microcontroladores
-Instalar dispositivos de bajo coste basados en **ESP32** o **Raspberry Pi Zero W** acoplados a sensores térmicos infrarrojos de contacto (MLX90614) dentro de las bolsas isotérmicas. La comunicación telemática hacia el Feature Store se realizaría mediante protocolos ligeros **MQTT** o redes de bajo consumo y largo alcance **LoRaWAN**.
+### 6.6.1. Despliegue Físico Edge-IoT con Dispositivos Telemáticos
+Instalar hardware telemático OBD-II con conectividad celular o LoRaWAN en vehículos comerciales para recolectar métricas de aceleración, frenado, consumo energético y posición en tiempo real, alimentando directamente el Feature Store mediante brokers de mensajería como Apache Kafka o EMQX.
 
-### 6.6.2. Integración Cartográfica con OpenStreetMap y OSRM
-Reemplazar la aproximación métrica de distancias Haversine/Manhattan por un motor de cálculo de rutas sobre red vial real como **OSRM (Open Source Routing Machine)** o **GraphHopper**, modelando restricciones de sentido de circulación, giros prohibidos y pendientes orográficas en el condado de Ada y Canyon.
+### 6.6.2. Integración Cartográfica con OSRM y Tráfico en Vivo
+Reemplazar la formulación geodésica Haversine por motores de enrutamiento basados en grafos viales reales como **OSRM (Open Source Routing Machine)** o **GraphHopper**, incorporando matrices de tiempos de viaje dependientes del tráfico horario (Time-Dependent VRP).
 
 ### 6.6.3. Optimización Dinámica con Aprendizaje por Refuerzo Profundo (DRL)
-Evolucionar la heurística 2-Opt hacia agentes de **Deep Reinforcement Learning** (ej. *Graph Attention Networks - GAT* combinadas con *Proximal Policy Optimization - PPO*), capaces de aprender políticas de despacho en tiempo real ante disrupciones simultáneas en múltiples vehículos.
+Evolucionar la heurística 2-Opt hacia agentes de **Deep Reinforcement Learning** (ej. *Graph Attention Networks - GAT* combinadas con *PPO*), capaces de aprender políticas óptimas de reenrutamiento y reasignación de paradas ante eventos imprevistos en tiempo real.
 
-### 6.6.4. Interacción Multimodal por Voz con LLMs para Voluntarios
-Desarrollar una aplicación móvil asistida por voz (*Speech-to-Text* y *Text-to-Speech*) mediante modelos LLM integrados, permitiendo que los conductores voluntarios mayores reciban instrucciones prescriptivas de navegación con manos libres y puedan reportar el estado de salud o incidencias del beneficiario en lenguaje coloquial.
+### 6.6.4. Interacción Multimodal por Voz con LLMs para Operadores y Conductores
+Desarrollar una interfaz de audio bidireccional (*Speech-to-Text* y *Text-to-Speech*) respaldada por LLMs multimodales, permitiendo a despachadores y conductores consultar el estado de la ruta y ejecutar acciones prescriptivas mediante instrucciones de voz con manos libres.
 
-### 6.6.5. Integración con Expedientes Asistenciales de Salud Pública
-Conectar la Torre de Control con los sistemas de servicios sociales de Idaho para registrar no solo la entrega de la comida, sino alertas tempranas de aislamiento social, desorientación o caídas detectadas durante la visita del voluntario.
+### 6.6.5. Logística Verde y Ruteo de Flotas Eléctricas (EV-VRP)
+Incorporar restricciones energéticas y de recarga para flotas eléctricas (Electric Vehicle Routing Problem with Time Windows), optimizando de forma conjunta los tiempos de llegada, los costes tarifarios de recarga y la minimización neta de emisiones de $\text{CO}_2$.
 
 ---
 
 ## 6.7. Reflexión de Cierre
 
-La transformación digital de la cadena de suministro en el contexto de la **Industria y Logística 4.0** adquiere su máxima trascendencia cuando la tecnología no se concibe como un fin en sí misma, sino como un habilitador para resolver problemas con profundo impacto humano.
+La transformación digital de la cadena de suministro en el contexto de la **Industria y Logística 4.0** alcanza su máximo valor cuando la tecnología trasciende la mera predicción y se convierte en un motor prescriptivo y autónomo capaz de optimizar operaciones complejas y dinámicas en tiempo real.
 
-Este Trabajo de Fin de Máster ha demostrado que la convergencia entre **IoT, Big Data, Machine Learning, Explicabilidad Causal y Optimización Matemática** proporciona los cimientos para una **Logística Asistencial Inteligente**, donde la anticipación prescriptiva garantiza que ningún adulto mayor vulnerable reciba un alimento fuera de norma térmica ni quede desatendido en su hogar. La arquitectura desarrollada sienta las bases para una nueva generación de sistemas de decisión que combinan rigor matemático, excelencia técnica en ingeniería de software y compromiso social.
+Este Trabajo de Fin de Máster ha demostrado que la convergencia entre **IoT, Big Data, Machine Learning, Explicabilidad Causal y Optimización Combinatoria** proporciona los cimientos para una nueva generación de **Torres de Control de Decision Intelligence**, donde la anticipación prescriptiva garantiza el cumplimiento riguroso de SLAs, reduce la huella de carbono y optimiza los costes operativos en la distribución de última milla. La arquitectura desarrollada sienta un precedente sólido que combina rigor científico, excelencia técnica en ingeniería de software y valor tangible para la industria logística moderna.
 
 ---

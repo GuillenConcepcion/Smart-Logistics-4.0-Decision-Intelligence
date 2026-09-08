@@ -30,12 +30,12 @@ flowchart TD
     COMM <--> CTRL
 ```
 
-### 2.1.1. Los Cinco Pilares de la DSN Aplicados a la Logística Asistencial
+### 2.1.1. Los Cinco Pilares de la DSN Aplicados a la Logística 4.0 de Última Milla
 De acuerdo con el marco conceptual de Sinha et al. (2020), una DSN se articula a través de capacidades clave:
 1. **Planificación Sincronizada (*Synchronized Planning*):** Superación de los planes de ruteo estáticos matutinos mediante la reoptimización continua impulsada por la demanda en tiempo real.
 2. **Operaciones Inteligentes y Gemelos Digitales (*Smart Operations*):** Representación virtual del estado cinemático, térmico y geoespacial de cada unidad de transporte mediante flujos de datos IoT.
 3. **Distribución Dinámica (*Dynamic Fulfillment*):** Asignación adaptativa de pedidos y ajuste de rutas vehiculares en respuesta a eventos imprevistos de congestión o meteorología severa.
-4. **Comunidad Conectada (*Connected Customer*):** Comunicación bidireccional transparente entre la cocina central, los conductores y los beneficiarios de Meals on Wheels.
+4. **Comunidad Conectada (*Connected Customer*):** Comunicación bidireccional transparente entre la estación logística, los conductores de reparto y los destinatarios finales.
 5. **Torres de Control Holísticas (*Control Towers*):** Plataformas analíticas centralizadas que integran la ingesta de telemetría masiva, la inferencia de modelos predictivos y la ejecución de directivas prescriptivas.
 
 ---
@@ -249,8 +249,8 @@ La tesis de Aponte Parejo (2025) en la Universidad Europea formula el concepto d
 ### 2.7.6. Trazabilidad y Mejores Prácticas Internacionales (BID, 2020; Alvarado et al., 2023)
 Las monografías del BID (2020) y los estudios empíricos de Alvarado et al. (2023) demuestran que la visibilidad telemática en tiempo real reduce las incidencias de entrega tardía en más de un $35\%$ al cerrar la asimetría informativa entre el centro de distribución y el destinatario final.
 
-### 2.7.7. El Benchmark Global de Última Milla: 2021 Amazon Last-Mile Challenge (Amazon Science & MIT CTL)
-El estudio publicado por **Amazon Last Mile Science** y el **MIT Center for Transportation & Logistics (CTL)** (Merchán et al., 2022; *Transportation Science*, INFORMS) formalizó la liberación del conjunto de datos operacionales de última milla más extenso del mundo ($6.112$ rutas y $904.527$ paradas en 17 centros logísticos). Esta investigación demostró que los modelos clásicos de Investigación Operativa fallan al no incorporar el conocimiento tácito de los conductores humanos, estableciendo la necesidad de marcos híbridos de *Machine Learning* y optimización prescriptiva adaptativa.
+### 2.7.7. El Benchmark Global de Última Milla: 2021 Amazon Last-Mile Routing Research Challenge Dataset (Amazon Last Mile Science & MIT CTL)
+El estudio publicado por **Amazon Last Mile Science** y el **MIT Center for Transportation & Logistics (CTL)** (Merchán et al., 2022; *Transportation Science*, INFORMS) formalizó la liberación del **2021 Amazon Last-Mile Routing Research Challenge Dataset**, el conjunto de datos operacionales de última milla más extenso y realista del mundo ($6.112$ rutas y $904.527$ paradas en 17 centros logísticos). Esta investigación demostró que los modelos clásicos de Investigación Operativa fallan al no incorporar el conocimiento tácito de los conductores humanos, estableciendo la necesidad de marcos híbridos de *Machine Learning* y optimización prescriptiva adaptativa.
 
 ---
 
@@ -260,7 +260,7 @@ La siguiente tabla sintetiza las contribuciones de las referencias clave y sitú
 
 | Dimensión Analítica | Referencias Científicas Clave | Enfoque Tradicional / Brecha Identificada | Propuesta del Presente TFM |
 | :--- | :--- | :--- | :--- |
-| **Dataset & Benchmark Operacional** | **Amazon Last Mile Science & MIT CTL (Merchán et al., 2022 - INFORMS)** | Datasets teóricos sintéticos desvinculados de la física real | Validación sobre datos operacionales de Amazon ($N=8.000$) integrados con IoT |
+| **Dataset & Benchmark Operacional** | **2021 Amazon Last-Mile Routing Research Challenge Dataset (Amazon Last Mile Science & MIT CTL - Merchán et al., 2022, INFORMS)** | Datasets teóricos sintéticos desvinculados de la física real | Validación sobre datos operacionales de Amazon ($N=8.000$) integrados con IoT |
 | **Arquitectura de Red DSN** | **Sinha et al. (2020); BID (2020); Revuelta Martínez (2019)** | Cadenas lineales secuenciales en silos | Red Digital de Suministro (DSN) con gemelo digital telemático en tiempo real |
 | **Herramientas Logística 4.0** | **UPV (2021); Díaz Leal (2022); UANL (2022)** | Captura de datos IoT sin automatización de decisiones | Pipeline completo desde ingesta IoT hasta prescripción ejecutoria |
 | **Trazabilidad & Control Térmico** | **Gómez Moreno (2020 - UAM); Alvarado et al. (2023)** | Monitoreo pasivo o post-entrega | Monitoreo continuo de temperatura ($T_{\text{carga}}$) y SLA térmico asistencial |

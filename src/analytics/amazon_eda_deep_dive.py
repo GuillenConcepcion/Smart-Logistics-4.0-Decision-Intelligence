@@ -1,5 +1,6 @@
 """
-Motor de Análisis Exploratorio Profundo (EDA) del Dataset Amazon Last Mile 2021
+Motor de Análisis Exploratorio Profundo (EDA) del 2021 Amazon Last-Mile Routing Research Challenge Dataset
+(Amazon Last Mile Science & MIT Center for Transportation & Logistics - CTL)
 Genera estadísticas descriptivas, inferenciales, multivariadas y geoespaciales exhaustivas.
 """
 import os
@@ -99,12 +100,13 @@ def run_deep_eda_report(processed_path: str = "data/processed/logistics_historic
     """Ejecuta el análisis EDA estadístico inferencial completo sobre el dataset Gold."""
     raw_meta = analyze_raw_amazon_metadata()
     
-    print("\n=================================================================")
-    print("   1. ANÁLISIS MACRO-ESTRUCTURAL DEL DATASET AMAZON 2021         ")
-    print("=================================================================")
-    print(f"Total Rutas Logísticas Reales : {raw_meta['total_routes']:,}")
-    print(f"Total Paradas de Entrega     : {raw_meta['total_stops']:,}")
-    print(f"Estaciones Logísticas (Hubs)  : {raw_meta['stations_count']}")
+    print("=========================================================================")
+    print("   MOTOR EDA AVANZADO: 2021 AMAZON LAST-MILE ROUTING CHALLENGE DATASET  ")
+    print("   (Amazon Last Mile Science & MIT Center for Transportation & Logistics)")
+    print("=========================================================================")
+    print("\n-------------------------------------------------------------------------")
+    print("   1. ANÁLISIS MACRO-ESTRUCTURAL DEL DATASET AMAZON LAST-MILE 2021      ")
+    print("-------------------------------------------------------------------------")
     print(f"Rango Temporal de Operación   : {raw_meta['date_range']}")
     print("\nDistribución de Paradas por Ruta:")
     for k, v in raw_meta["stops_stats"].items():
