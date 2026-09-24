@@ -299,5 +299,115 @@ Gobernanza del ciclo de vida de los modelos y reproducibilidad algorítmica:
 
 ---
 
+# ANEXO F. CATÁLOGO Y REGISTRO MAESTRO DE ACTIVOS VISUALES E IMÁGENES DEL SISTEMA (/images)
 
+El presente anexo recopila, clasifica y documenta técnica y metodológicamente la totalidad de los activos visuales, diagramas de arquitectura, gráficos de auditoría científica y capturas de la interfaz de usuario almacenados en el directorio [`images/`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/images/) de la plataforma **Smart Logistics 4.0: Decision Intelligence**.
 
+---
+
+## F.1. Matriz de Especificaciones Técnicas y Metadatos de Activos Visuales
+
+La siguiente tabla consolida los once activos visuales que componen el ecosistema gráfico y documental del proyecto:
+
+| Identificador | Archivo de Imagen | Tamaño | Formato / Tipo | Módulo / Componente Asociado | Rol en la Investigación | Capítulo Relacionado |
+| :---: | :--- | :---: | :---: | :--- | :--- | :---: |
+| **IMG-01** | [`images/tfm_title_banner.jpg`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/images/tfm_title_banner.jpg) | $562.8\text{ KB}$ | JPEG (1920x600) | Identidad Institucional UCM | Portada oficial y cabecera del repositorio | [Cap. 1](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Cap1_TFM_Introduccion_y_Objetivos.md), [`README.md`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/README.md) |
+| **IMG-02** | [`images/tfm_title_banner_raw.jpg`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/images/tfm_title_banner_raw.jpg) | $934.7\text{ KB}$ | JPEG (2560x1440) | Concept Art Alta Resolución | Representación artística del gemelo digital y DSN | [Cap. 2](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Cap2_TFM_Marco_Teorico_y_Estado_del_Arte.md) |
+| **IMG-03** | [`images/control_tower_ui_artifact.jpg`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/images/control_tower_ui_artifact.jpg) | $649.0\text{ KB}$ | JPEG (UI Dashboard) | Módulo 1: Torre de Control | Streaming IoT, mapa GPS y cuadro de mando de flota | [Cap. 4 (4.8)](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Cap4_TFM_Implementacion_Arquitectura.md#48-torre-de-control-interactiva-y-visualización-analítica), [Anexo E.1](#e1-módulo-1-torre-de-control-telemática-y-despacho-en-tiempo-real-gps--streaming-iot) |
+| **IMG-04** | [`images/app_dispatch_gold_store.jpg`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/images/app_dispatch_gold_store.jpg) | $546.8\text{ KB}$ | JPEG (UI Dashboard) | Módulo 2: Despacho Activo & Gold | Consola de despacho y exploración del Feature Store | [Cap. 4 (4.3)](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Cap4_TFM_Implementacion_Arquitectura.md#43-implementación-del-feature-store-y-capa-gold), [Anexo E.2](#e2-módulo-2-planificación-de-despacho-activo-y-consola-de-la-capa-gold-feature-store) |
+| **IMG-05** | [`images/app_xai_prescriptive.jpg`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/images/app_xai_prescriptive.jpg) | $632.1\text{ KB}$ | JPEG (UI Dashboard) | Módulo 3: XAI & Guarded GenAI | Waterfall TreeSHAP y prescripción asistida por LLM | [Cap. 4 (4.5, 4.6)](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Cap4_TFM_Implementacion_Arquitectura.md#45-explicabilidad-causal-matemática-xai-con-treeshap), [Anexo E.3](#e3-módulo-3-motor-de-explicabilidad-causal-treeshap-y-prescripción-asistida-guarded-genai) |
+| **IMG-06** | [`images/app_route_optimizer.jpg`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/images/app_route_optimizer.jpg) | $718.2\text{ KB}$ | JPEG (UI Dashboard) | Módulo 4: Optimizador VRP 2-Opt | Comparador de rutas, SLA térmico y ahorro anual | [Cap. 4 (4.7)](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Cap4_TFM_Implementacion_Arquitectura.md#47-optimización-topológica-de-rutas-vrp-y-algoritmos-de-grafos), [Anexo E.4](#e4-módulo-4-optimizador-de-rutas-last-mile-heurística-2-opt-vrp-y-control-de-sla-térmico) |
+| **IMG-07** | [`images/app_historical_analytics.jpg`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/images/app_historical_analytics.jpg) | $617.3\text{ KB}$ | JPEG (UI Dashboard) | Módulo 5: Analítica Batch Histórica | Dispersión cinemática y heatmap de correlaciones | [Cap. 5 (5.1)](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Cap5_TFM_Resultados_Validacion_y_Discusion.md#51-auditoría-integral-de-calidad-de-datos-data-quality-framework), [Anexo E.5](#e5-módulo-5-inteligencia-histórica-y-analítica-batch-impacto-climático-dispersión-y-correlaciones) |
+| **IMG-08** | [`images/app_statistical_eda.jpg`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/images/app_statistical_eda.jpg) | $697.8\text{ KB}$ | JPEG (UI Dashboard) | Módulo 6: Módulo EDA y Normalidad | Métricas descriptivas, Shapiro-Wilk y Q-Q Plots | [Cap. 5 (5.2)](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Cap5_TFM_Resultados_Validacion_y_Discusion.md#52-análisis-estadístico-descriptivo-e-inferencial), [Anexo E.6](#e6-módulo-6-módulo-eda-estadística-descriptiva-y-evaluación-de-normalidad) |
+| **IMG-09** | [`images/app_hypothesis_testing_tab.jpg`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/images/app_hypothesis_testing_tab.jpg) | $507.1\text{ KB}$ | JPEG (UI Dashboard) | Módulo 7: Contraste de Hipótesis | Welch $t$-test, Mann-Whitney, ANOVA y Violin Plots | [Cap. 5 (5.2)](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Cap5_TFM_Resultados_Validacion_y_Discusion.md#52-análisis-estadístico-descriptivo-e-inferencial), [Anexo E.7](#e7-módulo-7-inferencia-estadística-formal-y-contraste-de-hipótesis-operacionales) |
+| **IMG-10** | [`images/app_mlflow_governance.jpg`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/images/app_mlflow_governance.jpg) | $581.8\text{ KB}$ | JPEG (UI Dashboard) | Módulo 8: Gobernanza MLOps | Servidor MLflow, curvas ROC-AUC y linaje | [Cap. 4 (4.4)](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Cap4_TFM_Implementacion_Arquitectura.md#44-modelado-predictivo-supervisado-y-ensambles-ml), [Anexo E.8](#e8-módulo-8-plataforma-mlops-registro-de-experimentos-curvas-de-desempeño-y-gobernanza-en-mlflow) |
+| **IMG-11** | [`images/benchmark_leakage_contrast.png`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/images/benchmark_leakage_contrast.png) | $703.3\text{ KB}$ | PNG Científico (300 DPI) | Auditoría de Data Leakage | Contraste empírico Naïve vs. Modelos Saneados | [Cap. 4 (4.4.1)](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Cap4_TFM_Implementacion_Arquitectura.md#441-auditoría-rigurosa-de-fuga-de-datos-data-leakage), [Cap. 5 (5.3)](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Cap5_TFM_Resultados_Validacion_y_Discusion.md#53-auditoría-de-prevención-de-fuga-de-datos-anti-leakage) |
+
+---
+
+## F.2. Activos de Identidad Visual y Conceptualización de la Plataforma
+
+### F.2.1. Banner Institucional Oficial (IMG-01)
+Representa la identidad visual formal del Trabajo de Fin de Máster para la Universidad Complutense de Madrid. Integra la denominación del proyecto *Smart Logistics 4.0: Decision Intelligence & Care Dashboard*, las insignias tecnológicas fundamentales (Python 3.10+, Streamlit, MLflow, Docker/Podman, TreeSHAP) y el anclaje científico en el benchmark del **2021 Amazon Last-Mile Routing Challenge**.
+
+![Banner Oficial Institucional del TFM - Smart Logistics 4.0: Decision Intelligence & Care Dashboard. Universidad Complutense de Madrid. Fuente: Elaboración propia.](images/tfm_title_banner.jpg)
+
+---
+
+### F.2.2. Concept Art de la Red Digital de Suministro en Alta Resolución (IMG-02)
+Composición visual panorámica de alta fidelidad que conceptualiza la convergencia física y cibernética de la Logística 4.0: la captación sensorial telemática sobre las flotas de reparto urbano, la transmisión asíncrona hacia la torre de control en la nube, el gemelo digital en tiempo real y la prescripción algorítmica para la preservación de la cadena de frío y el cumplimiento de los SLAs asistenciales.
+
+![Composición Conceptual Panorámica de la Red Digital de Suministro (DSN) y Gemelo Digital Telemático en Logística 4.0. Fuente: Elaboración propia.](images/tfm_title_banner_raw.jpg)
+
+---
+
+## F.3. Galería de Interfaces de Usuario de la Torre de Control (Streamlit Dashboard)
+
+A continuación se presentan las evidencias directas de operación de los ocho módulos que estructuran la aplicación web interactiva desarrollada en **Streamlit** ([`src/visualization/dashboard.py`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/visualization/dashboard.py)):
+
+### F.3.1. Módulo 1: Torre de Control Telemática en Tiempo Real (IMG-03)
+Centraliza la supervisión continua de la flota (`VEH-001` a `VEH-010`), mostrando el mapa dinámico sobre OpenStreetMap con marcadores semafóricos de riesgo de retraso, KPIs operativos de cumplimiento de SLA y monitor de incidentes viales.
+
+![Módulo 1: Torre de Control Telemática en Tiempo Real con Telemetría IoT, Mapa Cartográfico GPS y Estado Operativo de la Flota. Fuente: Elaboración propia.](images/control_tower_ui_artifact.jpg)
+
+---
+
+### F.3.2. Módulo 2: Consola de Despacho Activo y Capa Gold (IMG-04)
+Permite a los operadores logísticos auditar la asignación de rutas activas, verificar las distancias restantes, monitorizar la temperatura del compartimento isotérmico y explorar en detalle las variables de la tabla `telemetria_gold` persistida en SQLite.
+
+![Módulo 2: Consola de Despacho Activo de Flota y Explorador de Matriz de Características de la Capa Gold del Feature Store. Fuente: Elaboración propia.](images/app_dispatch_gold_store.jpg)
+
+---
+
+### F.3.3. Módulo 3: Motor de Explicabilidad Causal TreeSHAP y Prescripción Guarded GenAI (IMG-05)
+Descompone localmente las causas matemáticas que originan la predicción de retraso mediante el gráfico en cascada (*Waterfall Plot*) de TreeSHAP y sintetiza directivas operacionales en lenguaje natural con cero alucinaciones mediante el agente gobernado por reglas deterministas.
+
+![Módulo 3: Motor de Explicabilidad Causal XAI (TreeSHAP Waterfall) y Panel de Prescripción Asistida Guarded GenAI con Guardrails de Seguridad. Fuente: Elaboración propia.](images/app_xai_prescriptive.jpg)
+
+---
+
+### F.3.4. Módulo 4: Optimizador de Rutas Last-Mile 2-Opt TSP (IMG-06)
+Compara cartográficamente la secuencia empírica inicial frente al recorrido optimizado por la heurística combinatoria 2-Opt TSP sujeta a la restricción térmica de caducidad ($\le 90\text{ min}$), calculando los ahorros anuales en millas, horas y costes operativos.
+
+![Módulo 4: Optimizador de Rutas Last-Mile 2-Opt TSP con Control de Restricción SLA Térmico (≤ 90 min) y Métricas de Ahorro Operativo. Fuente: Elaboración propia.](images/app_route_optimizer.jpg)
+
+---
+
+### F.3.5. Módulo 5: Inteligencia Histórica y Analítica Batch Multi-Factorial (IMG-07)
+Ofrece una visión macroscópica de las operaciones consolidadas a partir de las $8.000$ expediciones históricas, evaluando la severidad de las condiciones climáticas, la dispersión cinemática y la correlación bivariante entre variables de carga y tráfico.
+
+![Módulo 5: Panel de Inteligencia Histórica Batch con Análisis de Impacto Climático, Dispersión Cinemática y Matriz de Correlaciones. Fuente: Elaboración propia.](images/app_historical_analytics.jpg)
+
+---
+
+### F.3.6. Módulo 6: Módulo EDA, Estadística Descriptiva y Evaluación de Normalidad (IMG-08)
+Calcula métricas descriptivas exhaustivas (media, desviación típica, mediana, IQR, asimetría, curtosis), ejecuta el contraste formal de normalidad de Shapiro-Wilk, genera gráficos Q-Q e intervalos de confianza no paramétricos Bootstrap al 95%.
+
+![Módulo 6: Módulo EDA con Métricas Descriptivas, Evaluación de Normalidad Shapiro-Wilk, Q-Q Plot e Intervalos Bootstrap al 95%. Fuente: Elaboración propia.](images/app_statistical_eda.jpg)
+
+---
+
+### F.3.7. Módulo 7: Inferencia Estadística Formal y Contraste de Hipótesis Operacionales (IMG-09)
+Valida rigurosamente las hipótesis de investigación $H_1, H_2, H_3$ mediante pruebas de Welch, Mann-Whitney $U$, Kruskal-Wallis, ANOVA unidireccional, cálculo estandarizado de tamaños del efecto ($d$ de Cohen) y diagramas de violín comparativos.
+
+![Módulo 7: Contraste de Hipótesis Operacionales con Pruebas de Welch, Mann-Whitney U, Tamaños del Efecto (Cohen d) y Diagramas de Violín. Fuente: Elaboración propia.](images/app_hypothesis_testing_tab.jpg)
+
+---
+
+### F.3.8. Módulo 8: Plataforma MLOps, Registro de Experimentos y Gobernanza en MLflow (IMG-10)
+Centraliza la trazabilidad del ciclo de vida de los modelos de Machine Learning en el servidor de seguimiento MLflow, contrastando curvas ROC-AUC, matrices de confusión y registrando los metadatos y esquemas de firma de los estimadores de producción.
+
+![Módulo 8: Plataforma MLOps con Registro de Experimentos MLflow, Gobernanza de Ensamble Stacking, Curvas ROC-AUC y Linaje de Artefactos. Fuente: Elaboración propia.](images/app_mlflow_governance.jpg)
+
+---
+
+## F.4. Activos de Auditoría Científica y Prevención de Data Leakage
+
+### F.4.1. Contraste Empírico Naïve vs. Modelos Saneados (IMG-11)
+Evidencia visual de la **Auditoría de Prevención de Fuga de Datos (*Data Leakage*)**, formalizada en la Sección 4.4.1 y Sección 5.3 del TFM. El gráfico expone el contraste cuantitativo entre:
+1. **Modelo Naïve Contaminado:** Presenta un sobreajuste artificial espurio ($\text{Recall} = 1.0000$ derivado de la inclusión directa de la variable contaminante `expected_delay_min`, la cual incorpora matemáticamente el desenlace de entrega antes del despacho).
+2. **Suite de Modelos Saneados de Producción:** Evaluados mediante validación cruzada estratificada por grupos (`GroupKFold` sobre `route_id`), garantizando que la red neuronal y los ensambles aprendan relaciones cinemáticas legítimas y generalizables sobre rutas y conductores inéditos en condiciones de operación real.
+
+![Gráfico Científico de Auditoría Experimental: Contraste de Desempeño entre Modelo Naïve (con Fuga de Datos por expected_delay_min) y Suite de Modelos Saneados bajo Validación Cruzada por Grupos (GroupKFold, N=8.000). Fuente: Elaboración propia.](images/benchmark_leakage_contrast.png)
+
+---

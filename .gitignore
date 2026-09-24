@@ -111,4 +111,5 @@ desktop.ini
 *.tmp
 *.bak
 *.swp
+~$*
 scratch/
