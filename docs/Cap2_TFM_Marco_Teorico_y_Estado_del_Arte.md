@@ -36,7 +36,7 @@ De acuerdo con el marco conceptual de Sinha et al. (2020), una DSN se articula a
 2. **Operaciones Inteligentes y Gemelos Digitales (*Smart Operations*):** Representación virtual del estado cinemático, térmico y geoespacial de cada unidad de transporte mediante flujos de datos IoT.
 3. **Distribución Dinámica (*Dynamic Fulfillment*):** Asignación adaptativa de pedidos y ajuste de rutas vehiculares en respuesta a eventos imprevistos de congestión o meteorología severa.
 4. **Comunidad Conectada (*Connected Customer*):** Comunicación bidireccional transparente entre la estación logística, los conductores de reparto y los destinatarios finales.
-5. **Torres de Control Holísticas (*Control Towers*):** Plataformas analíticas centralizadas que integran la ingesta de telemetría masiva, la inferencia de modelos predictivos y la ejecución de directivas prescriptivas.
+5. **Torres de Control Holísticas (*Control Towers*):** Plataformas analíticas centralizadas que integran la ingesta de telemetría masiva, la inferencia de modelos predictivos y la ejecución de directivas prescriptivas. *(Véase la implementación y evidencia del artefacto interactivo en el [ANEXO E.1: Torre de Control Telemática en Tiempo Real](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#e1-módulo-1-torre-de-control-telemática-y-despacho-en-tiempo-real-gps--streaming-iot)).*
 
 ---
 
@@ -51,12 +51,12 @@ $$\text{OTIF}_{\text{asistencial}} = \frac{1}{N} \sum_{i=1}^{N} \mathbb{I}\left(
 
 Donde $\mathbb{I}(\cdot)$ es la función indicatriz. Como demuestran Longshore & Cheatham (2022), el tiempo de permanencia de la carga en tránsito dentro de contenedores pasivos isotérmicos sigue una ley de enfriamiento de Newton:
 $$\frac{dT}{dt} = -k(T - T_{\text{amb}})$$
-Donde $k$ es el coeficiente de conductividad térmica del embalaje y $T_{\text{amb}}$ es la temperatura exterior. En inviernos fríos como los de Idaho ($T_{\text{amb}} \le 0^\circ\text{C}$), el tiempo crítico para descender por debajo de los $60^\circ\text{C}$ se sitúa en los $90\text{ minutos}$, lo que convierte a la ventana temporal en un **límite biológico y de inocuidad alimentaria infranqueable**.
+Donde $k$ es el coeficiente de conductividad térmica del embalaje y $T_{\text{amb}}$ es la temperatura exterior. En inviernos fríos como los de Idaho ($T_{\text{amb}} \le 0^\circ\text{C}$), el tiempo crítico para descender por debajo de los $60^\circ\text{C}$ se sitúa en los $90\text{ minutos}$, lo que convierte a la ventana temporal en un **límite biológico y de inocuidad alimentaria infranqueable**. *(La deducción formal y ecuaciones completas de enfriamiento se detallan en el [ANEXO A.1: Compendio Matemático - Ecuaciones 1.1 a 1.6](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#a1-ingesta-telemática-cinética-vehicular-y-termodinámica-de-carga)).*
 
 ### 2.2.2. Descomposición del Coste Total Logístico
 Siguiendo a Longshore & Cheatham (2022), el coste operacional de la última milla ($C_{\text{total}}$) se descompone en:
 $$C_{\text{total}} = \sum_{r \in R} \left( c_v \cdot d_r + c_t \cdot t_r + c_f \right)$$
-Donde $c_v$ es el coste variable por distancia ($\$0.58/\text{milla}$ según la tasa estándar del IRS), $d_r$ es la distancia recorrida en la ruta $r$, $c_t$ es el coste de tiempo/desgaste y $c_f$ son los costes fijos de despacho. Reducir la distancia total recorrida maximiza la sostenibilidad económica de la organización sin ánimo de lucro.
+Donde $c_v$ es el coste variable por distancia ($\$0.58/\text{milla}$ según la tasa estándar del IRS), $d_r$ es la distancia recorrida en la ruta $r$, $c_t$ es el coste de tiempo/desgaste y $c_f$ son los costes fijos de despacho. Reducir la distancia total recorrida maximiza la sostenibilidad económica de la organización sin ánimo de lucro. *(Véanse las ecuaciones de impacto económico y ahorro en el [ANEXO A.5: Ecuaciones 5.1 a 5.7](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#a5-métricas-de-impacto-operacional-económico-y-ambiental) y su visualización en el [ANEXO E.4](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#e4-módulo-4-optimizador-de-rutas-last-mile-heurística-2-opt-vrp-y-control-de-sla-térmico)).*
 
 ---
 
@@ -89,9 +89,7 @@ Dado que el TSP y el VRP pertenecen a la clase de problemas **NP-Hard** (Ravindr
 La heurística 2-Opt (Croes, 1958; Ravindran & Warsing, 2021) parte de una ruta factible y evalúa sistemáticamente el intercambio de pares de aristas no consecutivas $(s_i, s_{i+1})$ y $(s_j, s_{j+1})$. La inversión del segmento intermedio produce una mejora en la distancia total si y solo si:
 $$\Delta D = d(s_i, s_j) + d(s_{i+1}, s_{j+1}) - d(s_i, s_{i+1}) - d(s_j, s_{j+1}) < 0$$
 
-Con una complejidad temporal por iteración de $O(n^2)$, la heurística 2-Opt converge a óptimos locales de alta calidad en fracciones de segundo ($<0.1\text{ s}$), lo que permite su integración en ciclos continuos de decisión telemática en tiempo real.
-
----
+Con una complejidad temporal por iteración de $O(n^2)$, la heurística 2-Opt converge a óptimos locales de alta calidad en fracciones de segundo ($<0.1\text{ s}$), lo que permite su integración en ciclos continuos de decisión telemática en tiempo real. *(El compendio formal del modelo VRP, K-Means y las restricciones operativas se detallan en el [ANEXO A.4: Ecuaciones 4.1 a 4.6](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#a4-optimización-combinatoria-de-rutas-last-mile-vrptsp) y su interfaz en el [ANEXO E.4](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#e4-módulo-4-optimizador-de-rutas-last-mile-heurística-2-opt-vrp-y-control-de-sla-térmico)).*
 
 ---
 
@@ -118,6 +116,8 @@ $$\hat{p} = \sigma\left( \beta_0 + \sum_{k=1}^K \beta_k f_k(X) \right) = \frac{1
 Para transformar los márgenes brutos en probabilidades bayesianas confiables, se aplica la calibración sigmoidea de Platt (*Platt Scaling*), minimizando la puntuación de Brier (*Brier Score*):
 $$\text{Brier Score} = \frac{1}{N} \sum_{i=1}^N (\hat{p}_i - y_i)^2$$
 
+*(Las formulaciones matemáticas completas del Stacking Super Learner, calibración y métricas de evaluación se desarrollan en el [ANEXO A.2: Ecuaciones 2.1 a 2.6](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#a2-modelado-predictivo-ensambles-super-learner-y-calibración-de-probabilidad); el espacio de búsqueda e hiperparámetros de calibración se documenta en el [ANEXO C](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#anexo-c-matriz-de-hiperparámetros-del-benchmark-multimodelo) y el linaje de experimentos en el [ANEXO E.8](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#e8-módulo-8-plataforma-mlops-registro-de-experimentos-curvas-de-desempeño-y-gobernanza-en-mlflow)).*
+
 ### 2.4.2. Formulación Matemática de las Variables Objetivo (Target Variables)
 El sistema resuelve una optimización bi-criterio jerárquica:
 
@@ -141,6 +141,8 @@ De acuerdo con los estándares internacionales de calidad de la información (Wa
 3. **Validez (*Validity*):** Pertenencia estricta de las variables a sus dominios físicos plausibles ($v \in [0, 160]\text{ km/h}$, $T \in [-15, 40]^\circ\text{C}$).
 4. **Consistencia Lógica (*Consistency*):** Coherencia física y relacional entre variables derivadas ($\eta_{\text{urgencia}} \ge 0, \Delta t_{\text{esperado}} \ge 0$).
 5. **Integridad Referencial (*Integrity*):** Correspondencia exacta de identificadores de vehículos, rutas y paradas.
+
+*(El catálogo formal de las 15 variables de la Capa Gold, sus tipos y rangos admisibles se detalla en el [ANEXO B: Diccionario Dimensional de Datos](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#anexo-b-diccionario-dimensional-de-datos-y-feature-store-capa-gold); los tests de validación automatizada se incluyen en el [ANEXO D](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#anexo-d-protocolo-de-pruebas-automatizadas-suite-pytest)).*
 
 ---
 
@@ -167,7 +169,7 @@ Propiedades axiomáticas fundamentales demostradas por Lundberg & Lee (2017) y a
 3. **Variable Nula (*Dummy Player*):** Si una variable no altera la predicción en ninguna coalición, $\phi_i = 0$.
 4. **Aditividad (*Additivity*):** Para ensambles de árboles, $\phi_i(f + g) = \phi_i(f) + \phi_i(g)$.
 
-En modelos basados en árboles de decisión (XGBoost, Random Forest), el algoritmo **TreeSHAP** optimiza el cálculo exacto de los valores de Shapley reduciendo la complejidad exponencial original $O(M \cdot 2^{|F|})$ a un tiempo polinómico $O(T L D^2)$, donde $T$ es el número de árboles, $L$ el número de hojas y $D$ la profundidad máxima, haciendo viable su computación en streaming (Lundberg et al., 2020).
+En modelos basados en árboles de decisión (XGBoost, Random Forest), el algoritmo **TreeSHAP** optimiza el cálculo exacto de los valores de Shapley reduciendo la complejidad exponencial original $O(M \cdot 2^{|F|})$ a un tiempo polinómico $O(T L D^2)$, donde $T$ es el número de árboles, $L$ el número de hojas y $D$ la profundidad máxima, haciendo viable su computación en streaming (Lundberg et al., 2020). *(Véase la formulación analítica de TreeSHAP y la matriz de reglas prescriptivas en el [ANEXO A.3: Ecuaciones 3.1 a 3.4](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#a3-explicabilidad-causal-matemática-treeshap-y-prescripción-asistida-guarded-genai); la interfaz del motor prescriptivo se ilustra en el [ANEXO E.3](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#e3-módulo-3-motor-de-explicabilidad-causal-treeshap-y-prescripción-asistida-guarded-genai)).*
 
 ### 2.5.2. El Paradigma Guarded GenAI para Mitigación de Alucinaciones
 Aunque los modelos de lenguaje masivo (LLMs) ofrecen capacidades excepcionales para interactuar con operadores en lenguaje natural, su naturaleza probabilística y autorregresiva introduce riesgos de "alucinación" fáctica incompatibles con entornos logísticos críticos (Sharma & Vajjhala, 2023). 
@@ -209,6 +211,8 @@ Siguiendo la clasificación de riesgos de Dasgupta et al. (2023), la red de Trea
 ### 2.6.2. Sostenibilidad y Reducción de Emisiones
 La optimización analítica de rutas no solo genera ahorros financieros directos, sino que contribuye activamente a los objetivos de sostenibilidad (Dasgupta et al., 2023; EPA, 2023). Por cada milla vehicular reducida en vehículos de combustión estándar utilizados por la flota asistencial, se evita la emisión promedio de **$404\text{ gramos de CO}_2$** a la atmósfera:
 $$\text{Emisiones Evitadas} = \Delta \text{Millas} \times 0.404\text{ kg CO}_2/\text{milla}$$
+
+*(El modelo de balance de emisiones y costes evitados se formaliza en el [ANEXO A.5: Ecuaciones 5.1 a 5.7](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#a5-métricas-de-impacto-operacional-económico-y-ambiental)).*
 
 ---
 
@@ -256,17 +260,22 @@ El estudio publicado por **Amazon Last Mile Science** y el **MIT Center for Tran
 
 ## 2.8. Síntesis del Estado del Arte y Posicionamiento del TFM
 
-La siguiente tabla sintetiza las contribuciones de las referencias clave y sitúa el posicionamiento diferencial del presente Trabajo de Fin de Máster:
+La siguiente tabla sintetiza las contribuciones de las referencias clave y sitúa el posicionamiento diferencial del presente Trabajo de Fin de Máster, vinculando cada dimensión analítica con su correspondiente anexo técnico:
 
-| Dimensión Analítica | Referencias Científicas Clave | Enfoque Tradicional / Brecha Identificada | Propuesta del Presente TFM |
-| :--- | :--- | :--- | :--- |
-| **Dataset & Benchmark Operacional** | **2021 Amazon Last-Mile Routing Research Challenge Dataset (Amazon Last Mile Science & MIT CTL - Merchán et al., 2022, INFORMS)** | Datasets teóricos sintéticos desvinculados de la física real | Validación sobre datos operacionales de Amazon ($N=8.000$) integrados con IoT |
-| **Arquitectura de Red DSN** | **Sinha et al. (2020); BID (2020); Revuelta Martínez (2019)** | Cadenas lineales secuenciales en silos | Red Digital de Suministro (DSN) con gemelo digital telemático en tiempo real |
-| **Herramientas Logística 4.0** | **UPV (2021); Díaz Leal (2022); UANL (2022)** | Captura de datos IoT sin automatización de decisiones | Pipeline completo desde ingesta IoT hasta prescripción ejecutoria |
-| **Trazabilidad & Control Térmico** | **Gómez Moreno (2020 - UAM); Alvarado et al. (2023)** | Monitoreo pasivo o post-entrega | Monitoreo continuo de temperatura ($T_{\text{carga}}$) y SLA térmico asistencial |
-| **Gestión Cuantitativa & SLAs** | **Longshore & Cheatham (2022)** | SLAs comerciales estándar de tiempo | SLA térmico biológico ($\le 90\text{ min}$, $T > 60^\circ\text{C}$) con costes IRS |
-| **Optimización Dinámica VRP** | **Ravindran & Warsing (2021); Aponte Parejo (2025)** | VRP estático previo al despacho | Heurística 2-Opt VRP combinada con re-enrutamiento dinámico en streaming |
-| **Explicabilidad & Gobernanza** | **Sharma & Vajjhala (2023)** | Modelos predictivos de caja negra / Alucinaciones LLM | Explicabilidad local con TreeSHAP + Paradigma *Guarded GenAI* |
-| **Resiliencia & Sostenibilidad** | **Dasgupta, Sošić & Vyas (2023)** | Resiliencia reactiva manual | Resiliencia prescriptiva proactiva con reducción de huella de $\text{CO}_2$ ($5.76\text{ ton/año}$) |
+| Dimensión Analítica | Referencias Científicas Clave | Enfoque Tradicional / Brecha Identificada | Propuesta del Presente TFM | Anexo Técnico Correlacionado |
+| :--- | :--- | :--- | :--- | :--- |
+| **Dataset & Benchmark Operacional** | **2021 Amazon Last-Mile Challenge (Amazon & MIT CTL - Merchán et al., 2022)** | Datasets teóricos sintéticos desvinculados de la física real | Validación sobre datos operacionales de Amazon ($N=8.000$) integrados con IoT | [ANEXO B](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#anexo-b-diccionario-dimensional-de-datos-y-feature-store-capa-gold) & [ANEXO E.2](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#e2-módulo-2-planificación-de-despacho-activo-y-consola-de-la-capa-gold-feature-store) |
+| **Arquitectura de Red DSN** | **Sinha et al. (2020); BID (2020); Revuelta Martínez (2019)** | Cadenas lineales secuenciales en silos | Red Digital de Suministro (DSN) con gemelo digital telemático en tiempo real | [ANEXO E.1](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#e1-módulo-1-torre-de-control-telemática-y-despacho-en-tiempo-real-gps--streaming-iot) |
+| **Herramientas Logística 4.0** | **UPV (2021); Díaz Leal (2022); UANL (2022)** | Captura de datos IoT sin automatización de decisiones | Pipeline completo desde ingesta IoT hasta prescripción ejecutoria | [ANEXO D](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#anexo-d-protocolo-de-pruebas-automatizadas-suite-pytest) & [ANEXO E](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#anexo-e-artefactos-del-software-evidencias-integrales-de-la-plataforma-torre-de-control-de-decision-intelligence-y-mlops) |
+| **Trazabilidad & Control Térmico** | **Gómez Moreno (2020 - UAM); Alvarado et al. (2023)** | Monitoreo pasivo o post-entrega | Monitoreo continuo de temperatura ($T_{\text{carga}}$) y SLA térmico asistencial | [ANEXO A.1](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#a1-ingesta-telemática-cinética-vehicular-y-termodinámica-de-carga) |
+| **Gestión Cuantitativa & SLAs** | **Longshore & Cheatham (2022)** | SLAs comerciales estándar de tiempo | SLA térmico biológico ($\le 90\text{ min}$, $T > 60^\circ\text{C}$) con costes IRS | [ANEXO A.1](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#a1-ingesta-telemática-cinética-vehicular-y-termodinámica-de-carga) & [ANEXO E.4](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#e4-módulo-4-optimizador-de-rutas-last-mile-heurística-2-opt-vrp-y-control-de-sla-térmico) |
+| **Optimización Dinámica VRP** | **Ravindran & Warsing (2021); Aponte Parejo (2025)** | VRP estático previo al despacho | Heurística 2-Opt VRP combinada con re-enrutamiento dinámico en streaming | [ANEXO A.4](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#a4-optimización-combinatoria-de-rutas-last-mile-vrptsp) & [ANEXO E.4](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#e4-módulo-4-optimizador-de-rutas-last-mile-heurística-2-opt-vrp-y-control-de-sla-térmico) |
+| **Explicabilidad & Gobernanza** | **Sharma & Vajjhala (2023)** | Modelos predictivos de caja negra / Alucinaciones LLM | Explicabilidad local con TreeSHAP + Paradigma *Guarded GenAI* | [ANEXO A.3](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#a3-explicabilidad-causal-matemática-treeshap-y-prescripción-asistida-guarded-genai) & [ANEXO E.3](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#e3-módulo-3-motor-de-explicabilidad-causal-treeshap-y-prescripción-asistida-guarded-genai) |
+| **Resiliencia & Sostenibilidad** | **Dasgupta, Sošić & Vyas (2023)** | Resiliencia reactiva manual | Resiliencia prescriptiva proactiva con reducción de huella de $\text{CO}_2$ ($5.76\text{ ton/año}$) | [ANEXO A.5](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#a5-métricas-de-impacto-operacional-económico-y-ambiental) |
+
+> [!NOTE]
+> La correspondencia detallada entre cada pilar teórico de las Redes Digitales de Suministro (DSN) y los componentes de software, modelos y scripts ejecutables se encuentra formalizada en el [**Catálogo Maestro de Artefactos del Proyecto**](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Catalogo_Maestro_Artefactos_Proyecto.md).
 
 ---
+
+

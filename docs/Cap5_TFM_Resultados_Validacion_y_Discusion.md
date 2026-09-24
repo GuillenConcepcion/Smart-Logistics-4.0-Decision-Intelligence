@@ -69,11 +69,13 @@ flowchart LR
 | **5. Integridad Referencial (*Integrity*)** | Claves de ruta, nodos de depósito y secuencias de entrega. | $100\%$ resuelto | **100.0%** (Integridad referencial completa en SQLite) | ✅ **Aprobado al 100%** |
 | **Puntaje Global de Calidad (DQS)** | Índice sintético de calidad de datos. | $\ge 95.0\%$ | **99.95% / 100.0%** | 🏆 **Certificado para Producción** |
 
+*(La especificación de cada variable, sus tipos y rangos físicos se detallan en el [ANEXO B: Diccionario Dimensional de Datos Capa Gold](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#anexo-b-diccionario-dimensional-de-datos-y-feature-store-capa-gold); el código de auditoría automatizado se encuentra respaldado por las pruebas unitarias del [ANEXO D](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#anexo-d-protocolo-de-pruebas-automatizadas-suite-pytest)).*
+
 ---
 
 ## 5.3. Análisis Exploratorio e Inferencial de Datos (Validación Estadística)
 
-Para asegurar la validez metodológica de las conclusiones, el dataset Gold de $N=8.000$ instancias telemáticas operacionales derivado del **2021 Amazon Last-Mile Routing Research Challenge Dataset**, publicado conjuntamente por **Amazon Last Mile Science** y el **MIT Center for Transportation & Logistics (CTL)** (Merchán et al., 2022; *Transportation Science*, INFORMS; [data/processed/logistics_historical_dataset.csv](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/data/processed/logistics_historical_dataset.csv)) fue analizado exhaustivamente mediante el motor estadístico ([src/analytics/statistical_eda.py](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/analytics/statistical_eda.py)).
+Para asegurar la validez metodológica de las conclusiones, el dataset Gold de $N=8.000$ instancias telemáticas operacionales derivado del **2021 Amazon Last-Mile Routing Research Challenge Dataset**, publicado conjuntamente por **Amazon Last Mile Science** y el **MIT Center for Transportation & Logistics (CTL)** (Merchán et al., 2022; *Transportation Science*, INFORMS; [data/processed/logistics_historical_dataset.csv](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/data/processed/logistics_historical_dataset.csv)) fue analizado exhaustivamente mediante el motor estadístico ([src/analytics/statistical_eda.py](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/analytics/statistical_eda.py)). *(Las interfaces interactivas de análisis exploratorio y contraste formal de hipótesis se documentan en el [ANEXO E.6: Módulo EDA y Evaluación de Normalidad](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#e6-módulo-6-módulo-eda-estadística-descriptiva-y-evaluación-de-normalidad) y el [ANEXO E.7: Inferencia Estadística Formal y Contraste de Hipótesis](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#e7-módulo-7-inferencia-estadística-formal-y-contraste-de-hipótesis-operacionales)).*
 
 ### 5.3.1. Caracterización Descriptiva de Variables Clave
 La siguiente tabla resume las estadísticas descriptivas paramétricas y no paramétricas calculadas para las variables continuas del sistema ($N=8.000$):
@@ -141,10 +143,10 @@ La evaluación experimental rigurosa sobre el dataset Gold derivado del **2021 A
 | **Extra Trees Classifier** | **1.0000** | 0.9999 | **1.0000** | 0.9577 | 0.9783 | 0.9912 | 0.0163 | 1.90 ms |
 
 ### 5.4.2. Análisis de Detección Temprana y Falsos Negativos
-El modelo campeón **StackingEnsemble** alcanzó un $\text{Recall} = 1.0000$ y un $F_2\text{-Score} = 0.9997$. Al ponderar la métrica $F_2$ que prioriza el recall el doble respecto a la precisión, se garantiza que **el sistema no comete falsos negativos** ante disrupciones de retraso en la cadena de frío, protegiendo al 100% de los adultos mayores de recibir comida fría o fuera de la ventana de 90 minutos.
+El modelo campeón **StackingEnsemble** alcanzó un $\text{Recall} = 1.0000$ y un $F_2\text{-Score} = 0.9997$ (formalizado en la formulación matemática de la Ec. 2.5 del [ANEXO A.2: Inferencia Estadística y Modelado Predictivo Supervisado](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#a2-inferencia-estadística-y-modelado-predictivo-supervisado)). Al ponderar la métrica $F_2$ que prioriza el recall el doble respecto a la precisión, se garantiza que **el sistema no comete falsos negativos** ante disrupciones de retraso en la cadena de frío, protegiendo al 100% de los adultos mayores de recibir comida fría o fuera de la ventana de 90 minutos.
 
 ### 5.4.3. Calibración de Probabilidades (Brier Score)
-La calibración mediante regresión logística meta-clasificadora logró un **Brier Score extraordinario de $BS = 0.0003$** (siendo 0 la calibración perfecta). Esto garantiza que una probabilidad emitida de $P(\text{Retraso}) = 0.85$ refleja una probabilidad real del 85% de incidencia operativa, validando con total robustez matemática los umbrales de decisión prescriptiva del sistema ($P \ge 0.75$ para Nivel 1 Crítico y $0.45 \le P < 0.75$ para Nivel 2 Moderado).
+La calibración mediante regresión logística meta-clasificadora logró un **Brier Score extraordinario de $BS = 0.0003$** (siendo 0 la calibración perfecta, ver Ec. 2.7 en el [ANEXO A.2](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#a2-inferencia-estadística-y-modelado-predictivo-supervisado)). Esto garantiza que una probabilidad emitida de $P(\text{Retraso}) = 0.85$ refleja una probabilidad real del 85% de incidencia operativa, validando con total robustez matemática los umbrales de decisión prescriptiva del sistema ($P \ge 0.75$ para Nivel 1 Crítico y $0.45 \le P < 0.75$ para Nivel 2 Moderado). Los hiperparámetros óptimos y pesos de la combinación meta-clasificadora se encuentran tabulados exhaustivamente en el [ANEXO C: Matriz de Hiperparámetros y Calibración MLOps](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#anexo-c-matriz-de-hiperparámetros-y-calibración-mlops), mientras que el registro de corridas y artefactos serializados puede auditarse en la interfaz documentada en el [ANEXO E.8: Consola de Gobernanza MLOps y Registro de Modelos en MLflow (Fig. 10)](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#e8-consola-de-gobernanza-mlops-y-registro-de-modelos-en-mlflow-fig-10).
 
 ### 5.4.4. Contraste Empírico: Modelo Naïve (con Fuga de Datos) vs. Modelos Saneados (Generalizables en Producción)
 
@@ -153,7 +155,7 @@ Una contribución metodológica central de este Trabajo de Fin de Máster es la 
 A través del script de auditoría [src/models/audit_data_leakage.py](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/models/audit_data_leakage.py), se contrastaron experimentalmente tres regímenes operacionales sobre el dataset histórico ($N=8.000$, 53 rutas únicas de Amazon):
 
 1. **Régimen 1 — Modelo Naïve (con Fuga de Información):** Incluye las variables telemáticas derivadas `expected_delay_min` y `eta_urgency_ratio` (que guardan dependencia circular directa con la formulación del retraso) y evalúa mediante `StratifiedKFold` a nivel de fila individual.
-2. **Régimen 2 — Modelo Saneado Dinámico (Telemetría en Tránsito):** Elimina variables con fuga circular, empleando telemetría pura de sensores (`speed_kmh`, `distance_remaining_km`, `scheduled_eta_minutes`, `weather_severity_num`, `traffic_density_num`, `cargo_temp_celsius`, `environmental_risk_index`) y valida mediante **`GroupKFold(n_splits=5)` agrupado por `route_id`**.
+2. **Régimen 2 — Modelo Saneado Dinámico (Telemetría en Tránsito):** Elimina variables con fuga circular, empleando telemetría pura de sensores (`speed_kmh`, `distance_remaining_km`, `scheduled_eta_minutes`, `weather_severity_num`, `traffic_density_num`, `cargo_temp_celsius`, `environmental_risk_index`) y valida mediante **`GroupKFold(n_splits=5)` agrupado por `route_id`** (conforme a las especificaciones del [ANEXO C](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#anexo-c-matriz-de-hiperparámetros-y-calibración-mlops)).
 3. **Régimen 3 — Modelo Saneado Pre-Despacho (Planificación Estática Ex-Ante):** Emula el escenario donde la furgoneta aún no ha iniciado el recorrido y sólo se dispone de metadatos estáticos de ruta (`station_code`, `scheduled_eta_minutes`, `weather_severity_num`) bajo partición estricta por `route_id`.
 
 La siguiente tabla resume los resultados empíricos consolidados en [data/processed/leakage_audit_comparison.csv](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/data/processed/leakage_audit_comparison.csv):
@@ -189,7 +191,7 @@ La siguiente tabla resume los resultados empíricos consolidados en [data/proces
 ## 5.5. Resultados de Explicabilidad Matemática (XAI con SHAP)
 
 ### 5.5.1. Importancia Global de Características
-El cálculo de los valores medios absolutos de Shapley ($\frac{1}{N}\sum |\phi_i|$) sobre el conjunto de test reveló la siguiente jerarquía de relevancia predictiva:
+El cálculo de los valores medios absolutos de Shapley ($\frac{1}{N}\sum |\phi_i|$) sobre el conjunto de test (conforme a la formulación teórica de la Ec. 3.1 en el [ANEXO A.3: Explicabilidad Matemática (XAI) y Gobernanza Guarded GenAI](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#a3-explicabilidad-matemática-xai-y-gobernanza-guarded-genai)) reveló la siguiente jerarquía de relevancia predictiva, visualizada interactivamente en el [ANEXO E.3: Módulo de Explicabilidad XAI (TreeSHAP) y Prescripción Guarded GenAI (Fig. 5)](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#e3-módulo-de-explicabilidad-xai-treeshap-y-prescripción-guarded-genai-fig-5):
 
 1. **`traffic_density_num` ($\text{mean}(|\text{SHAP}|) = 0.842$):** Factor dominante con mayor impacto en el empuje hacia la clase positiva (retraso).
 2. **`eta_urgency_ratio` ($\text{mean}(|\text{SHAP}|) = 0.651$):** Segunda variable más influyente, detectando el desajuste cinemático respecto al horario.
@@ -211,14 +213,14 @@ gantt
 ```
 
 ### 5.5.2. Efectividad del Patrón Guarded GenAI
-Se validaron 100 eventos en streaming clasificados en Nivel 1 y Nivel 2. En el $100\%$ de los casos, la directiva prescriptiva generada por [src/decision_engine/llm_agent.py](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/decision_engine/llm_agent.py) coincidió exactamente con el factor dominante del vector SHAP y el código de acción reglamentario, validando la eliminación total de alucinaciones.
+Se validaron 100 eventos en streaming clasificados en Nivel 1 y Nivel 2. En el $100\%$ de los casos, la directiva prescriptiva generada por [src/decision_engine/llm_agent.py](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/decision_engine/llm_agent.py) (restringida mediante el esquema formal de validación Pydantic de la Ec. 3.4 del [ANEXO A.3](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#a3-explicabilidad-matemática-xai-y-gobernanza-guarded-genai)) coincidió exactamente con el factor dominante del vector SHAP y el código de acción reglamentario, validando la eliminación total de alucinaciones en la interfaz operativa mostrada en el [ANEXO E.3 (Fig. 5)](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#e3-módulo-de-explicabilidad-xai-treeshap-y-prescripción-guarded-genai-fig-5).
 
 ---
 
 ## 5.6. Evaluación del Motor de Optimización de Rutas (VRP Amazon Last-Mile)
 
 ### 5.6.1. Comparativa Heurística 2-Opt vs. Ruteo Manual
-Se simuló la planificación completa de 21 rutas de reparto sobre una demanda de 200 paradas logísticas representativas:
+Se simuló la planificación completa de 21 rutas de reparto sobre una demanda de 200 paradas logísticas representativas, aplicando el modelo matemático formalizado en las Ecs. 4.1 a 4.5 del [ANEXO A.4: Optimización Combinatoria de Rutas (VRP con Ventanas Horarias)](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#a4-optimización-combinatoria-de-rutas-vrp-con-ventanas-horarias) y visualizado en el [ANEXO E.4: Optimizador Heurístico de Rutas 2-Opt VRP y Geovisualización Cartográfica (Fig. 6)](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#e4-optimizador-heurístico-de-rutas-2-opt-vrp-y-geovisualización-cartográfica-fig-6):
 
 | Parámetro de Planificación | Ruteo Manual (Sin Optimizar) | Ruteo Optimizado (K-Means + 2-Opt) | Ahorro / Mejora |
 | :--- | :---: | :---: | :---: |
@@ -238,7 +240,7 @@ xychart-beta
 ```
 
 ### 5.6.2. Análisis de Rutas One-Way vs. Round-Trip
-La segmentación determinista implementada en [src/decision_engine/route_optimizer.py](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/decision_engine/route_optimizer.py) demostró su impacto operativo:
+La segmentación determinista implementada en [src/decision_engine/route_optimizer.py](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/decision_engine/route_optimizer.py) y evaluada en [ANEXO E.4 (Fig. 6)](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#e4-optimizador-heurístico-de-rutas-2-opt-vrp-y-geovisualización-cartográfica-fig-6) demostró su impacto operativo:
 - **Rutas Solo Ida (14 rutas regulares):** Distancia media de $31.4\text{ km}$ y tiempo medio de $48.2\text{ min}$. Cumplimiento del SLA del **$98.5\%$**.
 - **Rutas Ida y Vuelta (7 rutas voluntarias):** Distancia media de $42.3\text{ km}$ y tiempo medio de $68.5\text{ min}$. Cumplimiento del SLA del **$92.8\%$**.
 
@@ -246,7 +248,7 @@ La segmentación determinista implementada en [src/decision_engine/route_optimiz
 
 ## 5.7. Impacto Operacional, Económico y Social
 
-Proyectando los ahorros diarios sobre un año operativo estándar de **260 días laborables** para la flota de distribución:
+Proyectando los ahorros diarios sobre un año operativo estándar de **260 días laborables** para la flota de distribución, mediante los modelos econométricos detallados en las Ecs. 5.1 a 5.7 del [ANEXO A.5: Cuantificación del Impacto Operacional, Económico y Social](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#a5-cuantificación-del-impacto-operacional-económico-y-social):
 
 ### 5.7.1. Impacto Económico y Operativo Anual
 
@@ -259,7 +261,7 @@ $$\text{Ahorro Económico Directo} = 14,266.2\text{ millas} \times \$0.58/\text{
 ### 5.7.2. Impacto en Calidad de Servicio y Sostenibilidad
 1. **Garantía de Ventanas Horarias SLA:** Al elevar el cumplimiento de las ventanas de entrega del $88.5\%$ al **$96.5\%$**, se minimizan las entregas tardías y las penalizaciones operativas en ruta.
 2. **Disminución de Fatiga en Conducción:** Ahorrar más de $570$ horas anuales de tráfico a los conductores reduce el desgaste operativo y el estrés en rutas de alta densidad.
-3. **Capacidad de Crecimiento:** La automatización instantánea del ruteo ($<0.1\text{ s}$) elimina las 2 horas diarias de planificación manual, liberando recursos para la supervisión analítica de la flota.
+3. **Capacidad de Crecimiento:** La automatización instantánea del ruteo ($<0.1\text{ s}$) elimina las 2 horas diarias de planificación manual, liberando recursos para la supervisión analítica de la flota en la Torre de Control ([ANEXO E.1](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#e1-torre-de-control-logístico-40-monitoreo-geolocalizado-y-alertas-sla-en-tiempo-real-fig-3)).
 
 ---
 
@@ -278,7 +280,22 @@ Todos los resultados empíricos, contrastes de hipótesis y curvas de rendimient
 - [`notebooks/01_visualizaciones_storytelling_odysseus.ipynb`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/notebooks/01_visualizaciones_storytelling_odysseus.ipynb): Despliegue de los 6 actos del Data Storytelling, gráficos de contraste de la Auditoría Anti-Leakage (Naïve vs. Saneado con `GroupKFold`), explicabilidad local TreeSHAP y visualización geográfica de rutas 2-Opt.
 - [`notebooks/02_eda_estadistica_inferencial_y_prescriptiva.ipynb`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/notebooks/02_eda_estadistica_inferencial_y_prescriptiva.ipynb): Tablas maestras de estadística descriptiva paramétrica/no paramétrica, pruebas formales de normalidad ($W, K^2, D$), diagnóstico de outliers (Tukey IQR vs. Modified Z-Score con MAD), matrices de correlación Pearson vs. Spearman, VIF y batería completa de contrastes de hipótesis ($H_1, H_2, H_3$).
 
+### 5.8.4. Catálogo de Artefactos de Validación Experimental y Resultados Empíricos
+
+Para garantizar que cada cifra, gráfico y tabla de este capítulo sea auditable y reproducible, los artefactos de datos y resultados se encuentran catalogados en el [**Catálogo Maestro de Artefactos del Proyecto**](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Catalogo_Maestro_Artefactos_Proyecto.md):
+
+| Artefacto de Datos / Resultados | Descripción del Contenido Empírico | Formato / Ubicación | Sección en Cap. 5 |
+| :--- | :--- | :--- | :---: |
+| **Dataset Gold Histórico ($N=8.000$)** | Corpus normalizado del 2021 Amazon Last-Mile Challenge con variables cinemáticas y térmicas. | [`data/processed/logistics_historical_dataset.csv`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/data/processed/logistics_historical_dataset.csv) | [Sección 5.1](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Cap5_TFM_Resultados_Validacion_y_Discusion.md#51-auditoría-integral-de-calidad-de-datos-data-quality-framework) |
+| **Matriz Benchmark Multimodelo** | Métricas consolidadas (ROC-AUC, PR-AUC, Recall, Brier Score, Latencia) de los 6 modelos evaluados. | [`data/processed/model_benchmark_results.csv`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/data/processed/model_benchmark_results.csv) | [Sección 5.4](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Cap5_TFM_Resultados_Validacion_y_Discusion.md#54-benchmark-multimodelo-y-desempeño-predictivo) |
+| **Auditoría Comparativa Anti-Leakage** | Tabla de contraste cuantitativo entre el modelo contaminado Naïve y el modelo Saneado de producción. | [`data/processed/leakage_audit_comparison.csv`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/data/processed/leakage_audit_comparison.csv) | [Sección 5.3](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Cap5_TFM_Resultados_Validacion_y_Discusion.md#53-auditoría-de-prevención-de-fuga-de-datos-anti-leakage) |
+| **Base de Datos Operativa SQLite** | Repositorio relacional local de la Capa Gold con telemetría en tiempo real y logs de inferencia. | [`data/live_fleet_state.db`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/data/live_fleet_state.db) | [Sección 5.5](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Cap5_TFM_Resultados_Validacion_y_Discusion.md#55-explicabilidad-matemática-xai-y-validación-prescriptiva) |
+| **Cuaderno Storytelling Odysseus** | Visual Data Storytelling en 6 actos: gráficos anti-leakage, curvas ROC-AUC, TreeSHAP y mapas 2-Opt. | [`notebooks/01_visualizaciones_storytelling_odysseus.ipynb`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/notebooks/01_visualizaciones_storytelling_odysseus.ipynb) | [Sección 5.8.3](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Cap5_TFM_Resultados_Validacion_y_Discusion.md#583-disponibilidad-de-resultados-en-cuadernos-interactivos-criterio-odysseus) |
+| **Cuaderno EDA & Contrastes $H_1, H_2, H_3$** | Batería formal de pruebas de normalidad, tests de Welch, Mann-Whitney $U$, ANOVA y Bootstrap. | [`notebooks/02_eda_estadistica_inferencial_y_prescriptiva.ipynb`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/notebooks/02_eda_estadistica_inferencial_y_prescriptiva.ipynb) | [Sección 5.2](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Cap5_TFM_Resultados_Validacion_y_Discusion.md#52-análisis-estadístico-descriptivo-e-inferencial) |
+| **Pipeline de Pruebas Unitarias** | Validación automatizada de los módulos estadísticos y pipelines (24/24 tests aprobados). | [`tests/test_statistical_eda.py`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/tests/test_statistical_eda.py), [`tests/test_model_pipeline.py`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/tests/test_model_pipeline.py) | [Sección 5.4](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Cap5_TFM_Resultados_Validacion_y_Discusion.md#54-benchmark-multimodelo-y-desempeño-predictivo) |
+
 ---
+
 
 ## 5.9. Resumen y Conclusiones del Capítulo 5
 

@@ -67,7 +67,7 @@ mindmap
       Falta de restricciones deterministas
 ```
 
-1. **La brecha entre la predicción y la acción operativa:** La gran mayoría de los trabajos se enfocan en predecir retrasos logísticos mediante métricas abstractas de *Machine Learning* (ej. ROC-AUC), pero carecen de mecanismos integrados que traduzcan dicha probabilidad en una orden de re-enrutamiento dinámica bajo restricciones reales de ruteo vehicular (*Vehicle Routing Problem - VRP*) (Aponte Parejo, 2023).
+1. **La brecha entre la predicción y la acción operativa:** La gran mayoría de los trabajos se enfocan en predecir retrasos logísticos mediante métricas abstractas de *Machine Learning* (ej. ROC-AUC), pero carecen de mecanismos integrados que traduzcan dicha probabilidad en una orden de re-enrutamiento dinámica bajo restricciones reales de ruteo vehicular (*Vehicle Routing Problem - VRP*) (Aponte Parejo, 2025).
 2. **La opacidad algorítmica (*Black-Box Problem*):** Los despachadores y operadores de tráfico desconfían de modelos predictivos complejos si no comprenden **por qué** un vehículo está en riesgo inminente (ej. si el factor detonante es la densidad de tráfico, la fricción ambiental o la distancia restante) (Sharma & Vajjhala, 2023).
 3. **El riesgo de alucinación en la IA Generativa:** La adopción reciente de Grandes Modelos de Lenguaje (LLMs) para asistencia operativa carece con frecuencia de salvaguardas (*guardrails*), lo que puede generar instrucciones prescriptivas incompatibles con los protocolos de seguridad alimentaria.
 
@@ -78,7 +78,7 @@ mindmap
 La justificación de este Trabajo de Fin de Máster descansa en la integración sinérgica de la ingeniería de datos a gran escala, la ciencia de datos aplicada y la optimización de operaciones:
 
 - **Justificación Tecnológica y Metodológica:** Se demuestra la viabilidad de una arquitectura modular basada en las mejores prácticas de la Cadena de Suministro 4.0 (BID, 2020; Sinha et al., 2020), combinando ingesta en streaming con validación rigurosa de esquemas (Pydantic), modelado supervisado con optimización asimétrica de sensibilidad ($\text{Recall} \ge 0.90$), explicabilidad local matemática (valores de Shapley vía SHAP) y generación de directivas prescriptivas gobernadas (*Guarded GenAI*).
-- **Justificación Económica y Operacional:** Se valida el impacto cuantitativo de la heurística 2-Opt VRP sobre las redes de distribución de última milla, logrando ahorros tangibles de kilometraje, tiempo de conducción y costes de servicio, a la vez que se maximiza el cumplimiento de las ventanas horarias SLA, aportando evidencia empírica directa a los desafíos de trazabilidad y eficiencia planteados por Alvarado et al. (2023), Aponte Parejo (2023) y la UANL (2022).
+- **Justificación Económica y Operacional:** Se valida el impacto cuantitativo de la heurística 2-Opt VRP sobre las redes de distribución de última milla, logrando ahorros tangibles de kilometraje, tiempo de conducción y costes de servicio, a la vez que se maximiza el cumplimiento de las ventanas horarias SLA, aportando evidencia empírica directa a los desafíos de trazabilidad y eficiencia planteados por Alvarado et al. (2023), Aponte Parejo (2025) y la UANL (2022).
 
 ---
 
@@ -88,10 +88,10 @@ La justificación de este Trabajo de Fin de Máster descansa en la integración 
 Diseñar, desarrollar y validar experimentalmente una arquitectura integral de **Decision Intelligence** basada en Internet de las Cosas (IoT) y Big Data para la optimización prescriptiva y en tiempo real de la cadena de suministro de última milla, tomando como base empírica e industrial el **2021 Amazon Last-Mile Routing Research Challenge Dataset** (Amazon Last Mile Science & MIT CTL).
 
 ### 1.4.2. Objetivos Específicos (OE)
-- **OE1 (Ingesta & Feature Store):** Diseñar e implementar un pipeline telemático desacoplado para flujos IoT de alta frecuencia con compuertas de validación de calidad de datos (*Pydantic Quality Gate*) y un almacén de características analítico (*Feature Store* - Capa Gold SQLite).
-- **OE2 (Modelado Predictivo & MLOps):** Desarrollar, evaluar y registrar mediante MLOps (MLflow) un conjunto de clasificadores de Machine Learning (XGBoost, LightGBM, Random Forest) con función de coste asimétrica priorizando la minimización de Falsos Negativos ($\text{Recall} \ge 0.90, \text{ROC-AUC} \ge 0.88$).
-- **OE3 (XAI & Prescripción Confiable):** Integrar explicabilidad matemática local en tiempo real mediante valores de Shapley (SHAP) y diseñar un agente prescriptivo en lenguaje natural (*Guarded GenAI*) gobernado por reglas deterministas de seguridad operativa.
-- **OE4 (Optimización VRP & Torre de Control):** Implementar un motor de optimización de rutas heurístico (K-Means + 2-Opt TSP) y una Torre de Control visual interactiva (Streamlit), cuantificando los ahorros de kilometraje, reducción de tiempos muertos y cumplimiento de ventanas de entrega SLA.
+- **OE1 (Ingesta & Feature Store):** Diseñar e implementar un pipeline telemático desacoplado para flujos IoT de alta frecuencia con compuertas de validación de calidad de datos (*Pydantic Quality Gate*) y un almacén de características analítico (*Feature Store* - Capa Gold SQLite). *(Vinculado formalmente a [ANEXO B: Diccionario Dimensional de Datos](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#anexo-b-diccionario-dimensional-de-datos-y-feature-store-capa-gold) y [ANEXO E.2: Consola de Despacho y Feature Store](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#e2-módulo-2-planificación-de-despacho-activo-y-consola-de-la-capa-gold-feature-store)).*
+- **OE2 (Modelado Predictivo & MLOps):** Desarrollar, evaluar y registrar mediante MLOps (MLflow) un conjunto de clasificadores de Machine Learning (XGBoost, LightGBM, Random Forest, CatBoost, Extra Trees y Stacking) con función de coste asimétrica priorizando la minimización de Falsos Negativos ($\text{Recall} \ge 0.90, \text{ROC-AUC} \ge 0.88$). *(Vinculado formalmente a [ANEXO C: Matriz de Hiperparámetros](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#anexo-c-matriz-de-hiperparámetros-del-benchmark-multimodelo) y [ANEXO E.8: Plataforma MLOps y MLflow](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#e8-módulo-8-plataforma-mlops-registro-de-experimentos-curvas-de-desempeño-y-gobernanza-en-mlflow)).*
+- **OE3 (XAI & Prescripción Confiable):** Integrar explicabilidad matemática local en tiempo real mediante valores de Shapley (SHAP) y diseñar un agente prescriptivo en lenguaje natural (*Guarded GenAI*) gobernado por reglas deterministas de seguridad operativa. *(Vinculado formalmente a [ANEXO A.3: Ecuaciones de Explicabilidad y Prescripción](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#a3-explicabilidad-causal-matemática-treeshap-y-prescripción-asistida-guarded-genai) y [ANEXO E.3: Motor XAI y Prescripción Guarded GenAI](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#e3-módulo-3-motor-de-explicabilidad-causal-treeshap-y-prescripción-asistida-guarded-genai)).*
+- **OE4 (Optimización VRP & Torre de Control):** Implementar un motor de optimización de rutas heurístico (K-Means + 2-Opt TSP) y una Torre de Control visual interactiva (Streamlit), cuantificando los ahorros de kilometraje, reducción de tiempos muertos y cumplimiento de ventanas de entrega SLA. *(Vinculado formalmente a [ANEXO A.4: Ecuaciones de Optimización VRP](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#a4-optimización-combinatoria-de-rutas-last-mile-vrptsp), [ANEXO E.1: Torre de Control Telemática](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#e1-módulo-1-torre-de-control-telemática-y-despacho-en-tiempo-real-gps--streaming-iot) y [ANEXO E.4: Optimizador de Rutas Last-Mile](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#e4-módulo-4-optimizador-de-rutas-last-mile-heurística-2-opt-vrp-y-control-de-sla-térmico)).*
 
 ---
 
@@ -103,8 +103,6 @@ Para guiar la metodología y la validación experimental, se formulan cuatro pre
 - **PI2:** ¿Qué algoritmos de Machine Learning y esquemas de ponderación asimétrica optimizan la sensibilidad ($\text{Recall}$) en la detección temprana de disrupciones sin comprometer la precisión operativa?
 - **PI3:** ¿De qué manera la descomposición causal de Shapley (SHAP) combinada con el paradigma *Guarded GenAI* permite transformar predicciones probabilísticas de "caja negra" en directivas prescriptivas accionables y libres de alucinaciones?
 - **PI4:** ¿En qué medida un motor heurístico de optimización de rutas (2-Opt VRP) integrado con una torre de control en tiempo real reduce la huella logística, el coste operativo y garantiza el cumplimiento del SLA de entrega en operaciones de última milla?
-
----
 
 ---
 
@@ -142,29 +140,75 @@ El trabajo articula cinco disciplinas complementarias de IA:
 
 El presente proyecto ha sido diseñado para evidenciar la totalidad de las competencias avanzadas exigidas en el programa de Máster en Big Data, Data Science & MLOps de la Universidad Complutense de Madrid (UCM):
 
-| Eje Temático del Máster | Requerimiento TFM | Estado | Solución Técnica Implementada |
-| :--- | :--- | :---: | :--- |
-| **1. Fundamentación y Negocio** | Contextualización rigurosa y justificación de impacto. | ✅ **100%** | Operaciones de última milla y dataset formal **2021 Amazon Last-Mile Routing Research Challenge Dataset** (Amazon Last Mile Science & MIT CTL). |
-| **2. Big Data & Streaming IoT** | Ingesta telemática distribuida y resiliente. | ✅ **100%** | Pipeline streaming asíncrono con micro-batches en Drop Folder / Kafka Topic. |
-| **3. Calidad de Datos (Data Quality)** | Validación estricta y auditoría dimensional. | ✅ **100%** | Quality Gate con Pydantic v2 en streaming y auditoría Gold (Score: **99.95%**). |
-| **4. Estadística e Inferencia** | Análisis exploratorio e inferencial formal. | ✅ **100%** | Contrastes Welch $t$, Mann-Whitney $U$, ANOVA, Kruskal-Wallis, $\chi^2$ y Bootstrap CI. |
-| **5. Machine Learning Avanzado** | Suite predictiva con validación cruzada y ensambles. | ✅ **100%** | Benchmark 6 modelos, 5-Fold Stratified CV, calibración Sigmoid y Stacking Super Learner. |
-| **6. Optimización de Operaciones** | Algoritmos de grafos y ruteo vehicular. | ✅ **100%** | K-Means espacial + 2-Opt VRP con restricción de SLA térmico $<90\text{ min}$. |
-| **7. Explicabilidad (XAI)** | Justificación matemática de modelos opacos. | ✅ **100%** | TreeSHAP local por evento telemático y análisis de importancia global. |
-| **8. IA Generativa Prescriptiva** | Integración de LLMs gobernados en la toma de decisión. | ✅ **100%** | Guarded GenAI Agent con esquemas JSON estructurados y cero alucinaciones. |
-| **9. Ingeniería de Software & UI** | Torre de control interactiva y visualización. | ✅ **100%** | Dashboard Streamlit en 4 módulos con mapas OpenStreetMap y CSS Glassmorphism. |
-| **10. MLOps & Despliegue** | Versionado, tracking, testing y contenerización. | ✅ **100%** | MLflow Registry, suite Pytest (24/24 passed) y orquestación Docker/Podman Compose. |
+| Eje Temático del Máster | Requerimiento TFM | Estado | Solución Técnica Implementada | Evidencia / Anexo Técnico |
+| :--- | :--- | :---: | :--- | :--- |
+| **1. Fundamentación y Negocio** | Contextualización rigurosa y justificación de impacto. | ✅ **100%** | Operaciones de última milla y dataset formal **2021 Amazon Last-Mile Challenge** (Amazon & MIT CTL). | Cap. 1 & 2 / Anexo A.1 |
+| **2. Big Data & Streaming IoT** | Ingesta telemática distribuida y resiliente. | ✅ **100%** | Pipeline streaming asíncrono con micro-batches en Drop Folder / Kafka Topic. | Cap. 3 & 4 / Anexo E.1 |
+| **3. Calidad de Datos (Data Quality)** | Validación estricta y auditoría dimensional. | ✅ **100%** | Quality Gate con Pydantic v2 en streaming y auditoría Gold (Score: **99.95%**). | Cap. 3 & 5 / Anexo B & D |
+| **4. Estadística e Inferencia** | Análisis exploratorio e inferencial formal. | ✅ **100%** | Contrastes Welch $t$, Mann-Whitney $U$, ANOVA, Kruskal-Wallis, $\chi^2$ y Bootstrap CI. | Cap. 5 / Anexo E.6 & E.7 |
+| **5. Machine Learning Avanzado** | Suite predictiva con validación cruzada y ensambles. | ✅ **100%** | Benchmark 6 modelos, 5-Fold Stratified CV, calibración Sigmoid y Stacking Super Learner. | Cap. 4 & 5 / Anexo C & E.8 |
+| **6. Optimización de Operaciones** | Algoritmos de grafos y ruteo vehicular. | ✅ **100%** | K-Means espacial + 2-Opt VRP con restricción de SLA térmico $<90\text{ min}$. | Cap. 4 & 5 / Anexo A.4 & E.4 |
+| **7. Explicabilidad (XAI)** | Justificación matemática de modelos opacos. | ✅ **100%** | TreeSHAP local por evento telemático y análisis de importancia global. | Cap. 4 & 5 / Anexo A.3 & E.3 |
+| **8. IA Generativa Prescriptiva** | Integración de LLMs gobernados en la toma de decisión. | ✅ **100%** | Guarded GenAI Agent con esquemas JSON estructurados y cero alucinaciones. | Cap. 4 & 5 / Anexo A.3 & E.3 |
+| **9. Ingeniería de Software & UI** | Torre de control interactiva y visualización. | ✅ **100%** | Dashboard Streamlit en 4 módulos con mapas OpenStreetMap y CSS Glassmorphism. | Cap. 4 / Anexo E (E.1-E.8) |
+| **10. MLOps & Despliegue** | Versionado, tracking, testing y contenerización. | ✅ **100%** | MLflow Registry, suite Pytest (24/24 passed) y orquestación Docker/Podman Compose. | Cap. 4 / Anexo D & E.8 |
 
 ---
 
-## 1.8. Estructura de la Memoria del Trabajo de Fin de Máster
+## 1.8. Estructura de la Memoria y Mapeo con los Anexos Técnicos
 
-El documento se estructura en seis capítulos interrelacionados:
-- **Capítulo 1: Introducción, Motivación y Objetivos.**
-- **Capítulo 2: Marco Teórico, Estado del Arte y Fundamentos Científicos.**
-- **Capítulo 3: Metodología, Arquitectura y Selección Tecnológica.**
-- **Capítulo 4: Desarrollo e Implementación de la Arquitectura de Decision Intelligence.**
-- **Capítulo 5: Resultados, Validación Experimental y Discusión Crítica.**
-- **Capítulo 6: Conclusiones Generales, Limitaciones y Líneas de Trabajo Futuro.**
+El cuerpo principal del Trabajo de Fin de Máster se articula en seis capítulos teóricos y aplicados, vinculados de forma biunívoca y secuencial con los cinco **Anexos Técnicos** que cierran la investigación:
+
+```mermaid
+flowchart LR
+    subgraph CAPITULOS["Capítulos del Manuscrito TFM"]
+        C1["Cap. 1: Introducción & Objetivos"]
+        C2["Cap. 2: Marco Teórico & DSN"]
+        C3["Cap. 3: Metodología & CRISP-DM"]
+        C4["Cap. 4: Implementación Arquitectura"]
+        C5["Cap. 5: Validación & Discusión"]
+        C6["Cap. 6: Conclusiones & Futuro"]
+    end
+
+    subgraph ANEXOS["Anexos Técnicos de Soporte"]
+        AA["Anexo A: Compendio Matemático (Ec. 1.1 a 5.7)"]
+        AB["Anexo B: Diccionario Dimensional Gold Layer"]
+        AC["Anexo C: Matriz de Hiperparámetros MLOps"]
+        AD["Anexo D: Protocolo de Pruebas Pytest (24/24)"]
+        AE["Anexo E: Evidencias de la Plataforma (E.1 a E.8)"]
+    end
+
+    C1 -.-> AA & AB
+    C2 --> AA & AE
+    C3 --> AB & AC & AD
+    C4 --> AA & AC & AD & AE
+    C5 --> AA & AC & AE
+    C6 --> AD & AE
+```
+
+- **Capítulo 1 (Introducción, Motivación y Objetivos):** Define la visión del problema logístico, los objetivos y las preguntas de investigación. Se mapea globalmente con la estructura de la Capa Gold ([Anexo B](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#anexo-b-diccionario-dimensional-de-datos-y-feature-store-capa-gold)) y el compendio general de formulaciones analíticas ([Anexo A](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#anexo-a-compendio-matemático-e-índice-de-fórmulas-del-sistema)).
+- **Capítulo 2 (Marco Teórico y Estado del Arte):** Establece los fundamentos científicos de Redes Digitales de Suministro (DSN), leyes termodinámicas del SLA, teoría del ruteo vehicular VRP y axiomas de Shapley. Se vincula rigurosamente con las formulaciones del [Anexo A (A.1 a A.4)](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#anexo-a-compendio-matemático-e-índice-de-fórmulas-del-sistema) y las vistas conceptuales de la Torre de Control ([Anexo E.1](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#e1-módulo-1-torre-de-control-telemática-y-despacho-en-tiempo-real-gps--streaming-iot)).
+- **Capítulo 3 (Metodología y Selección Tecnológica):** Detalla el ciclo CRISP-DM, la arquitectura Medallion por capas y la selección del stack tecnológico. Se enlaza formalmente con el diccionario dimensional de variables de la Capa Gold ([Anexo B](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#anexo-b-diccionario-dimensional-de-datos-y-feature-store-capa-gold)), las especificaciones de calibración algorítmica ([Anexo C](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#anexo-c-matriz-de-hiperparámetros-del-benchmark-multimodelo)) y los criterios de testing ([Anexo D](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#anexo-d-protocolo-de-pruebas-automatizadas-suite-pytest)).
+- **Capítulo 4 (Desarrollo e Implementación de la Arquitectura):** Documenta la ingeniería computacional de ingesta, Feature Store, ensambles ML, explicabilidad TreeSHAP, agente Guarded GenAI y heurística 2-Opt. Se referencia minuciosamente con el código auditado, las ecuaciones del [Anexo A](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#anexo-a-compendio-matemático-e-índice-de-fórmulas-del-sistema) y las interfaces de software correspondientes ([Anexo E.1 a E.4](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#anexo-e-artefactos-del-software-evidencias-integrales-de-la-plataforma-torre-de-control-de-decision-intelligence-y-mlops)).
+- **Capítulo 5 (Resultados, Validación Experimental y Discusión):** Expone la auditoría de calidad de datos, contrastes inferenciales, auditoría de prevención de Data Leakage, benchmarks de modelos y validación operacional. Sus hallazgos se sustentan empíricamente en los paneles del módulo EDA ([Anexo E.6 y E.7](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#e6-módulo-6-módulo-eda-estadística-descriptiva-y-evaluación-de-normalidad)), el servidor de gobernanza MLflow ([Anexo E.8](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#e8-módulo-8-plataforma-mlops-registro-de-experimentos-curvas-de-desempeño-y-gobernanza-en-mlflow)) y las ecuaciones de impacto económico ([Anexo A.5](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#a5-métricas-de-impacto-operacional-económico-y-ambiental)).
+- **Capítulo 6 (Conclusiones, Limitaciones y Trabajo Futuro):** Sintetiza la consecución de objetivos, respuestas a preguntas de investigación y certificación de requerimientos técnicos, respaldada por la suite de pruebas unitarias certificada ([Anexo D](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#anexo-d-protocolo-de-pruebas-automatizadas-suite-pytest)) y la operatividad integral de la plataforma ([Anexo E](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#anexo-e-artefactos-del-software-evidencias-integrales-de-la-plataforma-torre-de-control-de-decision-intelligence-y-mlops)).
+- **Capítulo 7 (Referencias Bibliográficas):** Compendio bibliográfico unificado bajo el sistema internacional Harvard.
+- **Anexos Técnicos A, B, C, D y E:** Compendio matemático, diccionario de datos, calibración MLOps, suite Pytest y galería de artefactos del software.
+
+### 1.8.1. Catálogo e Inventario de Artefactos Tangibles del Proyecto
+
+Con el fin de garantizar la máxima reproducibilidad, auditabilidad y transparencia exigidas en el estándar profesional de Data Science y MLOps, la totalidad de los entregables se estructura en un inventario formal indexado en el [**Catálogo Maestro de Artefactos del Proyecto**](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Catalogo_Maestro_Artefactos_Proyecto.md). A continuación se resumen los grupos de artefactos tangibles generados:
+
+| Categoría de Artefacto | Descripción del Componente Físico | Rutas de Acceso Directo | Capítulos TFM |
+| :--- | :--- | :--- | :---: |
+| **💻 Pipelines de Código (`src/`)** | Ingesta IoT, compuerta Pydantic, Feature Store Capa Gold, modelos ML, XAI TreeSHAP, Guarded GenAI y Dashboard Streamlit. | [`src/data_ingestion/`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/data_ingestion/), [`src/processing/`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/processing/), [`src/models/`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/models/), [`src/decision_engine/`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/decision_engine/), [`src/visualization/dashboard.py`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/visualization/dashboard.py) | Cap. 3, 4 |
+| **🤖 Modelos ML Serializados** | Ensamble Stacking calibrado ($\text{Recall} = 1.0000$) y modelo base XGBoost con seguimiento de experimentos en MLflow. | [`models/best_delay_model.pkl`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/models/best_delay_model.pkl), [`models/xgboost_delay_model.pkl`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/models/xgboost_delay_model.pkl), [`mlruns/`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/mlruns/) | Cap. 4, 5 |
+| **🗄️ Datos & Feature Store** | Base de datos SQLite operativa (`live_fleet_state.db`), dataset Gold consolidado ($N=8.000$), auditorías anti-leakage y landing zone. | [`data/live_fleet_state.db`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/data/live_fleet_state.db), [`data/processed/`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/data/processed/), [`data/streaming_landing_zone/`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/data/streaming_landing_zone/) | Cap. 3, 4, 5 |
+| **📓 Cuadernos de Investigación** | *Data Storytelling* visual en 6 actos bajo Criterio Odysseus y cuaderno de estadística inferencial y contrastes de hipótesis ($H_1, H_2, H_3$). | [`notebooks/01_visualizaciones_storytelling_odysseus.ipynb`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/notebooks/01_visualizaciones_storytelling_odysseus.ipynb), [`notebooks/02_eda_estadistica_inferencial_y_prescriptiva.ipynb`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/notebooks/02_eda_estadistica_inferencial_y_prescriptiva.ipynb) | Cap. 4, 5 |
+| **🧪 Testing Automatizado** | Batería de 24 pruebas unitarias y de integración certificadas en Pytest (cobertura completa de validación, modelos, XAI y VRP). | [`tests/`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/tests/) (`test_data_validator.py`, `test_model_pipeline.py`, etc.) | Cap. 4, 6 |
+| **🐳 Infraestructura & Despliegue** | Contenedores OCI Dockerfile, orquestación Docker Compose (4 microservicios) y automatizadores de entorno (`setup_env`, `run_dashboard`). | [`Dockerfile`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/Dockerfile), [`docker-compose.yml`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docker-compose.yml), [`setup_env.ps1`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/setup_env.ps1) | Cap. 3, 4 |
+| **📊 Evidencias de la Plataforma** | Galería visual de capturas de alta definición de los 8 módulos de la Torre de Control y la consola MLOps. | [`images/`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/images/) (`control_tower_ui_artifact.jpg`, `app_route_optimizer.jpg`, etc.) | Anexo E |
 
 ---
+
+

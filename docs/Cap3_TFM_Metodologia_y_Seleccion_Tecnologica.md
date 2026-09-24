@@ -10,7 +10,7 @@
 
 ## 3.1. Enfoque Metodológico de la Investigación
 
-La presente investigación adopta un enfoque metodológico mixto cuantitativo-aplicado fundamentado en la metodología estándar **CRISP-DM (*Cross-Industry Standard Process for Data Mining*)**, adaptada al ciclo de vida continuo de **MLOps** y procesamiento de eventos en tiempo real (*Continuous Machine Learning for Event Streams*) (Sinha et al., 2020; Ravindran & Warsing, 2021; Aponte Parejo, 2023). 
+La presente investigación adopta un enfoque metodológico mixto cuantitativo-aplicado fundamentado en la metodología estándar **CRISP-DM (*Cross-Industry Standard Process for Data Mining*)**, adaptada al ciclo de vida continuo de **MLOps** y procesamiento de eventos en tiempo real (*Continuous Machine Learning for Event Streams*) (Sinha et al., 2020; Ravindran & Warsing, 2021; Aponte Parejo, 2025). 
 
 Asimismo, se incorpora el marco de diseño por capas y evaluación experimental recomendado en las revisiones sistemáticas de Logística 4.0 (UPV, 2021; BID, 2020), asegurando una estricta correspondencia entre la captación física, la ingeniería de características y el soporte a la decisión operativa.
 
@@ -29,9 +29,9 @@ flowchart LR
 
 ## 3.2. Principios de Diseño Arquitectónico (Digital Supply Network)
 
-Siguiendo los principios de diseño de Redes Digitales de Suministro (Sinha et al., 2020), las directrices del BID (2020) y los marcos de gestión logística cuantitativa (Longshore & Cheatham, 2022; Dasgupta et al., 2023; Aponte Parejo, 2023), la arquitectura del sistema se rige por cinco principios fundamentales:
+Siguiendo los principios de diseño de Redes Digitales de Suministro (Sinha et al., 2020), las directrices del BID (2020) y los marcos de gestión logística cuantitativa (Longshore & Cheatham, 2022; Dasgupta et al., 2023; Aponte Parejo, 2025), la arquitectura del sistema se rige por cinco principios fundamentales:
 
-1. **Desacoplamiento y Tolerancia a Fallos:** El productor telemático IoT y el motor analítico operan de forma asíncrona mediante el patrón *Drop Folder / Landing Zone*, evitando bloqueos ante caídas de red o picos de tráfico telemático (Aponte Parejo, 2023).
+1. **Desacoplamiento y Tolerancia a Fallos:** El productor telemático IoT y el motor analítico operan de forma asíncrona mediante el patrón *Drop Folder / Landing Zone*, evitando bloqueos ante caídas de red o picos de tráfico telemático (Aponte Parejo, 2025).
 2. **Compuerta de Calidad de Datos en Ingesta (*Data Quality Gate*):** Validación estricta de tipos, rangos físicos y consistencia geográfica mediante esquemas Pydantic antes de que los datos ingresen al almacén analítico (UANL, 2022).
 3. **Optimización de Coste Asimétrico:** En la logística asistencial de alimentos calientes para personas dependientes, el coste de un **Falso Negativo** (no anticipar que la comida llegará fría) es infinitamente superior al coste de un **Falso Positivo** (alerta preventiva de revisión). Por ello, el pipeline prioriza maximizar la sensibilidad ($\text{Recall} \ge 0.90$) sobre la exactitud global (*Accuracy*) (Longshore & Cheatham, 2022).
 4. **Prescripción Gobernada y Explicable (*Guarded GenAI*):** Cero tolerancia a la opacidad de "caja negra" o a las alucinaciones de modelos generativos (Sharma & Vajjhala, 2023). Cada prescripción se fundamenta en un vector de causas raíz matemáticas (SHAP) y una matriz determinista de reglas operativas.
@@ -42,27 +42,28 @@ Siguiendo los principios de diseño de Redes Digitales de Suministro (Sinha et a
 ## 3.3. Arquitectura del Sistema por Capas
 
 ```mermaid
+```mermaid
 flowchart TD
-    subgraph CAPA_IOT["1. Capa de Captación e Ingesta Telemática"]
+    subgraph CAPA_IOT["1. Capa de Captación e Ingesta Telemática (Anexos A.1, D, E.1)"]
         SIM["Simulador IoT de Alta Frecuencia<br/>(GPS Boise/Nampa, Velocidad, Clima, Tráfico)"]
         VAL["DataValidator (Pydantic Quality Gate)<br/>(Filtro de anomalías físicas y espaciales)"]
         STREAM["FileStreamConsumer (Landing Zone)<br/>(Ingesta asíncrona micro-batch)"]
         SIM --> VAL --> STREAM
     end
 
-    subgraph CAPA_STORAGE["2. Almacenamiento & Feature Store (Capa Gold)"]
+    subgraph CAPA_STORAGE["2. Almacenamiento & Feature Store Capa Gold (Anexos B, E.2)"]
         SQL["Base de Datos SQLite (live_fleet_state.db)<br/>(Gemelo Digital Telemático)"]
         ENG["Feature Engineering Engine<br/>(η_urgencia, Δt_esperado, IR_amb)"]
         STREAM --> SQL <--> ENG
     end
 
-    subgraph CAPA_AI["3. Inteligencia Artificial Predictiva & XAI"]
+    subgraph CAPA_AI["3. IA Predictiva & MLOps (Anexos A.2, C, E.8)"]
         MODEL["Clasificador de Retrasos (XGBoost / LightGBM)<br/>(P(Retraso), MLflow Tracking)"]
         SHAP_M["TreeSHAP Explainer (Valores de Shapley)<br/>(Descomposición causal local en streaming)"]
         SQL --> MODEL --> SHAP_M
     end
 
-    subgraph CAPA_PRESCRIP["4. Motor Prescriptivo & Optimización de Rutas"]
+    subgraph CAPA_PRESCRIP["4. Motor Prescriptivo & VRP (Anexos A.3, A.4, E.3, E.4)"]
         RULES["Matriz de Decisión por Niveles de Riesgo<br/>(Nivel 1 Crítico, Nivel 2 Moderado, Nivel 3 Normal)"]
         LLM["Guarded GenAI Agent (LLM Prescriptivo)<br/>(Síntesis contextualizada sin alucinaciones)"]
         VRP_M["Motor VRP (K-Means + 2-Opt TSP)<br/>(Rutas One-Way y Round-Trip con SLA < 90 min)"]
@@ -70,7 +71,7 @@ flowchart TD
         RULES --> VRP_M
     end
 
-    subgraph CAPA_UI["5. Torre de Control & MLOps"]
+    subgraph CAPA_UI["5. Torre de Control & MLOps (Anexo E Completo, Anexo D)"]
         DASH["Dashboard Streamlit (Control Tower)<br/>(Glassmorphism, Mapas GPS, Inferencia de Rutas)"]
         EDA_M["Módulo EDA Estadístico e Inferencial<br/>(Welch t, ANOVA, Kruskal-Wallis, Chi-cuadrado)"]
         OPS_M["Entorno MLOps Cloud-Native<br/>(Docker / Podman Compose, PyTest Suite)"]
@@ -84,20 +85,18 @@ flowchart TD
 
 ## 3.4. Selección Tecnológica y Justificación Técnica
 
-| Capa del Sistema | Tecnología Seleccionada | Justificación Técnica y Criterio de Selección |
-| :--- | :--- | :--- |
-| **Lenguaje de Programación** | **Python 3.10+** | Estándar *de facto* en Data Science y MLOps. Soporte nativo para librerías científicas (`numpy`, `pandas`, `scipy`, `statsmodels`). |
-| **Validación de Datos** | **Pydantic v2** | Validación de tipos y restricciones en tiempo de ejecución de alto rendimiento escrita en Rust. Garantiza calidad de datos pre-ingesta. |
-| **Almacenamiento & Feature Store** | **SQLite 3 (Capa Gold)** | Base de datos embebida, ACID complaciente, de latencia sub-milisegundo, sin sobrecarga de infraestructura distribuida para micro-batches. |
-| **Modelado Predictivo** | **XGBoost & LightGBM** | Algoritmos de *Gradient Boosting* de última generación con soporte para hiperparámetros de coste asimétrico (`scale_pos_weight`). |
-| **Explicabilidad Matemática (XAI)** | **SHAP (`TreeExplainer`)** | Proporciona explicaciones locales exactas basadas en la teoría axiomática de Shapley en tiempo polinómico $O(TLD^2)$ (Sharma & Vajjhala, 2023). |
-| **Experiment Tracking** | **MLflow** | Registro de hiperparámetros, métricas multimodelo (ROC-AUC, Recall, F1), firmas de modelos y reproducibilidad de artefactos (Criterio Odysseus). |
-| **Optimización de Rutas** | **Scikit-Learn (K-Means) + Heurística 2-Opt TSP** | Descomposición *Cluster-First Route-Second* que resuelve el VRP con SLA térmico en $<0.1\text{ segundos}$ (Ravindran & Warsing, 2021). |
-| **Torre de Control Visual** | **Streamlit + Plotly / Mapbox** | Desarrollo rápido de interfaces analíticas reactivas de alta gama con CSS personalizado (*Glassmorphism Dark Theme*) y mapas geoespaciales interactivos. |
-| **Contenedorización** | **Docker / Podman Compose** | Despliegue modular en microservicios independientes (`control-tower`, `stream-consumer`, `iot-simulator`, `mlflow-server`). |
-| **Calidad y Pruebas** | **PyTest** | Suite de pruebas unitarias y de integración que verifica la robustez de los validadores, el feature store, el modelo y el optimizador. |
-
----
+| Capa del Sistema | Tecnología Seleccionada | Justificación Técnica y Criterio de Selección | Anexo Técnico Correlacionado |
+| :--- | :--- | :--- | :--- |
+| **Lenguaje de Programación** | **Python 3.10+** | Estándar *de facto* en Data Science y MLOps. Soporte nativo para librerías científicas (`numpy`, `pandas`, `scipy`, `statsmodels`). | [ANEXO D](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#anexo-d-protocolo-de-pruebas-automatizadas-suite-pytest) |
+| **Validación de Datos** | **Pydantic v2** | Validación de tipos y restricciones en tiempo de ejecución de alto rendimiento escrita en Rust. Garantiza calidad de datos pre-ingesta. | [ANEXO B](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#anexo-b-diccionario-dimensional-de-datos-y-feature-store-capa-gold) & [ANEXO D](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#anexo-d-protocolo-de-pruebas-automatizadas-suite-pytest) |
+| **Almacenamiento & Feature Store** | **SQLite 3 (Capa Gold)** | Base de datos embebida, ACID complaciente, de latencia sub-milisegundo, sin sobrecarga de infraestructura distribuida para micro-batches. | [ANEXO B](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#anexo-b-diccionario-dimensional-de-datos-y-feature-store-capa-gold) & [ANEXO E.2](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#e2-módulo-2-planificación-de-despacho-activo-y-consola-de-la-capa-gold-feature-store) |
+| **Modelado Predictivo** | **XGBoost & LightGBM** | Algoritmos de *Gradient Boosting* de última generación con soporte para hiperparámetros de coste asimétrico (`scale_pos_weight`). | [ANEXO C](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#anexo-c-matriz-de-hiperparámetros-del-benchmark-multimodelo) & [ANEXO E.8](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#e8-módulo-8-plataforma-mlops-registro-de-experimentos-curvas-de-desempeño-y-gobernanza-en-mlflow) |
+| **Explicabilidad Matemática (XAI)** | **SHAP (`TreeExplainer`)** | Proporciona explicaciones locales exactas basadas en la teoría axiomática de Shapley en tiempo polinómico $O(TLD^2)$ (Sharma & Vajjhala, 2023). | [ANEXO A.3](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#a3-explicabilidad-causal-matemática-treeshap-y-prescripción-asistida-guarded-genai) & [ANEXO E.3](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#e3-módulo-3-motor-de-explicabilidad-causal-treeshap-y-prescripción-asistida-guarded-genai) |
+| **Experiment Tracking** | **MLflow** | Registro de hiperparámetros, métricas multimodelo (ROC-AUC, Recall, F1), firmas de modelos y reproducibilidad de artefactos (Criterio Odysseus). | [ANEXO E.8](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#e8-módulo-8-plataforma-mlops-registro-de-experimentos-curvas-de-desempeño-y-gobernanza-en-mlflow) |
+| **Optimización de Rutas** | **Scikit-Learn (K-Means) + Heurística 2-Opt TSP** | Descomposición *Cluster-First Route-Second* que resuelve el VRP con SLA térmico en $<0.1\text{ segundos}$ (Ravindran & Warsing, 2021). | [ANEXO A.4](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#a4-optimización-combinatoria-de-rutas-last-mile-vrptsp) & [ANEXO E.4](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#e4-módulo-4-optimizador-de-rutas-last-mile-heurística-2-opt-vrp-y-control-de-sla-térmico) |
+| **Torre de Control Visual** | **Streamlit + Plotly / Mapbox** | Desarrollo rápido de interfaces analíticas reactivas de alta gama con CSS personalizado (*Glassmorphism Dark Theme*) y mapas geoespaciales interactivos. | [ANEXO E (E.1 a E.8)](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#anexo-e-artefactos-del-software-evidencias-integrales-de-la-plataforma-torre-de-control-de-decision-intelligence-y-mlops) |
+| **Contenedorización** | **Docker / Podman Compose** | Despliegue modular en microservicios independientes (`control-tower`, `stream-consumer`, `iot-simulator`, `mlflow-server`). | [ANEXO E.8](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#e8-módulo-8-plataforma-mlops-registro-de-experimentos-curvas-de-desempeño-y-gobernanza-en-mlflow) |
+| **Calidad y Pruebas** | **PyTest** | Suite de pruebas unitarias y de integración que verifica la robustez de los validadores, el feature store, el modelo y el optimizador. | [ANEXO D](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#anexo-d-protocolo-de-pruebas-automatizadas-suite-pytest) |
 
 ---
 
@@ -128,11 +127,13 @@ Cada evento telemático recibido es contrastado contra el validador Pydantic ant
 - **Consistencia:** $100\%$ de coherencia lógica ($\eta_{\text{urgencia}} \ge 0, \Delta t_{\text{esperado}} \ge 0$).
 - **Integridad:** $100\%$ de claves foráneas y secuencias de ruta resueltas.
 
+*(Para una descripción exhaustiva de cada variable de la Capa Gold, sus tipos, dominios y rangos, consúltese el [ANEXO B: Diccionario Dimensional de Datos](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#anexo-b-diccionario-dimensional-de-datos-y-feature-store-capa-gold); la auditoría de software y tests de validación se encuentran en el [ANEXO D](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#anexo-d-protocolo-de-pruebas-automatizadas-suite-pytest)).*
+
 ---
 
 ## 3.6. Formulación Matemática de Variables del Feature Store y Espacio de Entrada
 
-Para enriquecer la telemetría cruda, el motor de ingeniería de características genera variables de tensión cinemática y riesgo ambiental conformando el espacio de entrada $X \in \mathbb{R}^{10}$:
+Para enriquecer la telemetría cruda, el motor de ingeniería de características genera variables de tensión cinemática y riesgo ambiental conformando el espacio de entrada $X \in \mathbb{R}^{10}$ *(véanse las ecuaciones completas en el [ANEXO A.1: Compendio Matemático](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Anexo_TFM_Compendio_Matematico_e_Indice_de_Formulas.md#a1-ingesta-telemática-cinética-vehicular-y-termodinámica-de-carga))*:
 
 ### 3.6.1. Ratio de Urgencia Cinemática ($\eta_{\text{urgencia}}$)
 Cuantifica la discrepancia entre el tiempo físicamente requerido a la velocidad actual y la ventana horaria comprometida con el beneficiario:
@@ -205,4 +206,19 @@ Para garantizar la reproducibilidad y rigor de las conclusiones, el sistema se e
 4. **Reproducibilidad en Cuadernos Interactivos (Criterio Odysseus):** Implementación de cuadernos reproducibles de inferencia exploratoria y visual data storytelling ([`notebooks/01_visualizaciones_storytelling_odysseus.ipynb`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/notebooks/01_visualizaciones_storytelling_odysseus.ipynb) y [`notebooks/02_eda_estadistica_inferencial_y_prescriptiva.ipynb`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/notebooks/02_eda_estadistica_inferencial_y_prescriptiva.ipynb)) con semillado fijo (`seed=42`), auditoría formal anti-leakage bajo `GroupKFold` y prescripción topológica 2-Opt.
 
 ---
+
+## 3.10. Trazabilidad de Artefactos Metodológicos del Proyecto
+
+Cada etapa metodológica de la investigación se encuentra respaldada por artefactos computacionales auditables, inventariados en el [**Catálogo Maestro de Artefactos del Proyecto**](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/docs/Catalogo_Maestro_Artefactos_Proyecto.md):
+
+| Fase CRISP-DM / Capa Medallion | Entregable Metodológico | Artefacto Físico Implementado | Hipervínculo de Acceso |
+| :--- | :--- | :--- | :---: |
+| **1. Entendimiento de Negocio & Datos** | Definición formal del problema de última milla y cargador de trazas reales. | Parser Amazon Last-Mile y dataset consolidado Gold ($N=8.000$). | [`src/data_ingestion/amazon_dataset_loader.py`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/data_ingestion/amazon_dataset_loader.py), [`data/processed/logistics_historical_dataset.csv`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/data/processed/logistics_historical_dataset.csv) |
+| **2. Preparación & Calidad (Bronze $\to$ Gold)** | Validación dimensional Pydantic (DQS: 99.95%) y Feature Store persistente. | Compuerta de calidad y base SQLite operacional. | [`src/processing/data_validator.py`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/processing/data_validator.py), [`data/live_fleet_state.db`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/data/live_fleet_state.db) |
+| **3. Modelado Predictivo & MLOps** | Ensamble calibrado para coste asimétrico ($\text{Recall} = 100\%$) y tracking. | Script de entrenamiento multimodelo y modelo serializado Super Learner. | [`src/models/train.py`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/models/train.py), [`models/best_delay_model.pkl`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/models/best_delay_model.pkl) |
+| **4. Explicabilidad Causal & Prescripción** | Atribución matemática Shapley en streaming y LLM gobernado sin alucinaciones. | Motor TreeSHAP, sintetizador Guarded GenAI y optimizador 2-Opt. | [`src/decision_engine/shap_explainer.py`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/decision_engine/shap_explainer.py), [`src/decision_engine/llm_agent.py`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/decision_engine/llm_agent.py), [`src/decision_engine/route_optimizer.py`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/decision_engine/route_optimizer.py) |
+| **5. Evaluación & Torre de Control** | Suite de pruebas Pytest (24/24), notebooks de storytelling y cuadro de mandos Web. | Suite de testing automatizado, notebooks reproducibles y UI Streamlit. | [`tests/`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/tests/), [`notebooks/`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/notebooks/), [`src/visualization/dashboard.py`](file:///d:/LabD/DS-LOGISTICA%204.0-Metro-Meals-on%20Wheels%20Treasure%20Valley/src/visualization/dashboard.py) |
+
+---
+
 
